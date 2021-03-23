@@ -8,7 +8,10 @@ library("dplyr") #for data processing
 library("ggplot2") #for visualisation
 library("RColorBrewer") #for color pallettes
 library("formattable") #for making ncie tables
-library("networkD3")
+library("kableExtra") #for making nice tables
+library("networkD3") #for sankey diagrams
+library("htmltools") #to manage html objects
+library("webshot") #to save screenshots of html objects
 
 ###################### define paths for import and export ###################### 
 datadir <- "../Atlas_export_sheets"
@@ -20,7 +23,9 @@ source("./functions/away_gr.R")
 source("./functions/away_spaces.R")
 source("./functions/away_totals.R")
 source("./functions/dict_classification.R")
-  
+source("./functions/level1_count.R")
+source("./functions/export_formattable.R")
+
 ###################### load data ###################### 
 quotes <- read_excel(paste0(datadir, "/", "all_quotes.xlsx"))
 
@@ -54,37 +59,35 @@ for(i in 1:nrow(quotes_long)){
   quotes_long$name[i] <- code_vec[2]
 }
 
+n_studies <- as.numeric(as.character(length(unique(quotes_long$Document))))
+
 rm(list = c("new_row", "code", "code_vec", "codes", "i", "j"))
+###################### pre-process quotes ########################
 
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
 modelling_data <- modelling_data[!is.na(modelling_data$code_group),]
-
-modelling_data_sum <- modelling_data %>% 
-  group_by(name, Document) %>%
-  count(name)
-
-modelling_data_sum$n <- 1
-
-modelling_data_sum <- modelling_data_sum %>% 
-  group_by(name) %>%
-  count(name)
-
-modelling_data_sum <- modelling_data_sum %>%
-  arrange(desc(n))
-
-# make into a function
-modelling_data_sum$data_class <- NA
-for(i in 1:nrow(modelling_data_sum)){
-  for(j in names(data_types)){
-    if((modelling_data_sum$data[i]) %in% paste0(data_types[[j]], "\r\n")){
-      modelling_data_sum$data_class[i] = j
-    }
-  }
-}
-#
+modelling_data_sum <- level1_count(sheet = modelling_data)
 
 modelling_data_sum$data <- factor(modelling_data_sum$data, levels = rev(unique(modelling_data_sum$data)))
+colnames(modelling_data_sum) <- c("type of data", "number")
+modelling_data_sum$proportion <- round(modelling_data_sum$number/n_studies, 2)
+str(modelling_data_sum)
+
+modelling_data_sum$number <- color_bar("lightgreen")(modelling_data_sum$number)
+
+#ft <- formattable(modelling_data_sum, list(`n` = color_bar("#71CA97")))
+ft <- modelling_data_sum %>%
+  group_by(number) %>%
+  #mutate(number = color_tile("lightgreen", "green")(number)) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  #kable_styling("hover", full_width = F) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+  #column_spec(3, width = "3cm") %>%
+
+###################### prepare modelling - data ########################
+
+
 
 ##MESSY##
 

@@ -1,6 +1,6 @@
 # function summarising presence of codes within papers
 
-level1_count <- function(sheet, code_gr){
+level1_count <- function(sheet){
   data_sum <- sheet %>% 
     group_by(name, Document) %>%
     count(name)
