@@ -106,24 +106,41 @@ ft_mtyp
 rm(list = c("mtype", "mtype_sum"))
 ###################### prepare per model - type ########################
 
+###################### prepare spatial & temporal - ref scale ########################
+rsc <- quotes_long[quotes_long$code_group == "spatial & temporal - ref scale",]
+rsc <- rsc[!is.na(rsc$code_group),]
+rsc_sum <- level1_count(sheet = rsc)
+rsc_sum$name <- factor(rsc_sum$name, levels = rev(c("earth", 
+                                                    "earth > x > continent", 
+                                                    "continent", 
+                                                    "continent > x > country", 
+                                                    "country", 
+                                                    "country > x > province/state",
+                                                    "province/state",
+                                                    "province/state > x > municipality",
+                                                    "municipality",
+                                                    "municipality > x > city",
+                                                    "city",
+                                                    "city > x > city_district",
+                                                    "city district")))
+rsc_sum <- rsc_sum[order(rsc_sum$name),]
+colnames(rsc_sum) <- c("scale of model", "number")
+rsc_sum$proportion <- round(rsc_sum$number/n_studies, 2)
+
+rsc_sum$number <- color_bar("lightgreen")(rsc_sum$number)
+
+ft_rsc <- rsc_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_rsc 
+
+rm(list = c("rsc", "rsc_sum"))
+
+
+
 ##MESSY##
-
-# model_types
-colnames(model_types)[1] <- "Papers"
-model_types <- away_gr(sheet = model_types)
-model_types <- away_codegr(sheet = model_types, codegr = "^.*(per model - type: )") #^.*() ensures bullet point in front of codegroup is also removed
-model_types <- away_totals(sheet = model_types)
-model_types <- away_spaces(sheet = model_types)
-model_types <- model_types[,-(which(colSums(model_types[, -1]) == 0) + 1)] # take away columns that have not been used
-model_types_long <- gather(model_types, "type", "mentioned?", 2:ncol(model_types), factor_key = TRUE)
-
-model_types_long$`mentioned?`[model_types_long$`mentioned?` > 1] <- 1
-model_types_sum <- model_types_long %>% 
-  group_by(type) %>%
-  summarise(number = sum(`mentioned?`))
-model_types_sum <- model_types_sum %>%
-  arrange(desc(number))
-model_types_sum$type <- factor(model_types_sum$type, levels = rev(unique(model_types_sum$type)))
 
 # ref_scale
 colnames(ref_scale)[1] <- "Papers"
@@ -139,19 +156,19 @@ ref_scale_sum <- ref_scale_long %>%
   summarise(number = sum(`mentioned?`))
 ref_scale_sum <- ref_scale_sum %>%
   arrange(desc(number))
-ref_scale_sum$scale <- factor(ref_scale_sum$scale, levels = (c("earth\r\n", 
-                                                                "earth_>_x_>_continent\r\n", 
-                                                                "continent\r\n", 
-                                                                "continent_>_x_>_country\r\n", 
-                                                                "country\r\n", 
-                                                                "country_>_x_>_province/state\r\n",
-                                                                "province/state\r\n",
-                                                                "province/state_>_x_>_municipality\r\n",
-                                                                "municipality\r\n",
-                                                                "municipality_>_x_>_city\r\n",
-                                                                "city\r\n",
-                                                                "city_>_x_>_city_district\r\n",
-                                                                "city_district\r\n")))
+ref_scale_sum$scale <- factor(ref_scale_sum$scale, levels = rev(c("earth", 
+                                                                  "earth > x > continent", 
+                                                                  "continent", 
+                                                                  "continent > x > country", 
+                                                                  "country", 
+                                                                  "country > x > province/state",
+                                                                  "province/state",
+                                                                  "province/state > x > municipality",
+                                                                  "municipality",
+                                                                  "municipality > x > city",
+                                                                  "city",
+                                                                  "city > x > city_district",
+                                                                  "city district")))
 
 # model type and model domain
 colnames(model_type_model_domain)[1] <- "model_type"
