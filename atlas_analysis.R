@@ -109,6 +109,27 @@ ft_jrnl
 rm(list = c("jrnl", "jrnl_sum"))
 ###################### prepare papers - journal ########################
 
+###################### prepare modelling - aim ########################
+aim <- quotes_long[quotes_long$code_group == "modelling - aim",]
+aim <- aim[!is.na(aim$code_group),]
+aim_sum <- level1_count(sheet = aim)
+
+aim_sum$name <- factor(aim_sum$name, levels = rev(unique(aim_sum$name)))
+colnames(aim_sum) <- c("model aim", "number")
+aim_sum$proportion <- round(aim_sum$number/n_studies, 2)
+
+aim_sum$number <- color_bar("lightblue")(aim_sum$number)
+
+ft_aim <- aim_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_aim
+
+rm(list = c("aim", "aim_sum"))
+###################### prepare modelling - aim ########################
+
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
 modelling_data <- modelling_data[!is.na(modelling_data$code_group),]
