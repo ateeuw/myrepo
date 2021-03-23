@@ -109,6 +109,27 @@ ft_jrnl
 rm(list = c("jrnl", "jrnl_sum"))
 ###################### prepare papers - journal ########################
 
+###################### prepare modelling - coupling? ########################
+coup <- quotes_long[quotes_long$code_group == "modelling - coupling?",]
+coup <- coup [!is.na(coup $code_group),]
+coup_sum <- level1_count(sheet = coup )
+
+coup_sum$name <- factor(coup_sum$name, levels = rev(unique(coup_sum$name)))
+colnames(coup_sum) <- c("model coupling?", "number")
+coup_sum$proportion <- round(coup_sum$number/n_studies, 2)
+
+coup_sum$number <- color_bar("lightblue")(coup_sum$number)
+
+ft_coup <- coup_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_coup
+
+rm(list = c("coup", "coup_sum"))
+###################### prepare modelling - coupling? ########################
+
 ###################### prepare modelling - aim ########################
 aim <- quotes_long[quotes_long$code_group == "modelling - aim",]
 aim <- aim[!is.na(aim$code_group),]
@@ -129,6 +150,10 @@ ft_aim
 
 rm(list = c("aim", "aim_sum"))
 ###################### prepare modelling - aim ########################
+
+###################### prepare modelling - feedback-loops? ########################
+
+###################### prepare modelling - feedback-loops? ########################
 
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
