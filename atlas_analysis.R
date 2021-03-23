@@ -194,7 +194,24 @@ rm(list = c("sens", "sens_sum"))
 ###################### prepare modelling - sensitivity analysis? ########################
 
 ###################### prepare modelling - validation? ########################
+val <- quotes_long[quotes_long$code_group == "modelling - validation?",]
+val <- val[!is.na(val$code_group),]
+val_sum <- level1_count(sheet = val)
 
+val_sum$name <- factor(val_sum$name, levels = rev(unique(val_sum$name)))
+colnames(val_sum) <- c("model validated?", "number")
+val_sum$proportion <- round(val_sum$number/n_studies, 2)
+
+val_sum$number <- color_bar("lightblue")(val_sum$number)
+
+ft_val <- val_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_val
+
+rm(list = c("val", "val_sum"))
 ###################### prepare modelling - validation? ########################
 
 ###################### prepare modelling - data ########################
@@ -202,11 +219,11 @@ modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
 modelling_data <- modelling_data[!is.na(modelling_data$code_group),]
 modelling_data_sum <- level1_count(sheet = modelling_data)
 
-modelling_data_sum$data <- factor(modelling_data_sum$data, levels = rev(unique(modelling_data_sum$data)))
+modelling_data_sum$name <- factor(modelling_data_sum$name, levels = rev(unique(modelling_data_sum$name)))
 colnames(modelling_data_sum) <- c("type of data", "number")
 modelling_data_sum$proportion <- round(modelling_data_sum$number/n_studies, 2)
 
-modelling_data_sum$number <- color_bar("lightgreen")(modelling_data_sum$number)
+modelling_data_sum$number <- color_bar("lightblue")(modelling_data_sum$number)
 
 ft_data <- modelling_data_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
