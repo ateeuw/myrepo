@@ -12,11 +12,14 @@ library("networkD3")
 
 ###################### define paths for import and export ###################### 
 datadir <- "../Atlas_export_sheets"
-#list.files(datadir)
 figdir <- "../Figures"
 
 ###################### load functions ###################### 
-# to do!
+source("./functions/away_codegr.R")
+source("./functions/away_gr.R")
+source("./functions/away_spaces.R")
+source("./functions/away_totals.R")
+source("./functions/dict_classification.R")
   
 ###################### load data ###################### 
 modelling_data <- read_excel(paste0(mydir, "/", "DxC_modelling_data.xlsx"))
