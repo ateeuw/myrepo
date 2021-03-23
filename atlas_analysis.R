@@ -61,7 +61,7 @@ for(i in 1:nrow(quotes_long)){
 
 n_studies <- as.numeric(as.character(length(unique(quotes_long$Document))))
 
-rm(list = c("new_row", "code", "code_vec", "codes", "i", "j"))
+rm(list = c("new_row", "code", "codes_vec", "codes", "i", "j"))
 ###################### pre-process quotes ########################
 
 ###################### prepare modelling - data ########################
@@ -72,22 +72,39 @@ modelling_data_sum <- level1_count(sheet = modelling_data)
 modelling_data_sum$data <- factor(modelling_data_sum$data, levels = rev(unique(modelling_data_sum$data)))
 colnames(modelling_data_sum) <- c("type of data", "number")
 modelling_data_sum$proportion <- round(modelling_data_sum$number/n_studies, 2)
-str(modelling_data_sum)
 
 modelling_data_sum$number <- color_bar("lightgreen")(modelling_data_sum$number)
 
-#ft <- formattable(modelling_data_sum, list(`n` = color_bar("#71CA97")))
-ft <- modelling_data_sum %>%
+ft_data <- modelling_data_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  #mutate(number = color_tile("lightgreen", "green")(number)) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
-  #kable_styling("hover", full_width = F) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
-  #column_spec(3, width = "3cm") %>%
+
+ft_data
+
+rm(list = c("modelling_data", "modelling_data_sum"))
 
 ###################### prepare modelling - data ########################
 
+###################### prepare per model - type ########################
+mtype <- quotes_long[quotes_long$code_group == "per model - type",]
+mtype <- mtype[!is.na(mtype$code_group),]
+mtype_sum <- level1_count(sheet = mtype)
+mtype_sum$name <- factor(mtype_sum$name, levels = rev(unique(mtype_sum$name)))
+colnames(mtype_sum) <- c("type of model", "number")
+mtype_sum$proportion <- round(mtype_sum$number/n_studies, 2)
 
+mtype_sum$number <- color_bar("lightgreen")(mtype_sum$number)
+
+ft_mtyp <- mtype_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_mtyp 
+
+rm(list = c("mtype", "mtype_sum"))
+###################### prepare per model - type ########################
 
 ##MESSY##
 
