@@ -508,6 +508,26 @@ ft_ech
 rm(list = c("ech", "ech_sum"))
 ###################### prepare food system - echelon ########################
 
+###################### prepare food system - commodity ########################
+com <- quotes_long[quotes_long$code_group == "food system - commodity",]
+com <- com[!is.na(com$code_group),]
+com_sum <- level1_count(sheet = com)
+com_sum$name <- factor(com_sum$name, levels = rev(unique(com_sum$name)))
+colnames(com_sum) <- c("food commodity", "number")
+com_sum$proportion <- round(com_sum$number/n_studies, 2)
+
+com_sum$number <- color_bar("orange")(com_sum$number)
+
+ft_com <- com_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_com 
+
+rm(list = c("com", "com_sum"))
+###################### prepare food system - commodity ########################
+
 ##MESSY##
 
 # model type and model domain
