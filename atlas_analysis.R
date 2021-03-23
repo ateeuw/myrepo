@@ -22,9 +22,42 @@ source("./functions/away_totals.R")
 source("./functions/dict_classification.R")
   
 ###################### load data ###################### 
-quotes <- read_excel(paste0(mydir, "/", "all_quotes.xlsx"))
+quotes <- read_excel(paste0(datadir, "/", "all_quotes.xlsx"))
 
 ###################### pre-process data ########################
+quotes <- quotes[quotes$`Document Groups` == "!Read for Lit review - eligible",] #ignore codes attached in papers ineligible for literature review
+
+# make quotes into long format
+quotes_long <- quotes[1,]
+quotes_long$code <- NA
+quotes_long[,] <- NA
+
+for(i in 1:nrow(quotes)){
+  codes <- quotes$Codes[i]
+  codes_vec <- unlist(strsplit(codes, "\r\n"))
+  for(j in codes_vec){
+    new_row <- quotes[i,]
+    new_row$code <- j
+    quotes_long <- rbind(quotes_long, new_row)
+  }
+}
+
+quotes_long <- quotes_long[-1,]
+
+quotes_long$code_group <- ""
+quotes_long$name <- ""
+
+for(i in 1:nrow(quotes_long)){
+  code <- quotes_long$code[i]
+  code_vec <- unlist(strsplit(code, ": "))
+  quotes_long$code_group[i] <- code_vec[1]
+  quotes_long$name[i] <- code_vec[2]
+}
+
+rm(list = c("new_row", "code", "code_vec", "codes", "i", "j"))
+
+
+#### messy below
 
 # modelling_data
 colnames(modelling_data)[1] <- "Papers"
