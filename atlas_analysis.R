@@ -298,6 +298,25 @@ ft_msdom
 rm(list = c("mdom", "mdom_sum"))
 ###################### prepare per model - subdomain ########################
 
+###################### prepare spatial & temporal - country ########################
+cntr <- quotes_long[quotes_long$code_group == "spatial & temporal - country",]
+cntr <- cntr[!is.na(cntr$code_group),]
+cntr_sum <- level1_count(sheet = cntr)
+cntr_sum$name <- factor(cntr_sum$name, levels = rev(unique(cntr_sum$name)))
+colnames(cntr_sum) <- c("country", "number")
+cntr_sum$proportion <- round(cntr_sum$number/n_studies, 2)
+
+cntr_sum$number <- color_bar("lightpink")(cntr_sum$number)
+
+ft_cntr <- cntr_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_cntr 
+
+rm(list = c("cntr", "cntr_sum"))
+###################### prepare spatial & temporal - country ########################
 
 ###################### prepare spatial & temporal - ref scale ########################
 rsc <- quotes_long[quotes_long$code_group == "spatial & temporal - ref scale",]
@@ -320,7 +339,7 @@ rsc_sum <- rsc_sum[order(rsc_sum$name),]
 colnames(rsc_sum) <- c("scale of model", "number")
 rsc_sum$proportion <- round(rsc_sum$number/n_studies, 2)
 
-rsc_sum$number <- color_bar("lightgreen")(rsc_sum$number)
+rsc_sum$number <- color_bar("lightpink")(rsc_sum$number)
 
 ft_rsc <- rsc_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
@@ -330,7 +349,7 @@ ft_rsc <- rsc_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_
 ft_rsc 
 
 rm(list = c("rsc", "rsc_sum"))
-
+###################### prepare spatial & temporal - ref scale ########################
 
 
 ##MESSY##
