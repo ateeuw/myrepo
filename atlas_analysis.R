@@ -1,4 +1,5 @@
 # This is a document where I test how I can analyse my atlas ti data
+# Now I will clean it (23.3.2021)
 
 # load libraries
 library("readxl") #for reading excel files
@@ -7,92 +8,15 @@ library("dplyr") #for data processing
 library("ggplot2") #for visualisation
 library("RColorBrewer") #for color pallettes
 library("formattable") #for making ncie tables
+library("networkD3")
 
-# check out files
-mydir <- "C:/Users/TeeuwenAS/OneDrive - Universiteit Twente/Twente/Thesis shared - ABM value chains food security/Literature review - clean/Atlas_export_sheets"
-list.files(mydir)
-figdir <- "C:/Users/TeeuwenAS/OneDrive - Universiteit Twente/Twente/Thesis shared - ABM value chains food security/Literature review - clean/Figures"
+###################### define paths for import and export ###################### 
+datadir <- "../Atlas_export_sheets"
+#list.files(datadir)
+figdir <- "../Figures"
 
-# DxC means it is a document x code co-occurence matrix
-# CxC means it is a code x code co-occurence matrix
-
-###################### functions to preprocess data ###################### 
-away_gr <- function(sheet){
-  
-  #remove Gr=<number> from column names
-  for(i in 1:length(colnames(sheet))){
-    colnames(sheet)[i] <- gsub("Gr=[0-9]+", 
-                               replacement = "", 
-                               x = colnames(sheet)[i])
-  }
-  
-  #remove Gr=<number> from first column
-  for(i in 1:length(rownames(sheet))){
-    sheet[i,1] <- gsub("Gr=[0-9]+", 
-                       replacement = "", 
-                       x = sheet[i,1])
-  }
-  
-  return(sheet)
-}
-away_codegr <- function(sheet, codegr){
-  
-  #remove <code group> from column names
-  for(i in 1:length(colnames(sheet))){
-    colnames(sheet)[i] <- gsub(codegr, 
-                               replacement = "", 
-                               x = colnames(sheet)[i])
-  }
-  
-  return(sheet)
-}
-away_codegr_row <- function(sheet, codegr, clm = 1){
-  
-  #remove <code group> from first row
-  for(i in 1:nrow(sheet)){
-    print(i)
-    print(gsub(codegr, replacement = "", x = sheet[i,clm]))
-    sheet[i,clm] <- gsub(codegr, replacement = "", x = sheet[i,clm])
-  }
-  
-  return(sheet)
-}
-away_totals <- function(sheet){
-  
-  # remove "Totals" column
-  sheet <- sheet[,-which(colnames(sheet) == "Totals")]
-  
-  #remove "Totals" row
-  sheet <- sheet[-which(sheet[,1] == "Totals"),]
-}
-away_spaces <- function(sheet){
-  
-  #remove spaces from column names
-  for(i in 1:length(colnames(sheet))){
-    colnames(sheet)[i] <- gsub(" ",
-                               replacement = "_",
-                               x = colnames(sheet)[i])
-  }
-  
-  return(sheet)
-  
-}
-
-dict_classification <- function(sheet, dct, clm, class_clm){
-  sheet[, class_clm] <- as.character(sheet[, class_clm])
-  #sheet[i, n_clm] <- as.numeric(sheet[i, n_clm])
-  for(i in 1:nrow(sheet)){
-    print(i)
-    for(j in names(dct)){
-      print(j)
-      if((sheet[i,clm] %in% dct[[j]])){
-        sheet[i, class_clm] <- j
-        #sheet[i, n_clm] <- length(dct[[j]])
-      }
-    }
-  }
-  return(sheet)
-}
+###################### load functions ###################### 
+# to do!
   
 ###################### load data ###################### 
 modelling_data <- read_excel(paste0(mydir, "/", "DxC_modelling_data.xlsx"))
