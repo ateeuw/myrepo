@@ -385,43 +385,50 @@ spext_sum$logname <- log(as.numeric(as.character(spext_sum$name)))
 spext_sum <- spext_sum[order(spext_sum$name),]
 #spext_sum <- spext_sum %>% group_by(name) %>% count(name)
 
+quant_n <- length(unique(spext$Document))
+
 dc_spext <- ggdotchart(spext_sum, x = "Document", y = "name",
            add = "segments",
            add.params = list(color = "black"),
           sorting = "ascending") +
   yscale("log10", .format = TRUE) +
-  ylab("spatial scale (m2)") + xlab("Reviewed paper") +
-  bgcolor("lightpink")+
-  border("#BFD5E3")
+  ylab("spatial extent (m2)") + xlab("Reviewed paper") +
+  bgcolor("lightpink") +
+  border("#BFD5E3") +
+  ggtitle(paste(quant_n, "studies out of", n_studies))
 
 dc_spext
 
-rm(list = c("spext", "spext_sum"))
+rm(list = c("spext", "spext_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial extent ########################
 
 ###################### prepare spatial & temporal - temporal extent ########################
 tmext <- quotes_long[quotes_long$code_group == "spatial & temporal - temporal extent [d]",]
-tmext$name <- as.numeric(as.character(spext$name))
-spext <- spext[!is.na(spext$code_group),]
+tmext$name <- as.numeric(as.character(tmext$name))
+tmext <- tmext[!is.na(tmext$code_group),]
 
-spext_sum <- spext %>% group_by(Document, name) %>% count(name)
-spext_sum$n <- 1
-spext_sum <- spext %>% group_by(Document, name) %>% count(name)
-spext_sum$name <- as.numeric(as.character(spext_sum$name))
-spext_sum$logname <- log(as.numeric(as.character(spext_sum$name)))
-spext_sum <- spext_sum[order(spext_sum$name),]
-#spext_sum <- spext_sum %>% group_by(name) %>% count(name)
+tmext_sum <- tmext %>% group_by(Document, name) %>% count(name)
+tmext_sum$n <- 1
+tmext_sum <- tmext %>% group_by(Document, name) %>% count(name)
+tmext_sum$name <- as.numeric(as.character(tmext_sum$name))
+tmext_sum$logname <- log(as.numeric(as.character(tmext_sum$name)))
+tmext_sum <- tmext_sum[order(tmext_sum$name),]
 
-ggdotchart(spext_sum, x = "Document", y = "name",
+quant_n <- length(unique(tmext$Document))
+
+dc_tmext <- ggdotchart(tmext_sum, x = "Document", y = "name",
            add = "segments",
            add.params = list(color = "black"),
            sorting = "ascending") +
   yscale("log10", .format = TRUE) +
-  ylab("spatial scale (m2)") + xlab("Reviewed paper") +
-  bgcolor("lightpink")+
-  border("#BFD5E3")
+  ylab("temporal extent (days)") + xlab("Reviewed paper") +
+  bgcolor("lightpink") +
+  border("#BFD5E3") +
+  ggtitle(paste(quant_n, "studies out of", n_studies))
 
-rm(list = c("spext", "spext_sum"))
+dc_tmext
+
+rm(list = c("tmext", "tmext_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial extent ########################
 
 ##MESSY##
