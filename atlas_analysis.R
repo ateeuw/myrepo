@@ -152,8 +152,50 @@ rm(list = c("aim", "aim_sum"))
 ###################### prepare modelling - aim ########################
 
 ###################### prepare modelling - feedback-loops? ########################
+loop <- quotes_long[quotes_long$code_group == "modelling - feedback-loop?",]
+loop <- loop[!is.na(loop$code_group),]
+loop_sum <- level1_count(sheet = loop)
 
+loop_sum$name <- factor(loop_sum$name, levels = rev(unique(loop_sum$name)))
+colnames(loop_sum) <- c("feedback loops in model?", "number")
+loop_sum$proportion <- round(loop_sum$number/n_studies, 2)
+
+loop_sum$number <- color_bar("lightblue")(loop_sum$number)
+
+ft_loop <- loop_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_loop
+
+rm(list = c("loop", "loop_sum"))
 ###################### prepare modelling - feedback-loops? ########################
+
+###################### prepare modelling - sensitivity analysis? ########################
+sens <- quotes_long[quotes_long$code_group == "modelling - sensitivity analysis?",]
+sens <- sens[!is.na(sens$code_group),]
+sens_sum <- level1_count(sheet = sens)
+
+sens_sum$name <- factor(sens_sum$name, levels = rev(unique(sens_sum$name)))
+colnames(sens_sum) <- c("sensitivity analysis in model?", "number")
+sens_sum$proportion <- round(sens_sum$number/n_studies, 2)
+
+sens_sum$number <- color_bar("lightblue")(sens_sum$number)
+
+ft_sens <- sens_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_sens
+
+rm(list = c("sens", "sens_sum"))
+###################### prepare modelling - sensitivity analysis? ########################
+
+###################### prepare modelling - validation? ########################
+
+###################### prepare modelling - validation? ########################
 
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
