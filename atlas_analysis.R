@@ -86,6 +86,28 @@ ft_year <- year_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
 ft_year
 
 rm(list = c("year", "year_sum"))
+###################### prepare papers - year ########################
+
+###################### prepare papers - journal ########################
+jrnl <- quotes_long[quotes_long$code_group == "papers - journal",]
+jrnl <- jrnl[!is.na(jrnl$code_group),]
+jrnl_sum <- level1_count(sheet = jrnl)
+
+jrnl_sum$name <- factor(jrnl_sum$name, levels = rev(unique(jrnl_sum$name)))
+colnames(jrnl_sum) <- c("journal", "number")
+jrnl_sum$proportion <- round(jrnl_sum$number/n_studies, 2)
+
+jrnl_sum$number <- color_bar("lightgreen")(jrnl_sum$number)
+
+ft_jrnl <- jrnl_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_jrnl
+
+rm(list = c("jrnl", "jrnl_sum"))
+###################### prepare papers - journal ########################
 
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
