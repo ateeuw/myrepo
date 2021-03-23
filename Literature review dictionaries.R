@@ -52,35 +52,35 @@ space["680,000 ha"] <- 680000*10000                               #6800000000   
 space["14000 km2"] <- sprintf("%.1f", 14000*1000000)              #14000000000          10
 space[["23,000 km2"]] <- sprintf("%.1f", 23000*1000000)           #23000000000          10 
 space["46,717.48 km2"] <- sprintf("%.1f", 46717.48*1000000)       #46717480000          10
-space["91.646 km²"] <- sprintf("%.1f", 91646*1000000)             #91646000000          10
-space["238.535 km²"] <- sprintf("%.1f",238535*1000000)            #238535000000         11
+space["91.646 km?"] <- sprintf("%.1f", 91646*1000000)             #91646000000          10
+space["238.535 km?"] <- sprintf("%.1f",238535*1000000)            #238535000000         11
 space["268303 km2"]  <- sprintf("%.1f", 268303*1000000)           #268303000000         11
 space["300000 km2"] <- sprintf("%.1f", 300000*1000000)            #300000000000         11
 space["4.73 * 10^7 hm2"] <- sprintf("%.1f",4.73*10^7*10000)       #473000000000         11
 space[["537,023 sq km"]] <- sprintf("%.1f", 537023*1000000)       #537023000000         11
 space["881,913 km2"] <- sprintf("%.1f", 881913*1000000)           #881913000000         11
 space["1 100 000 km2"] <- sprintf("%.1f", 1100000*1000000)        #1100000000000        12
-space["1.267.000 km²"] <- sprintf("%.1f", 1267000*1000000)        #1267000000000        12
-space[["1.905.000 km²"]] <- sprintf("%.1f", 1905000*1000000)      #1905000000000        12
+space["1.267.000 km?"] <- sprintf("%.1f", 1267000*1000000)        #1267000000000        12
+space[["1.905.000 km?"]] <- sprintf("%.1f", 1905000*1000000)      #1905000000000        12
 space["7,682,300 km2"] <- sprintf("%.1f", 7682300*1000000)        #7682300000000        12 
-space["8.516.000 km²"] <- sprintf("%.1f", 8516000*1000000)        #8516000000000        12
+space["8.516.000 km?"] <- sprintf("%.1f", 8516000*1000000)        #8516000000000        12
 space["9,833,520 km2"] <- sprintf("%.1f", 9833520*1000000)        #9833520000000        12
-space["9.834.000 km²"] <- sprintf("%.1f", 9834000*1000000)        #9834000000000        12
-space[["510.100.000 km²"]] <- sprintf("%.1f", 510100000*1000000)  #510100000000000      14 
+space["9.834.000 km?"] <- sprintf("%.1f", 9834000*1000000)        #9834000000000        12
+space[["510.100.000 km?"]] <- sprintf("%.1f", 510100000*1000000)  #510100000000000      14 
 space["87,311 km2"] <- sprintf("%.1f", 87311*1000000)
 space["250 m x 250 m"] <- sprintf("%.1f", 250*250)
 space["9,596,961 km2"] <- sprintf("%.1f", 9596961*1000000)
 space["148 326 000 km2"] <- sprintf("%.1f", 148326000*1000000) #terrestrial land earth
-space["1.143.000 km²"] <- sprintf("%.1f", 1143000*1000000) 
-space["801.590 km²"] <- sprintf("%.1f", 801590*1000000) 
+space["1.143.000 km?"] <- sprintf("%.1f", 1143000*1000000) 
+space["801.590 km?"] <- sprintf("%.1f", 801590*1000000) 
 # many US states:
 91646+141300+22608+119283+24923+3144+24217+6446+295254+423970+423970+170312+153909+82931+153909+82931+139390+32133+110786
 space["2503062 km2"] <- sprintf("%.1f", 2503062*1000000) 
 # many US states + mexico & canada
 91646+141300+22608+119283+24923+3144+24217+6446+295254+423970+423970+170312+153909+82931+153909+82931+139390+32133+110786+1973000+9985000
 space["14461062 km2"] <- sprintf("%.1f", 14461062*1000000) 
-space["300.000 km²"] <- sprintf("%.1f", 300000*1000000) 
-space["801.590 km²"] <- sprintf("%.1f", 801590*1000000)
+space["300.000 km?"] <- sprintf("%.1f", 300000*1000000) 
+space["801.590 km?"] <- sprintf("%.1f", 801590*1000000)
 
 # 2503062000000 + 14461062000000
 # 300000000000 + 148326000000000
@@ -268,3 +268,17 @@ measure_class[["direct support for food producers"]] <- c("minimum support price
 measure_class[["nature-centered measures"]] <- c("soil erosion control",
                                                  "afforestation",
                                                  "disaster control")
+
+# commodities
+comm_classes <- list()
+comm_classes[["cereals & cerealproducts"]] <- c("rice", "maize", "wheat", "sorghum", "millet", "grain")
+comm_classes[["fruits and derived products"]] <- c("fruit")
+comm_classes[["vegetables and derived products"]] <- c("vegetable")
+comm_classes[["sugar crops and sweeteners, and derived products"]] <- c("sugar")
+comm_classes[["fibres of vegetal and animal origin"]] <- c("cotton")
+comm_classes[["not applicable"]] <- c("food", "trees")
+comm_classes[["products from live animals"]] <- c("milk", "dairy")
+comm_classes[["oil-bearing crops and derived products"]] <- c("groundnut")
+comm_classes[["products from slaughtered animals"]] <- c("meat", "fish")
+comm_classes[["livestock"]] <- c("cattle", "goat")
+comm_classes[["stimulant crops and derived products"]] <- c("tobacco", "coffee")
