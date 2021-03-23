@@ -14,7 +14,7 @@ library("networkD3")
 datadir <- "../Atlas_export_sheets"
 figdir <- "../Figures"
 
-###################### load functions ###################### 
+###################### source functions ###################### 
 source("./functions/away_codegr.R")
 source("./functions/away_gr.R")
 source("./functions/away_spaces.R")
@@ -22,10 +22,6 @@ source("./functions/away_totals.R")
 source("./functions/dict_classification.R")
   
 ###################### load data ###################### 
-modelling_data <- read_excel(paste0(mydir, "/", "DxC_modelling_data.xlsx"))
-model_types <- read_excel(paste0(mydir, "/", "DxC_per_model_type.xlsx"))
-ref_scale <- read_excel(paste0(mydir, "/", "DxC_spatial_&_temporal_ref_scale.xlsx"))
-model_type_model_domain <- read_excel(paste0(mydir, "/", "CxC_per_model_type_per_model_domain.xlsx"))
 quotes <- read_excel(paste0(mydir, "/", "all_quotes.xlsx"))
 
 ###################### pre-process data ########################
