@@ -244,7 +244,7 @@ mtype_sum$name <- factor(mtype_sum$name, levels = rev(unique(mtype_sum$name)))
 colnames(mtype_sum) <- c("type of model", "number")
 mtype_sum$proportion <- round(mtype_sum$number/n_studies, 2)
 
-mtype_sum$number <- color_bar("lightgreen")(mtype_sum$number)
+mtype_sum$number <- color_bar("lightblue")(mtype_sum$number)
 
 ft_mtyp <- mtype_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
@@ -255,6 +255,49 @@ ft_mtyp
 
 rm(list = c("mtype", "mtype_sum"))
 ###################### prepare per model - type ########################
+
+###################### prepare per model - domain ########################
+mdom <- quotes_long[quotes_long$code_group == "per model - domain",]
+mdom <- mdom[!is.na(mdom$code_group),]
+mdom_sum <- level1_count(sheet = mdom)
+mdom_sum$name <- factor(mdom_sum$name, levels = rev(unique(mdom_sum$name)))
+colnames(mdom_sum) <- c("model domains", "number")
+mdom_sum$proportion <- round(mdom_sum$number/n_studies, 2)
+
+mdom_sum$number <- color_bar("lightblue")(mdom_sum$number)
+
+ft_mdom <- mdom_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_mdom
+
+rm(list = c("mdom", "mdom_sum"))
+###################### prepare per model - domain ########################
+
+###################### prepare per model - subdomain ########################
+mdom <- quotes_long[quotes_long$code_group == "per model - subdomain",]
+mdom <- mdom[!is.na(mdom$code_group),]
+mdom_sum <- level1_count(sheet = mdom)
+nota <- which(unique(mdom_sum$name) == "not applicable")
+mdom_sum$name <- factor(mdom_sum$name, levels = c(unique(mdom_sum$name)[-nota], "not applicable"))
+mdom_sum <- mdom_sum[order(mdom_sum$name),]
+colnames(mdom_sum) <- c("model sub domains", "number")
+mdom_sum$proportion <- round(mdom_sum$number/n_studies, 2)
+
+mdom_sum$number <- color_bar("lightblue")(mdom_sum$number)
+
+ft_msdom <- mdom_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_msdom
+
+rm(list = c("mdom", "mdom_sum"))
+###################### prepare per model - subdomain ########################
+
 
 ###################### prepare spatial & temporal - ref scale ########################
 rsc <- quotes_long[quotes_long$code_group == "spatial & temporal - ref scale",]
