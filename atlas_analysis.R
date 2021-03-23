@@ -64,6 +64,29 @@ n_studies <- as.numeric(as.character(length(unique(quotes_long$Document))))
 rm(list = c("new_row", "code", "codes_vec", "codes", "i", "j"))
 ###################### pre-process quotes ########################
 
+###################### prepare papers - year ########################
+year <- quotes_long[quotes_long$code_group == "papers - year",]
+year <- year[!is.na(year$code_group),]
+year_sum <- level1_count(sheet = year)
+
+y_range <- min(as.numeric(as.character(year_sum$name))):max(as.numeric(as.character(year_sum$name)))
+
+year_sum$name <- factor(year_sum$name, levels = y_range)
+year_sum <- year_sum[order(year_sum$name),]
+colnames(year_sum) <- c("publication year", "number")
+year_sum$proportion <- round(year_sum$number/n_studies, 2)
+
+year_sum$number <- color_bar("lightgreen")(year_sum$number)
+
+ft_year <- year_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_year
+
+rm(list = c("year", "year_sum"))
+
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
 modelling_data <- modelling_data[!is.na(modelling_data$code_group),]
@@ -141,34 +164,6 @@ rm(list = c("rsc", "rsc_sum"))
 
 
 ##MESSY##
-
-# ref_scale
-colnames(ref_scale)[1] <- "Papers"
-ref_scale <- away_gr(sheet = ref_scale)
-ref_scale <- away_codegr(sheet = ref_scale, codegr = "^.*(spatial & temporal - ref scale: )") #^.*() ensures bullet point in front of codegroup is also removed
-ref_scale <- away_totals(sheet = ref_scale)
-ref_scale <- away_spaces(sheet = ref_scale)
-ref_scale_long <- gather(ref_scale, "scale", "mentioned?", 2:ncol(ref_scale), factor_key = TRUE)
-
-ref_scale_long$`mentioned?`[ref_scale_long$`mentioned?` > 1] <- 1
-ref_scale_sum <- ref_scale_long %>% 
-  group_by(scale) %>%
-  summarise(number = sum(`mentioned?`))
-ref_scale_sum <- ref_scale_sum %>%
-  arrange(desc(number))
-ref_scale_sum$scale <- factor(ref_scale_sum$scale, levels = rev(c("earth", 
-                                                                  "earth > x > continent", 
-                                                                  "continent", 
-                                                                  "continent > x > country", 
-                                                                  "country", 
-                                                                  "country > x > province/state",
-                                                                  "province/state",
-                                                                  "province/state > x > municipality",
-                                                                  "municipality",
-                                                                  "municipality > x > city",
-                                                                  "city",
-                                                                  "city > x > city_district",
-                                                                  "city district")))
 
 # model type and model domain
 colnames(model_type_model_domain)[1] <- "model_type"
