@@ -24,7 +24,7 @@ source("./functions/dict_classification.R")
 ###################### load data ###################### 
 quotes <- read_excel(paste0(datadir, "/", "all_quotes.xlsx"))
 
-###################### pre-process data ########################
+###################### pre-process quotes ########################
 quotes <- quotes[quotes$`Document Groups` == "!Read for Lit review - eligible",] #ignore codes attached in papers ineligible for literature review
 
 # make quotes into long format
@@ -56,23 +56,22 @@ for(i in 1:nrow(quotes_long)){
 
 rm(list = c("new_row", "code", "code_vec", "codes", "i", "j"))
 
+###################### prepare modelling - data ########################
+modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
+modelling_data <- modelling_data[!is.na(modelling_data$code_group),]
 
-#### messy below
+modelling_data_sum <- modelling_data %>% 
+  group_by(name, Document) %>%
+  count(name)
 
-# modelling_data
-colnames(modelling_data)[1] <- "Papers"
-modelling_data <- away_gr(sheet = modelling_data)
-modelling_data <- away_codegr(sheet = modelling_data, codegr = "^.*(modelling - data: )") #^.*() ensures bullet point in front of codegroup is also removed
-modelling_data <- away_totals(sheet = modelling_data)
-modelling_data <- away_spaces(sheet = modelling_data)
-modelling_data_long <- gather(modelling_data, "data", "mentioned?", 2:11, factor_key = TRUE)
+modelling_data_sum$n <- 1
 
-modelling_data_long$`mentioned?`[modelling_data_long$`mentioned?` > 1] <- 1
-modelling_data_sum <- modelling_data_long %>% 
-  group_by(data) %>%
-  summarise(number = sum(`mentioned?`))
+modelling_data_sum <- modelling_data_sum %>% 
+  group_by(name) %>%
+  count(name)
+
 modelling_data_sum <- modelling_data_sum %>%
-  arrange(desc(number))
+  arrange(desc(n))
 
 # make into a function
 modelling_data_sum$data_class <- NA
@@ -86,6 +85,8 @@ for(i in 1:nrow(modelling_data_sum)){
 #
 
 modelling_data_sum$data <- factor(modelling_data_sum$data, levels = rev(unique(modelling_data_sum$data)))
+
+##MESSY##
 
 # model_types
 colnames(model_types)[1] <- "Papers"
