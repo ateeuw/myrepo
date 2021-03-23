@@ -402,6 +402,34 @@ dc_spext
 rm(list = c("spext", "spext_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial extent ########################
 
+###################### prepare spatial & temporal - spatial resolution ########################
+spres <- quotes_long[quotes_long$code_group == "spatial & temporal - spatial resolution [m2]",]
+spres$name <- as.numeric(as.character(spres$name))
+spres <- spres[!is.na(spres$code_group),]
+
+spres_sum <- spres %>% group_by(Document, name) %>% count(name)
+spres_sum$n <- 1
+spres_sum$name <- as.numeric(as.character(spres_sum$name))
+spres_sum <- spres_sum[order(spres_sum$name),]
+#spext_sum <- spext_sum %>% group_by(name) %>% count(name)
+
+quant_n <- length(unique(spres$Document))
+
+dc_spres <- ggdotchart(spres_sum, x = "Document", y = "name",
+                       add = "segments",
+                       add.params = list(color = "black"),
+                       sorting = "ascending") +
+  yscale("log10", .format = TRUE) +
+  ylab("spatial resolution (m2)") + xlab("Reviewed paper") +
+  bgcolor("lightpink") +
+  border("#BFD5E3") +
+  ggtitle(paste(quant_n, "studies out of", n_studies))
+
+dc_spres
+
+rm(list = c("spres", "spres_sum", "quant_n"))
+###################### prepare spatial & temporal - spatial resolution ########################
+
 ###################### prepare spatial & temporal - temporal extent ########################
 tmext <- quotes_long[quotes_long$code_group == "spatial & temporal - temporal extent [d]",]
 tmext$name <- as.numeric(as.character(tmext$name))
@@ -415,6 +443,7 @@ tmext_sum$logname <- log(as.numeric(as.character(tmext_sum$name)))
 tmext_sum <- tmext_sum[order(tmext_sum$name),]
 
 quant_n <- length(unique(tmext$Document))
+tm_range <- c(min(tmext_sum$name), max(tmext_sum$name))
 
 dc_tmext <- ggdotchart(tmext_sum, x = "Document", y = "name",
            add = "segments",
@@ -424,12 +453,43 @@ dc_tmext <- ggdotchart(tmext_sum, x = "Document", y = "name",
   ylab("temporal extent (days)") + xlab("Reviewed paper") +
   bgcolor("lightpink") +
   border("#BFD5E3") +
-  ggtitle(paste(quant_n, "studies out of", n_studies))
+  ggtitle(paste(quant_n, "studies out of", n_studies)) +
 
 dc_tmext
 
 rm(list = c("tmext", "tmext_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial extent ########################
+
+###################### prepare spatial & temporal - temporal resolution ########################
+tmres <- quotes_long[quotes_long$code_group == "spatial & temporal - temporal resolution [d]",]
+tmres$name <- as.numeric(as.character(tmres$name))
+tmres <- tmres[!is.na(tmres$code_group),]
+
+tmres_sum <- tmres %>% group_by(Document, name) %>% count(name)
+tmres_sum$n <- 1
+tmres_sum$name <- as.numeric(as.character(tmres_sum$name))
+tmres_sum <- tmres_sum[order(tmres_sum$name),]
+#spext_sum <- spext_sum %>% group_by(name) %>% count(name)
+
+quant_n <- length(unique(tmres$Document))
+
+dc_tmres <- ggdotchart(tmres_sum, x = "Document", y = "name",
+                       add = "segments",
+                       add.params = list(color = "black"),
+                       sorting = "ascending") +
+  yscale("log10", .format = TRUE) +
+  ylab("temporal resolution (days)") + xlab("Reviewed paper") +
+  bgcolor("lightpink") +
+  border("#BFD5E3") +
+  ggtitle(paste(quant_n, "studies out of", n_studies))
+
+dc_tmres
+
+rm(list = c("tmres", "tmres_sum", "quant_n"))
+###################### prepare spatial & temporal - temporal resolution ########################
+
+###################### prepare food system - echelon ########################
+###################### prepare food system - echelon ########################
 
 ##MESSY##
 
