@@ -12,6 +12,7 @@ library("kableExtra") #for making nice tables
 library("networkD3") #for sankey diagrams
 library("htmltools") #to manage html objects
 library("webshot") #to save screenshots of html objects
+library("ggpubr") #to make nice figures
 
 ###################### define paths for import and export ###################### 
 datadir <- "../Atlas_export_sheets"
@@ -351,6 +352,77 @@ ft_rsc
 rm(list = c("rsc", "rsc_sum"))
 ###################### prepare spatial & temporal - ref scale ########################
 
+###################### prepare spatial & temporal - representation ########################
+repr <- quotes_long[quotes_long$code_group == "spatial & temporal - representation",]
+repr <- repr[!is.na(repr$code_group),]
+repr_sum <- level1_count(sheet = repr)
+repr_sum$name <- factor(repr_sum$name, levels = rev(unique(repr_sum$name)))
+colnames(repr_sum) <- c("spatial representation", "number")
+repr_sum$proportion <- round(repr_sum$number/n_studies, 2)
+
+repr_sum$number <- color_bar("lightpink")(repr_sum$number)
+
+ft_repr <- repr_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_repr 
+
+rm(list = c("repr", "repr_sum"))
+###################### prepare spatial & temporal - representation ########################
+
+###################### prepare spatial & temporal - spatial extent ########################
+spext <- quotes_long[quotes_long$code_group == "spatial & temporal - spatial extent [m2]",]
+spext$name <- as.numeric(as.character(spext$name))
+spext <- spext[!is.na(spext$code_group),]
+
+spext_sum <- spext %>% group_by(Document, name) %>% count(name)
+spext_sum$n <- 1
+spext_sum <- spext %>% group_by(Document, name) %>% count(name)
+spext_sum$name <- as.numeric(as.character(spext_sum$name))
+spext_sum$logname <- log(as.numeric(as.character(spext_sum$name)))
+spext_sum <- spext_sum[order(spext_sum$name),]
+#spext_sum <- spext_sum %>% group_by(name) %>% count(name)
+
+dc_spext <- ggdotchart(spext_sum, x = "Document", y = "name",
+           add = "segments",
+           add.params = list(color = "black"),
+          sorting = "ascending") +
+  yscale("log10", .format = TRUE) +
+  ylab("spatial scale (m2)") + xlab("Reviewed paper") +
+  bgcolor("lightpink")+
+  border("#BFD5E3")
+
+dc_spext
+
+rm(list = c("spext", "spext_sum"))
+###################### prepare spatial & temporal - spatial extent ########################
+
+###################### prepare spatial & temporal - temporal extent ########################
+tmext <- quotes_long[quotes_long$code_group == "spatial & temporal - temporal extent [d]",]
+tmext$name <- as.numeric(as.character(spext$name))
+spext <- spext[!is.na(spext$code_group),]
+
+spext_sum <- spext %>% group_by(Document, name) %>% count(name)
+spext_sum$n <- 1
+spext_sum <- spext %>% group_by(Document, name) %>% count(name)
+spext_sum$name <- as.numeric(as.character(spext_sum$name))
+spext_sum$logname <- log(as.numeric(as.character(spext_sum$name)))
+spext_sum <- spext_sum[order(spext_sum$name),]
+#spext_sum <- spext_sum %>% group_by(name) %>% count(name)
+
+ggdotchart(spext_sum, x = "Document", y = "name",
+           add = "segments",
+           add.params = list(color = "black"),
+           sorting = "ascending") +
+  yscale("log10", .format = TRUE) +
+  ylab("spatial scale (m2)") + xlab("Reviewed paper") +
+  bgcolor("lightpink")+
+  border("#BFD5E3")
+
+rm(list = c("spext", "spext_sum"))
+###################### prepare spatial & temporal - spatial extent ########################
 
 ##MESSY##
 
