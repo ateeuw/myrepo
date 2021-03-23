@@ -489,6 +489,23 @@ rm(list = c("tmres", "tmres_sum", "quant_n"))
 ###################### prepare spatial & temporal - temporal resolution ########################
 
 ###################### prepare food system - echelon ########################
+ech <- quotes_long[quotes_long$code_group == "food system - echelon",]
+ech <- ech[!is.na(ech$code_group),]
+ech_sum <- level1_count(sheet = ech)
+ech_sum$name <- factor(ech_sum$name, levels = rev(unique(ech_sum$name)))
+colnames(ech_sum) <- c("value chain echelon", "number")
+ech_sum$proportion <- round(ech_sum$number/n_studies, 2)
+
+ech_sum$number <- color_bar("orange")(ech_sum$number)
+
+ft_ech <- ech_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_ech 
+
+rm(list = c("ech", "ech_sum"))
 ###################### prepare food system - echelon ########################
 
 ##MESSY##
