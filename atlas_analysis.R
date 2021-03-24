@@ -542,7 +542,7 @@ ft_comgr <- com_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
 ft_comgr
-rm(list = c("com", "com_sum"))
+rm(list = c("com", "com_sum", "code_vec"))
 
 ###################### prepare food system - commodity ########################
 
@@ -621,7 +621,7 @@ visNetwork(nodes, edges) %>%
 
 ggplot(Vedges, aes(x = from, y = to, col = width)) +
   geom_point(aes(size = width)) +
-  ggtitle(paste("Total number of studies =", n_studies, ". Studies with combined governances measures =")) +
+  ggtitle(paste("Total number of studies =", n_studies, ". Studies with combined governances measures =", n_combined)) +
   ylab("Governance measure") +
   xlab("Governance measure") +
   theme_classic() +
@@ -633,10 +633,10 @@ ggplot(Vedges, aes(x = from, y = to, col = width)) +
         legend.text = element_text(size = rel(1.4)),
         title = element_text(size = rel(1.4))) + 
   scale_size(breaks = c(0:max(Vedges$width))) +
-  #scale_y_continuous(breaks = seq(0,15,3)) +
+  scale_color_gradient(low = "white", high = "red") +
   coord_flip()
 
-rm(list = c("gov", "gov_sum"))
+rm(list = c("gov", "gov_sum", "Vedges", "edges", "nodes", "Vnodes", "cluster_df", "graph", "cluster", "V", "Vdat", "Vlong"))
 ###################### governance - combined measures? ########################
 
 ##MESSY##
