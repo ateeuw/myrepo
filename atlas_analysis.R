@@ -679,6 +679,48 @@ rm(list = c("meas", "meas_sum"))
 
 ###################### per measure - measure ########################
 
+###################### per measure - type ########################
+mstyp <- quotes_long[quotes_long$code_group == "per measure - type",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level1_count(sheet = mstyp)
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("type governance measure", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("red")(mstyp_sum$number)
+
+ft_mstyp <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_mstyp
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per measure - type ########################
+
+###################### per measure - type 2 ########################
+mstyp2 <- quotes_long[quotes_long$code_group == "per measure - type 2",]
+mstyp2 <- mstyp2[!is.na(mstyp2$code_group),]
+mstyp2_sum <- level1_count(sheet = mstyp2)
+
+mstyp2_sum$name <- factor(mstyp2_sum$name, levels = rev(unique(mstyp2_sum$name)))
+colnames(mstyp2_sum) <- c("type governance measure", "number")
+mstyp2_sum$proportion <- round(mstyp2_sum$number/n_studies, 2)
+
+mstyp2_sum$number <- color_bar("red")(mstyp2_sum$number)
+
+ft_mstyp2 <- mstyp2_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_mstyp2
+
+rm(list = c("mstyp2", "mstyp2_sum"))
+###################### per measure - type 2 ########################
+
 ##MESSY##
 
 # all quotes
