@@ -639,6 +639,46 @@ ggplot(Vedges, aes(x = from, y = to, col = width)) +
 rm(list = c("gov", "gov_sum", "Vedges", "edges", "nodes", "Vnodes", "cluster_df", "graph", "cluster", "V", "Vdat", "Vlong"))
 ###################### governance - combined measures? ########################
 
+###################### per measure - measure ########################
+meas <- quotes_long[quotes_long$code_group == "per measure - measure",]
+meas <- meas[!is.na(meas$code_group),]
+meas_sum <- level1_count(sheet = meas)
+
+meas_sum$name <- factor(meas_sum$name, levels = rev(unique(meas_sum$name)))
+colnames(meas_sum) <- c("governance measure", "number")
+meas_sum$proportion <- round(meas_sum$number/n_studies, 2)
+
+meas_sum$number <- color_bar("red")(meas_sum$number)
+
+ft_meas <- meas_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_meas
+
+# measure classes
+com$class <- ""
+com <- dict_classification(sheet = com, dct = comm_classes, clm = 16, class_clm = 17)
+colnames(com)[16:17] <- c("commodity", "name")
+com_sum <- level1_count(sheet = com)
+com_sum$name <- factor(com_sum$name, levels = rev(unique(com_sum$name)))
+colnames(com_sum) <- c("food commodity group", "number")
+com_sum$proportion <- round(com_sum$number/n_studies, 2)
+
+com_sum$number <- color_bar("orange")(com_sum$number)
+
+ft_comgr <- com_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers. Grouped using FAO commodity list.")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_comgr
+
+rm(list = c("aim", "aim_sum"))
+
+###################### per measure - measure ########################
+
 ##MESSY##
 
 # all quotes
