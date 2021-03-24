@@ -271,7 +271,7 @@ measure_class[["nature-centered measures"]] <- c("soil erosion control",
 
 # commodities
 comm_classes <- list()
-comm_classes[["cereals & cerealproducts"]] <- c("rice", "maize", "wheat", "sorghum", "millet", "grain", "coarse grains", "barley", "bread", "maize flour", "oats", "other cereals", "pasta", "refined grains", "teff", "whole grains")
+comm_classes[["cereals & cerealproducts"]] <- c("rice", "maize", "wheat", "sorghum", "millet", "grain", "coarse grains", "barley", "bread", "maize flour", "oats", "other cereals", "pasta", "refined grains", "teff", "whole grains", "cereals")
 comm_classes[["fruits and derived products"]] <- c("fruit", "plantain", "avocado", "banana", "mango")
 comm_classes[["vegetables and derived products"]] <- c("vegetable", "onion", "tomato", "broccoli", "cabbage", "garlic")
 comm_classes[["sugar crops and sweeteners, and derived products"]] <- c("sugar", "sugarcane", "candy")
@@ -283,7 +283,7 @@ comm_classes[["products from slaughtered animals"]] <- c("meat", "fish", "beef",
 comm_classes[["livestock"]] <- c("cattle", "goat", "poultry", "sheep", "livestock", "broiler chicken", "buffalo", "camel", "chicken", "cow", "crossbred cattle", "laying hen")
 comm_classes[["stimulant crops and derived products"]] <- c("tobacco", "coffee", "cocoa", "chat", "cocoa beans", "tea")
 comm_classes[["beverages"]] <- c("beverages", "alcoholic beverages", "carbonated soft drinks")
-comm_classes[["roots and tubers, and derived products"]] <- c("cassava", "potato", "roots", "sweet potato", "tubers", "yam")
+comm_classes[["roots and tubers, and derived products"]] <- c("cassava", "potato", "roots", "sweet potato", "tubers", "yam", "cocoyam")
 comm_classes[["pulses and derived products"]] <- c("cowpea", "pulses", "beans", "chickpea", "dry beans", "faba bean", "haricot bean", "legumes", "lentil", "vetch")
 comm_classes[["fodder crops and products"]] <- c("animal feed", "feedgrain", "fodder crop", "fonio")
 comm_classes[["nuts and derived products"]] <- c("cashews", "nuts")
