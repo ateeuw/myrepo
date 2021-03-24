@@ -1,6 +1,8 @@
 # This is a document where I test how I can analyse my atlas ti data
 # Now I will clean it (23.3.2021)
 
+rm(list = ls())
+
 # load libraries
 library("readxl") #for reading excel files
 library("tidyr") #for data processing 
@@ -25,7 +27,6 @@ source("./functions/away_spaces.R")
 source("./functions/away_totals.R")
 source("./functions/dict_classification.R")
 source("./functions/level1_count.R")
-source("./functions/export_formattable.R")
 
 ###################### load data ###################### 
 quotes <- read_excel(paste0(datadir, "/", "all_quotes.xlsx"))
@@ -545,18 +546,102 @@ rm(list = c("com", "com_sum"))
 
 ###################### prepare food system - commodity ########################
 
+###################### governance - combined measures? ########################
+gov <- quotes_long[quotes_long$code_group == "governance - combined measures?",]
+gov <- gov[!is.na(gov$code_group),]
+gov_sum <- level1_count(sheet = gov)
+gov_sum$name <- factor(gov_sum$name, levels = rev(unique(gov_sum$name)))
+colnames(gov_sum) <- c("combined governance measures?", "number")
+gov_sum$proportion <- round(gov_sum$number/n_studies, 2)
+
+gov_sum$number <- color_bar("red")(gov_sum$number)
+
+ft_gov <- gov_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_gov 
+
+# which governance measures are combined?
+
+# first limit data to where the co-occurence of governance measures is specified
+gov <- quotes_long[grep("governance - combined measures?: yes", quotes_long$Codes, fixed = TRUE),]
+n_combined <- length(unique(gov$Document))
+
+gov <- gov[gov$code_group == "per measure - measure",]
+gov <- gov[!is.na(gov$code_group),]
+gov <- gov[!is.na(gov$name),]
+gov_sum <- gov %>% 
+  group_by(ID, name) %>%
+  count(ID, name)
+
+V <- crossprod(table(gov_sum[1:2]))
+diag(V) <- 0
+V
+
+
+
+Vdat <- as.data.frame(V)
+colnames(Vdat) <- gsub("\\s*\\([^\\)]+\\)","", colnames(Vdat)) #remove parentheses because they cause problems later
+rownames(Vdat) <- gsub("\\s*\\([^\\)]+\\)","", rownames(Vdat))
+colnames(Vdat) <- trimws(colnames(Vdat), which = c("both"), whitespace = "[ \t\r\n]") #remove white spaces at the beginning and end because they cause problems later 
+rownames(Vdat) <- trimws(rownames(Vdat), which = c("both"), whitespace = "[ \t\r\n]")
+colnames(Vdat) <- gsub(" ","_", colnames(Vdat)) #remove spaces because they cause problems later
+rownames(Vdat) <- gsub(" ","_", rownames(Vdat))
+Vdat$measures1 <- rownames(Vdat)
+
+library(reshape2)
+Vlong <- melt(Vdat, id.vars = c("measures1"))
+colnames(Vlong)[2] <- "measures2"
+
+Vnodes <- as.data.frame(cbind(unique(Vlong$measures1), unique(Vlong$measures1)))
+colnames(Vnodes) <- c("id", "label")
+Vedges <- Vlong
+colnames(Vedges) <- c("from", "to", "width")
+
+#Create graph for Louvain
+graph <- graph_from_data_frame(Vedges, directed = FALSE)
+#Louvain Comunity Detection
+cluster <- cluster_louvain(graph)
+cluster_df <- data.frame(as.list(membership(cluster)))
+cluster_df <- as.data.frame(t(cluster_df))
+cluster_df$label <- rownames(cluster_df)
+colnames(Vnodes) <- c("id", "label")
+#Create group column
+Vnodes <- left_join(Vnodes, cluster_df, by = "label")
+colnames(Vnodes)[3] <- "group"
+nodes <- Vnodes
+edges <- Vedges
+
+visNetwork(nodes, edges) %>%
+  visOptions( highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+  visInteraction( navigationButtons = TRUE) %>%
+  visPhysics( maxVelocity = 35)
+
+ggplot(Vedges, aes(x = from, y = to, col = width)) +
+  geom_point(aes(size = width)) +
+  ggtitle(paste("Total number of studies =", n_studies, ". Studies with combined governances measures =")) +
+  ylab("Governance measure") +
+  xlab("Governance measure") +
+  theme_classic() +
+  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.6), angle = 90), 
+        axis.text.y = element_text(size = rel(1.6)), 
+        axis.title = element_text(size=rel(1.4), face="bold"),
+        legend.title = element_text(size = rel(1.3), face = "bold"), 
+        #legend.position = "none",
+        legend.text = element_text(size = rel(1.4)),
+        title = element_text(size = rel(1.4))) + 
+  scale_size(breaks = c(0:max(Vedges$width))) +
+  #scale_y_continuous(breaks = seq(0,15,3)) +
+  coord_flip()
+
+rm(list = c("gov", "gov_sum"))
+###################### governance - combined measures? ########################
+
 ##MESSY##
 
-# model type and model domain
-colnames(model_type_model_domain)[1] <- "model_type"
-model_type_model_domain <- away_gr(sheet = model_type_model_domain)
-model_type_model_domain <- away_codegr_row(sheet = model_type_model_domain, codegr = "^.*(per model - type: )")
-model_type_model_domain <- away_codegr(sheet = model_type_model_domain, codegr = "^.*(per model - domain: )") #^.*() ensures bullet point in front of codegroup is also removed
-model_type_model_domain <- away_spaces(sheet = model_type_model_domain)
-model_type_model_domain_long <- gather(model_type_model_domain, "domain", "cooc", 2:ncol(model_type_model_domain), factor_key = TRUE)
-
 # all quotes
-quotes <- quotes[quotes$`Document Groups` == "!Read for Lit review - eligible",]
 agent_codes <- grepl("agent - representation:", quotes$Codes) | grepl("agent - paradigm:", quotes$Codes) | grepl("agent - method:", quotes$Codes) | grepl("agent - theory:", quotes$Codes) | grepl("per agent - ability", quotes$Codes) | grepl("per agent - adaptation", quotes$Codes) | grepl("per agent - agent", quotes$Codes) | grepl("per agent - characteristic", quotes$Codes) | grepl("per agent - decision", quotes$Codes) | grepl("per agent - echelon", quotes$Codes) | grepl("per agent - heterogeneity", quotes$Codes) | grepl("per agent - learning", quotes$Codes) | grepl("per agent - number", quotes$Codes) | grepl("per effect - affected agent", quotes$Codes) | grepl("per interaction - interaction", quotes$Codes) | grepl("per interaction - other agent", quotes$Codes) | grepl("per interaction - exchange", quotes$Codes)
 agent_quotes <- quotes[agent_codes, ]
 
