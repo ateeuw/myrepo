@@ -1075,6 +1075,90 @@ s_gov <- sankeyNetwork(Links = links, Nodes = nodes,
 s_gov
 ###################### governance measures sankey ########################
 
+###################### agent - agent representation ########################
+mstyp <- quotes_long[quotes_long$code_group == "agent - representation",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level1_count(sheet = mstyp)
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("agent representation", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
+
+ft_arep <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_arep 
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### agent - agent representation ########################
+
+###################### agent - paradigm ########################
+mstyp <- quotes_long[quotes_long$code_group == "agent - paradigm",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level1_count(sheet = mstyp)
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("agent decision-making paradigm", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
+
+ft_apar <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_apar 
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### agent - paradigm ########################
+
+###################### agent - theory ########################
+mstyp <- quotes_long[quotes_long$code_group == "agent - theory",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level1_count(sheet = mstyp)
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("agent decision-making theory", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
+
+ft_athe <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_athe 
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### agent - theory ########################
+
+###################### agent - method ########################
+mstyp <- quotes_long[quotes_long$code_group == "agent - method",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level1_count(sheet = mstyp)
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("agent decision-making method", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
+
+ft_amet <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_amet 
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### agent - method ########################
+
 ##MESSY##
 
 # all quotes
