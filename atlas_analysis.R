@@ -3,7 +3,7 @@
 
 rm(list = ls())
 
-# load libraries
+###################### load libraries ###################### 
 library("readxl") #for reading excel files
 library("tidyr") #for data processing 
 library("dplyr") #for data processing 
@@ -15,10 +15,12 @@ library("networkD3") #for sankey diagrams
 library("htmltools") #to manage html objects
 library("webshot") #to save screenshots of html objects
 library("ggpubr") #to make nice figures
+###################### load libraries ###################### 
 
 ###################### define paths for import and export ###################### 
 datadir <- "../Atlas_export_sheets"
 figdir <- "../Figures"
+###################### define paths for import and export ###################### 
 
 ###################### source functions ###################### 
 source("./functions/away_codegr.R")
@@ -27,9 +29,16 @@ source("./functions/away_spaces.R")
 source("./functions/away_totals.R")
 source("./functions/dict_classification.R")
 source("./functions/level1_count.R")
+source("./functions/level2_count.R")
+###################### source functions ######################
+
+###################### source dictionaries ######################
+# to do!
+###################### source dictionaries ######################
 
 ###################### load data ###################### 
 quotes <- read_excel(paste0(datadir, "/", "all_quotes.xlsx"))
+###################### load data ###################### 
 
 ###################### pre-process quotes ########################
 quotes <- quotes[quotes$`Document Groups` == "!Read for Lit review - eligible",] #ignore codes attached in papers ineligible for literature review
@@ -981,15 +990,90 @@ mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
 
 mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
 
-ft_eofs <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_eafa <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_eofs
+ft_eafa
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per effect - affected agent ########################
+
+###################### per effect - type other ########################
+mstyp <- quotes_long[quotes_long$code_group == "per effect - type other",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level2_count(sheet = mstyp)
+
+n_effects <- length(unique(mstyp$ID))
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("type of non-food security effects", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
+
+mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
+
+ft_etpo <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_etpo
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per effect - type other ########################
+
+###################### governance measures sankey ########################
+gov <- quotes_long[quotes_long$code_group %in% c("per measure - objective", "per measure - measure", "per effect - FS indicator"),]
+gov_w <- spread(gov, code_group, name)
+obj_w <- gov_w[,c(1,17)]
+meas_w <- gov_w[,c(1,16)]
+fsi_w <- gov_w[,c(1,15)]
+
+gov_s <- merge(obj_w, meas_w,  by = "ID")
+gov_t <- merge(meas_w, fsi_w,  by = "ID")
+gov_s <- na.omit(gov_s)
+gov_t <- na.omit(gov_t)
+
+gov_s$m_class <- ""
+gov_s$o_class <- ""
+gov_s <- dict_classification(sheet = gov_s, dct = goals_class, clm = 2, class_clm = 5)
+gov_s <- dict_classification(sheet = gov_s, dct = measure_class, clm = 3, class_clm = 4)
+
+gov_t$m_class <- ""
+gov_t$f_class <- ""
+gov_t <- dict_classification(sheet = gov_t, dct = measure_class, clm = 2, class_clm = 4)
+gov_t <- dict_classification(sheet = gov_t, dct = FSi_classes, clm = 3, class_clm = 5)
+
+# colnames(intract_m) <- c("ID", "agent", "other", "codes", "exchange")
+# intract_m <- intract_m[-which(intract_m$agent == "not applicable" | intract_m$exchange == "not applicable"| intract_m$other == "not applicable"),]
+gov_s <- gov_s %>% group_by(o_class, m_class, ID) %>% count(o_class, m_class, ID)
+gov_s$o_class <- paste("obj:", gov_s$o_class)
+gov_t <- gov_t%>% group_by(m_class, f_class, ID) %>% count(m_class, f_class, ID)
+gov_t$f_class <- paste("FSi:", gov_t$f_class)
+
+#intract_target$target <- paste("receiver:", intract_target$target)
+colnames(gov_s) <- c("source",  "target", "ID", "value")
+colnames(gov_t) <- c("source",  "target", "ID", "value")
+links <- rbind(gov_s, gov_t)
+
+# From these flows we need to create a node data frame: it lists every entities involved in the flow
+nodes <- data.frame(
+  name=c(as.character(links$source), 
+         as.character(links$target)) %>% unique()
+)
+
+# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
+links$IDsource <- match(links$source, nodes$name)-1 
+links$IDtarget <- match(links$target, nodes$name)-1
+
+# Make the Network
+s_gov <- sankeyNetwork(Links = links, Nodes = nodes,
+                   Source = "IDsource", Target = "IDtarget",
+                   Value = "value", NodeID = "name", 
+                   sinksRight=FALSE, fontSize = 10)
+s_gov
+###################### governance measures sankey ########################
 
 ##MESSY##
 
