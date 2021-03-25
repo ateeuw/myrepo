@@ -1200,66 +1200,7 @@ rm(list = c("mstyp", "mstyp_sum"))
 
 ##MESSY##
 
-# all quotes
-agent_codes <- grepl("agent - representation:", quotes$Codes) | grepl("agent - paradigm:", quotes$Codes) | grepl("agent - method:", quotes$Codes) | grepl("agent - theory:", quotes$Codes) | grepl("per agent - ability", quotes$Codes) | grepl("per agent - adaptation", quotes$Codes) | grepl("per agent - agent", quotes$Codes) | grepl("per agent - characteristic", quotes$Codes) | grepl("per agent - decision", quotes$Codes) | grepl("per agent - echelon", quotes$Codes) | grepl("per agent - heterogeneity", quotes$Codes) | grepl("per agent - learning", quotes$Codes) | grepl("per agent - number", quotes$Codes) | grepl("per effect - affected agent", quotes$Codes) | grepl("per interaction - interaction", quotes$Codes) | grepl("per interaction - other agent", quotes$Codes) | grepl("per interaction - exchange", quotes$Codes)
-agent_quotes <- quotes[agent_codes, ]
 
-agents <- quotes[grepl("(per agent - agent:)", quotes$Codes),] 
-agents$code <- NA
-
-agents_long <- agents[1,]
-agents_long$code <- NA
-agents_long[,] <- NA
-
-for(i in 1:nrow(agents)){
-  codes <- agents$Codes[i]
-  codes_vec <- unlist(strsplit(codes, "\r\n"))
-  for(j in codes_vec){
-    new_row <- agents[i,]
-    new_row$code <- j
-    agents_long <- rbind(agents_long, new_row)
-  }
-}
-
-agents_long <- agents_long[-1,]
-
-agents_long <- agents_long[grepl("per agent - agent:", agents_long$code),]
-agents_long <- away_codegr_row(sheet = agents_long, codegr = "^(per agent - agent: )", clm = 14)
-agents_sum <- agents_long %>% group_by(Document) %>% count(code)
-agents_sum$n <- 1
-agents_sum <- agents_sum %>% group_by(code) %>% count(code)
-
-agents_sum$class <- ""
-#agents_sum$n_code <- 0
-agent_class <- dict_classification(sheet = agents_sum, dct = agent_types, clm = 1, class_clm = 3)
-#agent_class$clm_width <- 1/agent_class$n_code
-
-# make quotes into long format
-quotes_long <- quotes[1,]
-quotes_long$code <- NA
-quotes_long[,] <- NA
-
-for(i in 1:nrow(quotes)){
-  codes <- quotes$Codes[i]
-  codes_vec <- unlist(strsplit(codes, "\r\n"))
-  for(j in codes_vec){
-    new_row <- quotes[i,]
-    new_row$code <- j
-    quotes_long <- rbind(quotes_long, new_row)
-  }
-}
-
-quotes_long <- quotes_long[-1,]
-
-quotes_long$code_group <- ""
-quotes_long$name <- ""
-
-for(i in 1:nrow(quotes_long)){
-  code <- quotes_long$code[i]
-  code_vec <- unlist(strsplit(code, ": "))
-  quotes_long$code_group[i] <- code_vec[1]
-  quotes_long$name[i] <- code_vec[2]
-}
 
 ###################### process data ########################
 
