@@ -1198,6 +1198,28 @@ ft_agntgr
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per agent - agent ########################
 
+###################### per agent - heterogeneity ########################
+mstyp <- quotes_long[quotes_long$code_group == "per agent - heterogeneity",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level1_count(sheet = mstyp)
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = c("continuous", "1 type", paste(2:90, "types"), "not applicable"))
+mstyp_sum <- mstyp_sum[order(mstyp_sum$name),]
+colnames(mstyp_sum) <- c("agent heterogeneity", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
+
+ft_ahet <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_ahet 
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per agent - heterogeneity ########################
+
 ##MESSY##
 
 
