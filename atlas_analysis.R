@@ -899,6 +899,98 @@ ft_dir
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per effect - direct? ########################
 
+###################### per effect - place ########################
+mstyp <- quotes_long[quotes_long$code_group == "per effect - place",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level2_count(sheet = mstyp)
+
+n_effects <- length(unique(mstyp$ID))
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("place impacted", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
+
+mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
+
+ft_eplc <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_eplc
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per effect - place ########################
+
+###################### per effect - intended ########################
+mstyp <- quotes_long[quotes_long$code_group == "per effect - intended?",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level2_count(sheet = mstyp)
+
+n_effects <- length(unique(mstyp$ID))
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("intended impact?", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
+
+mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
+
+ft_eint <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_eint
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per effect - intended ########################
+
+###################### per effect - on FS? ########################
+mstyp <- quotes_long[quotes_long$code_group == "per effect - on FS?",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level2_count(sheet = mstyp)
+
+n_effects <- length(unique(mstyp$ID))
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("food security impact?", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
+
+mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
+
+ft_eofs <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_eofs
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per effect - on FS? ########################
+
+###################### per effect - affected agent ########################
+mstyp <- quotes_long[quotes_long$code_group == "per effect - affected agent",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level2_count(sheet = mstyp)
+
+n_effects <- length(unique(mstyp$ID))
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("affected agent", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
+
+mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
+
+ft_eofs <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_eofs
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per effect - affected agent ########################
+
 ##MESSY##
 
 # all quotes
