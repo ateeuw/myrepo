@@ -721,6 +721,184 @@ ft_mstyp2
 rm(list = c("mstyp2", "mstyp2_sum"))
 ###################### per measure - type 2 ########################
 
+###################### per measure - objective ########################
+obj <- quotes_long[quotes_long$code_group == "per measure - objective",]
+obj <- obj[!is.na(obj$code_group),]
+obj_sum <- level1_count(sheet = obj)
+
+obj_sum$name <- factor(obj_sum$name, levels = rev(unique(obj_sum$name)))
+colnames(obj_sum) <- c("governance objective", "number")
+obj_sum$proportion <- round(obj_sum$number/n_studies, 2)
+
+obj_sum$number <- color_bar("red")(obj_sum$number)
+
+ft_obj <- obj_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_obj
+
+# objective classes
+obj$class <- ""
+obj <- dict_classification(sheet = obj, dct = goals_class, clm = 16, class_clm = 17)
+colnames(obj)[16:17] <- c("governance objective", "name")
+obj_sum <- level1_count(sheet = obj)
+obj_sum$name <- factor(obj_sum$name, levels = rev(unique(obj_sum$name)))
+colnames(obj_sum) <- c("governance objective type", "number")
+obj_sum$proportion <- round(obj_sum$number/n_studies, 2)
+
+obj_sum$number <- color_bar("red")(obj_sum$number)
+
+ft_objgr <- obj_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers. Grouped using FAO commodity list.")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_objgr
+
+rm(list = c("obj", "obj_sum"))
+
+###################### per measure - objective ########################
+
+###################### per measure - scale ########################
+msc <- quotes_long[quotes_long$code_group == "per measure - scale",]
+msc <- msc[!is.na(msc$code_group),]
+msc_sum <- level1_count(sheet = msc)
+
+msc_sum$name <- factor(msc_sum$name, levels = rev(c("unclear", "earth", 
+                                                             "earth > x > continent", 
+                                                             "continent", 
+                                                             "continent > x > country", 
+                                                             "country", 
+                                                             "country > x > province/state",
+                                                             "province/state",
+                                                             "province/state > x > municipality",
+                                                             "municipality",
+                                                             "municipality > x > city",
+                                                             "city",
+                                                             "city > x > city_district",
+                                                             "city district")))
+msc_sum <- msc_sum[order(msc_sum$name),]
+colnames(msc_sum) <- c("scale of governance measure", "number")
+msc_sum$proportion <- round(msc_sum$number/n_studies, 2)
+
+msc_sum$number <- color_bar("red")(msc_sum$number)
+
+ft_msc <- msc_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_msc
+
+rm(list = c("msc", "msc_sum"))
+###################### per measure - scale ########################
+
+###################### per measure - target implementer ########################
+mstyp <- quotes_long[quotes_long$code_group == "per measure - target implementer",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level1_count(sheet = mstyp)
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("implementer of governance measure", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("red")(mstyp_sum$number)
+
+ft_impl <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_impl
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per measure - target implementer ########################
+
+###################### per measure - spatially targeted? ########################
+mstyp <- quotes_long[quotes_long$code_group == "per measure - spatially targeted?",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level1_count(sheet = mstyp)
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("spatially targeted governance?", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("red")(mstyp_sum$number)
+
+ft_sptg <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_sptg
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per measure - spatially targeted? ########################
+
+###################### per effect - FS indicator ########################
+meas <- quotes_long[quotes_long$code_group == "per effect - FS indicator",]
+meas <- meas[!is.na(meas$code_group),]
+meas_sum <- level1_count(sheet = meas)
+
+meas_sum$name <- factor(meas_sum$name, levels = rev(unique(meas_sum$name)))
+colnames(meas_sum) <- c("food security indicator", "number")
+meas_sum$proportion <- round(meas_sum$number/n_studies, 2)
+
+meas_sum$number <- color_bar("yellow")(meas_sum$number)
+
+ft_FSin <- meas_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_FSin 
+
+# measure classes
+meas$class <- ""
+meas <- dict_classification(sheet = meas, dct = FSi_classes, clm = 16, class_clm = 17)
+colnames(meas)[16:17] <- c("food security indicator type", "name")
+meas_sum <- level1_count(sheet = meas)
+meas_sum$name <- factor(meas_sum$name, levels = rev(unique(meas_sum$name)))
+colnames(meas_sum) <- c("food security indicator type", "number")
+meas_sum$proportion <- round(meas_sum$number/n_studies, 2)
+
+meas_sum$number <- color_bar("yellow")(meas_sum$number)
+
+ft_fsigr <- meas_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers.")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_fsigr
+
+rm(list = c("meas", "meas_sum"))
+###################### per effect - FS indicator ########################
+
+###################### per effect - direct? ########################
+mstyp <- quotes_long[quotes_long$code_group == "per effect - direct?",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level2_count(sheet = mstyp)
+
+n_effects <- length(unique(mstyp$ID))
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("direct impact?", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
+
+mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
+
+ft_dir <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_dir
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per effect - direct? ########################
+
 ##MESSY##
 
 # all quotes

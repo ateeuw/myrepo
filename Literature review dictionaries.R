@@ -328,3 +328,21 @@ comm_classes[["nuts and derived products"]] <- c("cashews", "nuts")
 comm_classes[["beverage crops and spices"]] <- c("hop")
 comm_classes[["vegetable and animal oils and fats"]] <- c("edible oil", "biodiesel", "vegetable oil")
 comm_classes[["hides and skins"]] <- c("leather")
+
+# FS indicators
+FSi_classes <- list()
+FSi_classes[["availability"]] <- c("number of (active/passive) farms", "area used for X", "supply of water for irrigation", "area irrigated", "production of X", "productivity of X", 
+                                   "yield of X", "yield gap of X", "availability of X", "area left fallow")
+FSi_classes[["access"]] <- c("profitability of land", "profitability of water use", "profitability of labour", "farm profit", "marginal cost of producing X", "marginal cost of shipping X",
+                             "farm gate/producer price of X", "import of X", "export of X", "price of X", "import price of X", "price of irrigation water", "added value of X", 
+                             "contribution of X to GDP", "income/wage/salary", "discretionary income", "income from X", "income from agriculture", "income inequality", "poverty incidence/rate",
+                             "poverty severity", "poverty depth/gap", "people walking to store as a last resort", "capital assets", "demand for X", "demand for farm land", "production costs",
+                             "dietary income differential", "economic benefit/increase in output value of additional production of X", "inflation", "poverty rate/incidence", "sales of X", 
+                             "selling time of X")
+FSi_classes[["utilisation"]] <- c("consumption of X", "Healthy Eating Index", "share of X in diet", "quality adjusted life years", "dietary income inequality", "food losses", "purchase of X")
+FSi_classes[["stability"]] <- c("resilience to water scarcity", "water security", "food shortage", "stocks of X", "incidence of higher average income with higher variance (%)",
+                                "incidence of higher average income with lower variance (%)", "incidence of identical average income and variance (%)", 
+                                "incidence of ïdentical average income with lower variance (%)", "incidence of lower average income with higher variance", 
+                                "incidence of lower average income with lower variance [%]", "variance in income", "self-sufficiency of X", "food security risk", 
+                                "incidence of identical average income with lower variance (%)", "incidence of lower income with higher variance")
+FSi_classes[["unclear"]] <- "unclear"
