@@ -1159,6 +1159,45 @@ ft_amet
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### agent - method ########################
 
+###################### per agent - agent ########################
+mstyp <- quotes_long[quotes_long$code_group == "per agent - agent",]
+mstyp <- mstyp[!is.na(mstyp$code_group),]
+mstyp_sum <- level1_count(sheet = mstyp)
+
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("agent", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
+
+ft_agnt <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_agnt 
+
+# measure classes
+mstyp$class <- ""
+mstyp <- dict_classification(sheet = mstyp, dct = agent_types, clm = 16, class_clm = 17)
+colnames(mstyp)[16:17] <- c("agent type", "name")
+mstyp_sum <- level1_count(sheet = mstyp)
+mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+colnames(mstyp_sum) <- c("agent type", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
+
+ft_agntgr <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers.")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_agntgr
+
+rm(list = c("mstyp", "mstyp_sum"))
+###################### per agent - agent ########################
+
 ##MESSY##
 
 # all quotes
