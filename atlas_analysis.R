@@ -709,6 +709,8 @@ ggplot(Vedges, aes(x = from, y = to, col = width)) +
   coord_flip()
 dev.off()
 
+# to do: make grouped co-occurence plot
+
 rm(list = c("gov", "gov_sum", "Vedges", "edges", "nodes", "Vnodes", "cluster_df", "graph", "cluster", "V", "Vdat", "Vlong"))
 ###################### governance - combined measures? ########################
 
@@ -723,30 +725,33 @@ meas_sum$proportion <- round(meas_sum$number/n_studies, 2)
 
 meas_sum$number <- color_bar("red")(meas_sum$number)
 
-ft_meas <- meas_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_meas <- meas_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Top-20 governance measures, gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_meas
+ft_meas %>% as_image(file = paste0(figdir, "/per-measure_measure-top20_table.png")) 
 
 # measure classes
+# to do: add total number of governance measures to caption
 meas$class <- ""
 meas <- dict_classification(sheet = meas, dct = measure_class, clm = 16, class_clm = 17)
-colnames(meas)[16:17] <- c("governance measure", "name")
-meas_sum <- level1_count(sheet = meas)
-meas_sum$name <- factor(meas_sum$name, levels = rev(unique(meas_sum$name)))
-colnames(meas_sum) <- c("governance measure type", "number")
+#colnames(meas)[16:17] <- c("governance_measure", "name")
+meas_sum <- level2_count(sheet = meas)
+meas_sum$class <- factor(meas_sum$class, levels = rev(unique(meas_sum$class)))
+colnames(meas_sum) <- c("governance measures by type", "number")
 meas_sum$proportion <- round(meas_sum$number/n_studies, 2)
 
 meas_sum$number <- color_bar("red")(meas_sum$number)
 
 ft_measgr <- meas_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers. Grouped using FAO commodity list.")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers.")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_measgr
+ft_measgr %>% as_image(file = paste0(figdir, "/per-measure_measure-grouped_table.png")) 
 
 rm(list = c("meas", "meas_sum"))
 
