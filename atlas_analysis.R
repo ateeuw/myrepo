@@ -517,9 +517,10 @@ dc_tmext
 dev.off()
 
 rm(list = c("tmext", "tmext_sum", "quant_n"))
-###################### prepare spatial & temporal - spatial extent ########################
+###################### prepare spatial & temporal - temporal extent ########################
 
 ###################### prepare spatial & temporal - temporal resolution ########################
+# to do: check whether berger and chen really have two temporal resolutions
 tmres <- quotes_long[quotes_long$code_group == "spatial & temporal - temporal resolution [d]",]
 tmres$name <- as.numeric(as.character(tmres$name))
 tmres <- tmres[!is.na(tmres$code_group),]
@@ -536,13 +537,19 @@ dc_tmres <- ggdotchart(tmres_sum, x = "Document", y = "name",
                        add = "segments",
                        add.params = list(color = "black"),
                        sorting = "ascending") +
-  yscale("log10", .format = TRUE) +
+  scale_y_continuous(trans = "log10", breaks = 10^(0:3), labels = c("1", "10", "100", "1000")) +
   ylab("temporal resolution (days)") + xlab("Reviewed paper") +
   bgcolor("lightpink") +
   border("#BFD5E3") +
-  ggtitle(paste(quant_n, "studies out of", n_studies))
+  annotation_logticks(sides="l") +
+  ggtitle(paste(quant_n, "studies out of", n_studies)) +
+  geom_hline(yintercept=365, col = "deeppink", linetype = "dashed") + annotate("text", x = 2, y = 365, label = "1 year", col = "grey30") + #1 year
+  geom_hline(yintercept=30, col = "deeppink", linetype = "dashed") + annotate("text", x = 2, y = 30, label = "1 month", col = "grey30") +
+  geom_hline(yintercept=7, col = "deeppink", linetype = "dashed") + annotate("text", x = 2, y = 7, label = "1 week", col = "grey30") #1 year
 
+png(filename = paste0(figdir, "/spatial&temporal_temporal-resolution_dotchart.png"), width = 750, height = 800)
 dc_tmres
+dev.off()
 
 rm(list = c("tmres", "tmres_sum", "quant_n"))
 ###################### prepare spatial & temporal - temporal resolution ########################
@@ -550,6 +557,8 @@ rm(list = c("tmres", "tmres_sum", "quant_n"))
 ###################### prepare food system - echelon ########################
 ech <- quotes_long[quotes_long$code_group == "food system - echelon",]
 ech <- ech[!is.na(ech$code_group),]
+ech$name[ech$name %in% c("distribution", "transport")] <- "distribution/transport"
+ech$name[ech$name %in% c("processing", "manufacturing")] <- "processing/manufacturing"
 ech_sum <- level1_count(sheet = ech)
 ech_sum$name <- factor(ech_sum$name, levels = rev(unique(ech_sum$name)))
 colnames(ech_sum) <- c("value chain echelon", "number")
@@ -560,9 +569,10 @@ ech_sum$number <- color_bar("orange")(ech_sum$number)
 ft_ech <- ech_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_ech 
+ft_ech %>% as_image(file = paste0(figdir, "/food-system_echelon_table.png"))
 
 rm(list = c("ech", "ech_sum"))
 ###################### prepare food system - echelon ########################
