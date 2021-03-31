@@ -33,7 +33,7 @@ source("./functions/level2_count.R")
 ###################### source functions ######################
 
 ###################### source dictionaries ######################
-# to do!
+source("./Literature review dictionaries.R")
 ###################### source dictionaries ######################
 
 ###################### load data ###################### 

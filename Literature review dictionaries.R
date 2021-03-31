@@ -17,9 +17,6 @@ countries["Philippines"] <- 300000000000
 countries["USA"] <- 9834000000000
 countries[["Vietnam"]] <- 331212000000
 
-# Regions
-regions[""]
-
 # Extent and resolution
 time <- list()
 time["1 month"] <- 30
