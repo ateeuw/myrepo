@@ -758,22 +758,43 @@ rm(list = c("meas", "meas_sum"))
 ###################### per measure - measure ########################
 
 ###################### per measure - type ########################
-mstyp <- quotes_long[quotes_long$code_group == "per measure - type",]
+mstyp <- quotes_long[quotes_long$code_group %in% c("per measure - type", "per measure - measure"),]
 mstyp <- mstyp[!is.na(mstyp$code_group),]
-mstyp_sum <- level1_count(sheet = mstyp)
+mstyp <- mstyp %>% spread(code_group, name)
+colnames(mstyp)[15:16] <- c("measure", "type")
+meas <- mstyp[,which(colnames(mstyp) %in% c("measure", "ID", "Document"))]
+typ <- mstyp[,which(colnames(mstyp) %in% c("type", "ID"))]
 
-mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
-colnames(mstyp_sum) <- c("type governance measure", "number")
-mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+mstyp <- merge(meas, typ, by = "ID")
+mstyp <- na.omit(mstyp)
+
+mstyp <- mstyp %>% group_by(Document, measure, type) %>%
+  count(Document, measure, type)
+
+mstyp$n <- 1
+
+mstyp_sum <- mstyp %>% 
+  group_by(type) %>%
+  count(type)
+
+mstyp_sum <- mstyp_sum %>%
+  arrange(desc(n))
+
+n_measures <- nrow(mstyp)
+
+mstyp_sum$type <- factor(mstyp_sum$type, levels = rev(unique(mstyp_sum$type)))
+mstyp_sum$proportion <- round(mstyp_sum$n/n_measures, 2)
+colnames(mstyp_sum)[1:2] <- c("type governance measure", "number")
 
 mstyp_sum$number <- color_bar("red")(mstyp_sum$number)
 
 ft_mstyp <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_mstyp
+ft_mstyp %>% as_image(file = paste0(figdir, "/per-measure_measure-type_table.png")) 
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per measure - type ########################
