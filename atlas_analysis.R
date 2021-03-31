@@ -467,13 +467,16 @@ dc_spres <- ggdotchart(spres_sum, x = "Document", y = "name",
                        add = "segments",
                        add.params = list(color = "black"),
                        sorting = "ascending") +
-  yscale("log10", .format = TRUE) +
-  ylab("spatial resolution (m2)") + xlab("Reviewed paper") +
+  scale_y_continuous(trans = "log10", breaks = 10^(2:7), labels = c("100", "1000", "10,000", "100,000", "1,000,000", "10,000,000")) +
+  ylab(bquote("spatial resolution "~(m^2))) + xlab("Reviewed paper") +
   bgcolor("lightpink") +
   border("#BFD5E3") +
-  ggtitle(paste(quant_n, "studies out of", n_studies))
+  ggtitle(paste(quant_n, "studies out of", n_studies)) + 
+  annotation_logticks(sides="l")
 
+png(filename = paste0(figdir, "/spatial&temporal_spatial-resolution_dotchart.png"), width = 250, height = 500)
 dc_spres
+dev.off()
 
 rm(list = c("spres", "spres_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial resolution ########################
