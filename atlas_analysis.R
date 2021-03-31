@@ -616,6 +616,8 @@ rm(list = c("com", "com_sum", "code_vec"))
 
 ###################### prepare food system - commodity ########################
 
+# to do: make table of nonfood system commodities
+
 ###################### governance - combined measures? ########################
 gov <- quotes_long[quotes_long$code_group == "governance - combined measures?",]
 gov <- gov[!is.na(gov$code_group),]
@@ -629,9 +631,10 @@ gov_sum$number <- color_bar("red")(gov_sum$number)
 ft_gov <- gov_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_gov 
+ft_gov %>% as_image(file = paste0(figdir, "/governance_combined-measures_table.png")) 
 
 # which governance measures are combined?
 
@@ -649,8 +652,6 @@ gov_sum <- gov %>%
 V <- crossprod(table(gov_sum[1:2]))
 diag(V) <- 0
 V
-
-
 
 Vdat <- as.data.frame(V)
 colnames(Vdat) <- gsub("\\s*\\([^\\)]+\\)","", colnames(Vdat)) #remove parentheses because they cause problems later
@@ -689,6 +690,7 @@ visNetwork(nodes, edges) %>%
   visInteraction( navigationButtons = TRUE) %>%
   visPhysics( maxVelocity = 35)
 
+png(filename = paste0(figdir, "/governance_combined-measures_co-occurence.png"), width = 1200, height = 1200)
 ggplot(Vedges, aes(x = from, y = to, col = width)) +
   geom_point(aes(size = width)) +
   ggtitle(paste("Total number of studies =", n_studies, ". Studies with combined governances measures =", n_combined)) +
@@ -705,6 +707,7 @@ ggplot(Vedges, aes(x = from, y = to, col = width)) +
   scale_size(breaks = c(0:max(Vedges$width))) +
   scale_color_gradient(low = "white", high = "red") +
   coord_flip()
+dev.off()
 
 rm(list = c("gov", "gov_sum", "Vedges", "edges", "nodes", "Vnodes", "cluster_df", "graph", "cluster", "V", "Vdat", "Vlong"))
 ###################### governance - combined measures? ########################
