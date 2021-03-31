@@ -587,12 +587,13 @@ com_sum$proportion <- round(com_sum$number/n_studies, 2)
 
 com_sum$number <- color_bar("orange")(com_sum$number)
 
-ft_com <- com_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_com <- com_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Top 20 commodities, gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_com 
+ft_com %>% as_image(file = paste0(figdir, "/food-system_commodity-top20_table.png")) 
 # commodity classes
 com$class <- ""
 com <- dict_classification(sheet = com, dct = comm_classes, clm = 16, class_clm = 17)
@@ -607,9 +608,10 @@ com_sum$number <- color_bar("orange")(com_sum$number)
 ft_comgr <- com_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers. Grouped using FAO commodity list.")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_comgr
+ft_comgr %>% as_image(file = paste0(figdir, "/food-system_commodity-grouped_table.png")) 
 rm(list = c("com", "com_sum", "code_vec"))
 
 ###################### prepare food system - commodity ########################
