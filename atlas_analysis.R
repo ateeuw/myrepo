@@ -15,6 +15,9 @@ library("networkD3") #for sankey diagrams
 library("htmltools") #to manage html objects
 library("webshot") #to save screenshots of html objects
 library("ggpubr") #to make nice figures
+library("magick") # image formatting
+library("sparkline") #making nice tables
+webshot::install_phantomjs()
 ###################### load libraries ###################### 
 
 ###################### define paths for import and export ###################### 
@@ -92,9 +95,11 @@ year_sum$number <- color_bar("lightgreen")(year_sum$number)
 ft_year <- year_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_year
+
+ft_year %>% as_image(file = paste0(figdir, "/papers_year_table.png"))
 
 rm(list = c("year", "year_sum"))
 ###################### prepare papers - year ########################
@@ -113,9 +118,10 @@ jrnl_sum$number <- color_bar("lightgreen")(jrnl_sum$number)
 ft_jrnl <- jrnl_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_jrnl
+ft_jrnl %>% as_image(file = paste0(figdir, "/papers_journal_table.png"))
 
 rm(list = c("jrnl", "jrnl_sum"))
 ###################### prepare papers - journal ########################
@@ -134,9 +140,10 @@ coup_sum$number <- color_bar("lightblue")(coup_sum$number)
 ft_coup <- coup_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_coup
+ft_coup %>% as_image(file = paste0(figdir, "/modelling_coupling_table.png"))
 
 rm(list = c("coup", "coup_sum"))
 ###################### prepare modelling - coupling? ########################
@@ -155,9 +162,10 @@ aim_sum$number <- color_bar("lightblue")(aim_sum$number)
 ft_aim <- aim_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_aim
+ft_aim %>% as_image(file = paste0(figdir, "/modelling_aim_table.png"))
 
 rm(list = c("aim", "aim_sum"))
 ###################### prepare modelling - aim ########################
@@ -176,9 +184,10 @@ loop_sum$number <- color_bar("lightblue")(loop_sum$number)
 ft_loop <- loop_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_loop
+ft_loop %>% as_image(file = paste0(figdir, "/modelling_feedback-loop_table.png"))
 
 rm(list = c("loop", "loop_sum"))
 ###################### prepare modelling - feedback-loops? ########################
