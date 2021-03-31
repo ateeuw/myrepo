@@ -225,13 +225,15 @@ measure_class[["compaigns"]] <- c("awareness campaign on water conservation",
                                   "perfect information communication through agricultural extension services",
                                   "promotion of improved seed",
                                   "promotion of agricultural machinery & equipment",
-                                  "share seasonal forecasts with farmers")
+                                  "share seasonal forecasts with farmers",
+                                  "dietary guidelines",
+                                  "encourage environmentally friendly farm inputs")
 
 measure_class[["incentives for certain production systems/land uses"]] <- c("abolish quantitative and area-based cotton production restrictions",
                                                                             "land protection policy",
                                                                             "quantity-based cotton production requirements",
                                                                             "relocation of water-demanding crops",
-                                                                            "quantity & area-based cotton production requirements")
+                                                                            "quantity & area-based cotton production requirements") 
 
 measure_class[["store policies"]] <- c("creating new stores",
                                        "increase availability of healthy foods in stores",
@@ -266,7 +268,8 @@ measure_class[["tax policies"]] <- c("decreased value added tax on hotels and re
                                      "increased value added tax with lower rates for agricultural goods",
                                      "reduced value added tax for poor households",
                                      "tax rebate",
-                                     "increased value added tax with exemptions for agricultural and food processing goods")
+                                     "increased value added tax with exemptions for agricultural and food processing goods",
+                                     "abolish producer tax on rice")
 
 measure_class[["targeted subsidies"]] <- c("subsidies on fertilizer",
                                            "elimination of irrigation subsidies",
@@ -281,14 +284,15 @@ measure_class[["targeted subsidies"]] <- c("subsidies on fertilizer",
                                            "subsidies on farm inputs",
                                            "subsidies on fertiliser",
                                            "subsidies on fuel",
-                                           "subsidies on seeds")
+                                           "subsidies on seeds",
+                                           "reduce subsidies on agrochemicals")
 
 measure_class[["international trade"]] <- c("trade liberalisation",
                                             "trade deliberalisation",
                                             "accession into trade partnership",
                                             "open for trade with neighbouring countries")
 
-measure_class[["other"]] <- c("rice self-sufficiency program")
+measure_class[["other"]] <- c("rice self-sufficiency program", "two-child policy", "rural settlement consolidation")
 
 measure_class[["targeted investment"]] <- c("(increased) investment in agricultural sector",
                                             "increased investment general",
@@ -306,12 +310,18 @@ measure_class[["import policies"]] <- c("import tariffs on rice",
                                       "reduce import tariffs on fertilizer",
                                       "abolish quantitative rice import quotas",
                                       "reduced import tariffs on rice",
-                                      "reduce import tariffs on fertiliser")
+                                      "reduce import tariffs on fertiliser",
+                                      "import tax on X",
+                                      "reduce import tax on X",
+                                      "reduce/remove import tariffs on X")
 
 measure_class[["export policies"]] <- c("export ban on wheat and coarse grains",
                                         "increased export tax on cereals",
                                         "export quotas for wheat & coarse grains",
-                                        "export tariffs on wheat & coarse grains")
+                                        "export tariffs on wheat & coarse grains",
+                                        "abolish quantiative export quotas of rice",
+                                        "export tax on X",
+                                        "reduce export tax on X")
 
 measure_class[["direct support for food producers"]] <- c("minimum support price for rice",
                                                           "minimum support price for milk")
