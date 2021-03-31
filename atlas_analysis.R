@@ -206,9 +206,10 @@ sens_sum$number <- color_bar("lightblue")(sens_sum$number)
 ft_sens <- sens_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_sens
+ft_sens %>% as_image(file = paste0(figdir, "/modelling_sensitivity-analysis_table.png"))
 
 rm(list = c("sens", "sens_sum"))
 ###################### prepare modelling - sensitivity analysis? ########################
@@ -227,12 +228,15 @@ val_sum$number <- color_bar("lightblue")(val_sum$number)
 ft_val <- val_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_val
+ft_val %>% as_image(file = paste0(figdir, "/modelling_validation_table.png"))
 
 rm(list = c("val", "val_sum"))
 ###################### prepare modelling - validation? ########################
+
+#to do: combine sensitivity analysis & validation in one table
 
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
@@ -248,9 +252,10 @@ modelling_data_sum$number <- color_bar("lightblue")(modelling_data_sum$number)
 ft_data <- modelling_data_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_data
+ft_data %>% as_image(file = paste0(figdir, "/modelling_data_table.png"))
 
 rm(list = c("modelling_data", "modelling_data_sum"))
 
@@ -269,9 +274,10 @@ mtype_sum$number <- color_bar("lightblue")(mtype_sum$number)
 ft_mtyp <- mtype_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_mtyp 
+ft_mtyp %>% as_image(file = paste0(figdir, "/per-model_type_table.png"))
 
 rm(list = c("mtype", "mtype_sum"))
 ###################### prepare per model - type ########################
@@ -289,12 +295,16 @@ mdom_sum$number <- color_bar("lightblue")(mdom_sum$number)
 ft_mdom <- mdom_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_mdom
+ft_mdom %>% as_image(file = paste0(figdir, "/per-model_domain_table.png"))
 
 rm(list = c("mdom", "mdom_sum"))
 ###################### prepare per model - domain ########################
+
+# to do: model type x domain co-occurence
+# to do: model domain co-occurence
 
 ###################### prepare per model - subdomain ########################
 mdom <- quotes_long[quotes_long$code_group == "per model - subdomain",]
@@ -311,12 +321,15 @@ mdom_sum$number <- color_bar("lightblue")(mdom_sum$number)
 ft_msdom <- mdom_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_msdom
+ft_msdom %>% as_image(file = paste0(figdir, "/per-model_subdomain_table.png"))
 
 rm(list = c("mdom", "mdom_sum"))
 ###################### prepare per model - subdomain ########################
+
+#to do: make subtype table
 
 ###################### prepare spatial & temporal - country ########################
 cntr <- quotes_long[quotes_long$code_group == "spatial & temporal - country",]
@@ -328,12 +341,13 @@ cntr_sum$proportion <- round(cntr_sum$number/n_studies, 2)
 
 cntr_sum$number <- color_bar("lightpink")(cntr_sum$number)
 
-ft_cntr <- cntr_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_cntr <- cntr_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Top 20 countries, gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_cntr 
+ft_cntr %>% as_image(file = paste0(figdir, "/spatial&temporal_country-top20_table.png"))
 
 rm(list = c("cntr", "cntr_sum"))
 ###################### prepare spatial & temporal - country ########################
