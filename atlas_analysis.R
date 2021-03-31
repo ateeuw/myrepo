@@ -17,6 +17,7 @@ library("webshot") #to save screenshots of html objects
 library("ggpubr") #to make nice figures
 library("magick") # image formatting
 library("sparkline") #making nice tables
+library("grid") #to place text in plots
 webshot::install_phantomjs()
 ###################### load libraries ###################### 
 
@@ -378,14 +379,16 @@ rsc_sum$number <- color_bar("lightpink")(rsc_sum$number)
 ft_rsc <- rsc_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_rsc 
+ft_rsc %>% as_image(file = paste0(figdir, "/spatial&temporal_ref-scale_table.png"))
 
 rm(list = c("rsc", "rsc_sum"))
 ###################### prepare spatial & temporal - ref scale ########################
 
 ###################### prepare spatial & temporal - representation ########################
+# to do: standardize representation types (spatial -> geographic)
 repr <- quotes_long[quotes_long$code_group == "spatial & temporal - representation",]
 repr <- repr[!is.na(repr$code_group),]
 repr_sum <- level1_count(sheet = repr)
@@ -398,14 +401,16 @@ repr_sum$number <- color_bar("lightpink")(repr_sum$number)
 ft_repr <- repr_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_repr 
+ft_repr %>% as_image(file = paste0(figdir, "/spatial&temporal_representation_table.png"))
 
 rm(list = c("repr", "repr_sum"))
 ###################### prepare spatial & temporal - representation ########################
 
 ###################### prepare spatial & temporal - spatial extent ########################
+# to do: check whether Anderson 2004 really has two spatial extents (this is possible)
 spext <- quotes_long[quotes_long$code_group == "spatial & temporal - spatial extent [m2]",]
 spext$name <- as.numeric(as.character(spext$name))
 spext <- spext[!is.na(spext$code_group),]
@@ -424,13 +429,23 @@ dc_spext <- ggdotchart(spext_sum, x = "Document", y = "name",
            add = "segments",
            add.params = list(color = "black"),
           sorting = "ascending") +
-  yscale("log10", .format = TRUE) +
-  ylab("spatial extent (m2)") + xlab("Reviewed paper") +
+  scale_y_continuous(trans = "log10", limits = c(10^6, 10^15), breaks = 10^(6:15), labels = c(paste(c(1,10,100), "million"), 
+                                                                     paste(c(1, 10, 100), "billion"),
+                                                                     paste(c(1, 10, 100), "trillion"),
+                                                                     "1 quadrillion")) +
+  ylab(bquote("spatial extent "~(m^2))) + xlab("Reviewed paper") +
   bgcolor("lightpink") +
   border("#BFD5E3") +
-  ggtitle(paste(quant_n, "studies out of", n_studies))
+  ggtitle(paste(quant_n, "studies out of", n_studies)) + 
+  geom_hline(yintercept=510100000000000, col = "deeppink", linetype = "dashed") + annotate("text", x = 3, y = 510100000000000, label = "the earth", col = "grey30") + #the world
+  geom_hline(yintercept=9597000000000, col = "deeppink", linetype = "dashed") + annotate("text", x = 3, y = 9597000000000, label = "China", col = "grey30") + #china 
+  geom_hline(yintercept=130279000000, col = "deeppink", linetype = "dashed") + annotate("text", x = 3, y = 130279000000, label = "England", col = "grey30") + #england
+  geom_hline(yintercept=783800000, col = "deeppink", linetype = "dashed") + annotate("text", x = 3, y = 783800000, label = "New York", col = "grey30") + #new york
+  annotation_logticks(sides="l")
 
-dc_spext
+png(filename = paste0(figdir, "/spatial&temporal_spatial-extent_dotchart.png"), width = 750, height = 800)
+dc_spext 
+dev.off()
 
 rm(list = c("spext", "spext_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial extent ########################
