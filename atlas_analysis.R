@@ -482,6 +482,7 @@ rm(list = c("spres", "spres_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial resolution ########################
 
 ###################### prepare spatial & temporal - temporal extent ########################
+# to do: check if chen 2018 really has two temporal extents
 tmext <- quotes_long[quotes_long$code_group == "spatial & temporal - temporal extent [d]",]
 tmext$name <- as.numeric(as.character(tmext$name))
 tmext <- tmext[!is.na(tmext$code_group),]
@@ -500,13 +501,20 @@ dc_tmext <- ggdotchart(tmext_sum, x = "Document", y = "name",
            add = "segments",
            add.params = list(color = "black"),
            sorting = "ascending") +
-  yscale("log10", .format = TRUE) +
+  scale_y_continuous(trans = "log10", breaks = 10^(2:5), labels = c("100", "1,000", "10,000", "100,000"), limits = c(100,100000)) +
   ylab("temporal extent (days)") + xlab("Reviewed paper") +
   bgcolor("lightpink") +
   border("#BFD5E3") +
   ggtitle(paste(quant_n, "studies out of", n_studies)) +
+  annotation_logticks(sides="l") +
+  geom_hline(yintercept=365, col = "deeppink", linetype = "dashed") + annotate("text", x = 20, y = 365, label = "1 year", col = "grey30") + #1 year
+  geom_hline(yintercept=1826, col = "deeppink", linetype = "dashed") + annotate("text", x = 20, y = 1826, label = "5 years", col = "grey30") +
+  geom_hline(yintercept=18262, col = "deeppink", linetype = "dashed") + annotate("text", x = 20, y = 18262, label = "50 years", col = "grey30") +
+  geom_hline(yintercept=73048, col = "deeppink", linetype = "dashed") + annotate("text", x = 20, y = 73048, label = "200 years", col = "grey30") 
 
+png(filename = paste0(figdir, "/spatial&temporal_temporal-extent_dotchart.png"), width = 750, height = 800)
 dc_tmext
+dev.off()
 
 rm(list = c("tmext", "tmext_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial extent ########################
