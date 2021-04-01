@@ -843,40 +843,33 @@ rm(list = c("mstyp2", "mstyp2_sum"))
 ###################### per measure - type 2 ########################
 
 ###################### per measure - objective ########################
-obj <- quotes_long[quotes_long$code_group == "per measure - objective",]
-obj <- obj[!is.na(obj$code_group),]
-obj_sum <- level1_count(sheet = obj)
+obj <- level2_summ(level1code = "per measure - measure", level2code = "per measure - objective", dat_long = quotes_long)
+obj$proportion <- round(obj$n/n_measures, 2)
+colnames(obj)[1:2] <- c("governance objectives", "number")
 
-obj_sum$name <- factor(obj_sum$name, levels = rev(unique(obj_sum$name)))
-colnames(obj_sum) <- c("governance objective", "number")
-obj_sum$proportion <- round(obj_sum$number/n_studies, 2)
+obj2 <- obj
+obj$number <- color_bar("red")(obj$number)
 
-obj_sum$number <- color_bar("red")(obj_sum$number)
-
-ft_obj <- obj_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_obj <- obj[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures. Top 20.")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_obj
+ft_obj %>% as_image(file = paste0(figdir, "/per-measure_objective-top20_table.png")) 
 
-# objective classes
-obj$class <- ""
-obj <- dict_classification(sheet = obj, dct = goals_class, clm = 16, class_clm = 17)
-colnames(obj)[16:17] <- c("governance objective", "name")
-obj_sum <- level1_count(sheet = obj)
-obj_sum$name <- factor(obj_sum$name, levels = rev(unique(obj_sum$name)))
-colnames(obj_sum) <- c("governance objective type", "number")
-obj_sum$proportion <- round(obj_sum$number/n_studies, 2)
+#objectives grouped according to food security dimension or - if not related to food security - other societal domains
+objclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - objective", dat_long = quotes_long, classdct = goals_class)
+colnames(objclss) <- c("governance objective groups", "number")
+objclss$number <- color_bar("red")(objclss$number)
 
-obj_sum$number <- color_bar("red")(obj_sum$number)
-
-ft_objgr <- obj_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_objgr <- objclss %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers. Grouped using FAO commodity list.")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures.")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_objgr
+ft_objgr %>% as_image(file = paste0(figdir, "/per-measure_objective-grouped_table.png")) 
 
 rm(list = c("obj", "obj_sum"))
 
