@@ -780,7 +780,8 @@ mstyp_sum <- mstyp %>%
 mstyp_sum <- mstyp_sum %>%
   arrange(desc(n))
 
-n_measures <- nrow(mstyp)
+ismeas <- which(quotes_long$code_group == "per measure - measure")
+n_measures <- length(unique(paste(quotes_long$Document[ismeas],quotes_long$name[ismeas]))) #to do: figure out why the number of measures differs 
 
 mstyp_sum$type <- factor(mstyp_sum$type, levels = rev(unique(mstyp_sum$type)))
 mstyp_sum$proportion <- round(mstyp_sum$n/n_measures, 2)
@@ -790,7 +791,7 @@ mstyp_sum$number <- color_bar("red")(mstyp_sum$number)
 
 ft_mstyp <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures")) %>%
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
@@ -800,22 +801,43 @@ rm(list = c("mstyp", "mstyp_sum"))
 ###################### per measure - type ########################
 
 ###################### per measure - type 2 ########################
-mstyp2 <- quotes_long[quotes_long$code_group == "per measure - type 2",]
+mstyp2 <- quotes_long[quotes_long$code_group %in% c("per measure - type 2", "per measure - measure"),]
 mstyp2 <- mstyp2[!is.na(mstyp2$code_group),]
-mstyp2_sum <- level1_count(sheet = mstyp2)
 
-mstyp2_sum$name <- factor(mstyp2_sum$name, levels = rev(unique(mstyp2_sum$name)))
-colnames(mstyp2_sum) <- c("type governance measure", "number")
-mstyp2_sum$proportion <- round(mstyp2_sum$number/n_studies, 2)
+mstyp2 <- mstyp2 %>% spread(code_group, name)
+colnames(mstyp2)[15:16] <- c("measure", "type2")
+meas <- mstyp2[,which(colnames(mstyp2) %in% c("measure", "ID", "Document"))]
+typ2 <- mstyp2[,which(colnames(mstyp2) %in% c("type2", "ID"))]
+
+mstyp2 <- merge(meas, typ2, by = "ID")
+mstyp2 <- na.omit(mstyp2)
+
+
+mstyp2 <- mstyp2 %>% group_by(Document, measure, type2) %>%
+  count(Document, measure, type2)
+
+mstyp2$n <- 1
+
+mstyp2_sum <- mstyp2 %>% 
+  group_by(type2) %>%
+  count(type2)
+
+mstyp2_sum <- mstyp2_sum %>%
+  arrange(desc(n))
+
+mstyp2_sum$type2 <- factor(mstyp2_sum$type2, levels = rev(unique(mstyp2_sum$type2)))
+mstyp2_sum$proportion <- round(mstyp2_sum$n/n_measures, 2)
+colnames(mstyp2_sum)[1:2] <- c("organisation of governance measure", "number")
 
 mstyp2_sum$number <- color_bar("red")(mstyp2_sum$number)
 
 ft_mstyp2 <- mstyp2_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_mstyp2
+ft_mstyp2 %>% as_image(file = paste0(figdir, "/per-measure_measure-type2_table.png")) 
 
 rm(list = c("mstyp2", "mstyp2_sum"))
 ###################### per measure - type 2 ########################
