@@ -909,22 +909,34 @@ rm(list = c("msc"))
 ###################### per measure - scale ########################
 
 ###################### per measure - target implementer ########################
-mstyp <- quotes_long[quotes_long$code_group == "per measure - target implementer",]
-mstyp <- mstyp[!is.na(mstyp$code_group),]
-mstyp_sum <- level1_count(sheet = mstyp)
+mdat <- level2_summ(level1code = "per measure - measure", level2code = "per measure - target implementer", dat_long = quotes_long)
 
-mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
-colnames(mstyp_sum) <- c("implementer of governance measure", "number")
-mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+colnames(mdat) <- c("implementer of governance measure", "number")
+mdat$proportion <- round(mdat$number/n_studies, 2)
 
-mstyp_sum$number <- color_bar("red")(mstyp_sum$number)
+mdat$number <- color_bar("red")(mdat$number)
 
-ft_impl <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_impl <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures.")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_impl
+ft_impl %>% as_image(file = paste0(figdir, "/per-measure_target-implementer_table.png")) 
+
+# target implementer grouped
+mdatclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - target implementer", dat_long = quotes_long, classdct = timpl_classes)
+colnames(mdatclss) <- c("target implementing entities", "number")
+mdatclss$number <- color_bar("red")(mdatclss$number)
+
+ft_objgr <- mdatclss %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures.")) %>%
+  kable_styling(font_size = 20) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_objgr %>% as_image(file = paste0(figdir, "/per-measure_target-implementer-grouped_table.png")) 
+
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per measure - target implementer ########################
