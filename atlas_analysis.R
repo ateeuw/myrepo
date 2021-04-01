@@ -876,11 +876,13 @@ rm(list = c("obj", "obj_sum"))
 ###################### per measure - objective ########################
 
 ###################### per measure - scale ########################
-msc <- quotes_long[quotes_long$code_group == "per measure - scale",]
-msc <- msc[!is.na(msc$code_group),]
-msc_sum <- level1_count(sheet = msc)
+msc <- level2_summ(level1code = "per measure - measure", level2code = "per measure - scale", dat_long = quotes_long)
+msc$proportion <- round(msc$n/n_measures, 2)
+colnames(msc)[1:2] <- c("scales of governance", "number")
 
-msc_sum$name <- factor(msc_sum$name, levels = rev(c("unclear", "earth", 
+msc$number <- color_bar("red")(msc$number)
+
+msc$`scales of governance` <- factor(msc$`scales of governance`, levels = rev(c("unclear", "earth", 
                                                              "earth > x > continent", 
                                                              "continent", 
                                                              "continent > x > country", 
@@ -893,20 +895,17 @@ msc_sum$name <- factor(msc_sum$name, levels = rev(c("unclear", "earth",
                                                              "city",
                                                              "city > x > city_district",
                                                              "city district")))
-msc_sum <- msc_sum[order(msc_sum$name),]
-colnames(msc_sum) <- c("scale of governance measure", "number")
-msc_sum$proportion <- round(msc_sum$number/n_studies, 2)
+msc <- msc[order(msc$`scales of governance`),]
 
-msc_sum$number <- color_bar("red")(msc_sum$number)
-
-ft_msc <- msc_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_msc <- msc %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures.")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_msc
+ft_msc %>% as_image(file = paste0(figdir, "/per-measure_scale_table.png")) 
 
-rm(list = c("msc", "msc_sum"))
+rm(list = c("msc"))
 ###################### per measure - scale ########################
 
 ###################### per measure - target implementer ########################
