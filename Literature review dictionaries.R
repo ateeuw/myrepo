@@ -386,3 +386,17 @@ FSi_classes[["stability"]] <- c("resilience to water scarcity", "water security"
                                 "incidence of lower average income with lower variance [%]", "variance in income", "self-sufficiency of X", "food security risk", 
                                 "incidence of identical average income with lower variance (%)", "incidence of lower income with higher variance")
 FSi_classes[["unclear"]] <- "unclear"
+
+timpl_classes <- list()
+timpl_classes[["governmental entities"]] <- "government"
+timpl_classes[["food producing entities"]] <- c("farmer")
+timpl_classes[["unclear"]] <- c("unclear")
+timpl_classes[["knowledge broker entities"]] <- c("agricultural extension services", "educators")
+timpl_classes[["trade entities"]] <- c("trade partnership", "farmer cooperative")
+timpl_classes[["non-food manufacturing/processing entities"]] <- c("agricultural machinery manufacturing industry")
+timpl_classes[["food consuming entities"]] <- c("consumer", "resident/consumer")
+timpl_classes[["citizen entities"]] <- c("citizen", "volunteers", "women")
+timpl_classes[["food retail entities"]] <- c("retailer", "stores")
+timpl_classes[["knowledge producing entities"]] <- c("agricultural researchers")
+timpl_classes[["banks/credit suppliers"]] <- c("credit suppliers")
+timpl_classes[["non-food retail entities"]] <- c("input supplier")
