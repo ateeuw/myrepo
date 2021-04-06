@@ -52,9 +52,11 @@ space["3.63 km2"] <- 3.63*1000000                                 #3630000      
 space[["783,8 km²"]] <- 783.8*1000000                             #783800000             8
 space["1000 ha"] <- 1000*10000                                    #10000000              7
 space[["1593 km2"]] <- sprintf("%.1f", 1593*1000000)              #15930000000           7
+space[["1.602 km²"]] <- sprintf("%.0f", 1602*1000000)             #1602000000
 space[["1,707.84 平方千米"]] <- 1707.7*1000000                    #1707700000            7
 space[["1975.7 km2"]] <- 1975.7*1000000                           #1975700000            7
 space["3703 km2"] <- sprintf("%.1f", 3703*1000000)                #3703000000            9
+space[["7.415 km2"]] <- sprintf("%.0f", 7415*1000000)             #7415000000            9
 space["461.786 ha"] <- 461786*10000                               #4617860000            9
 space["680,000 ha"] <- 680000*10000                               #6800000000            9
 space["14000 km2"] <- sprintf("%.1f", 14000*1000000)              #14000000000          10
@@ -372,13 +374,14 @@ comm_classes[["hides and skins"]] <- c("leather")
 # FS indicators
 FSi_classes <- list()
 FSi_classes[["availability"]] <- c("number of (active/passive) farms", "area used for X", "supply of water for irrigation", "area irrigated", "production of X", "productivity of X", 
-                                   "yield of X", "yield gap of X", "availability of X", "area left fallow")
+                                   "yield of X", "yield gap of X", "availability of X", "area left fallow/unused", "supply of X", "consumption of agricultural water")
 FSi_classes[["access"]] <- c("profitability of land", "profitability of water use", "profitability of labour", "farm profit", "marginal cost of producing X", "marginal cost of shipping X",
                              "farm gate/producer price of X", "import of X", "export of X", "price of X", "import price of X", "price of irrigation water", "added value of X", 
                              "contribution of X to GDP", "income/wage/salary", "discretionary income", "income from X", "income from agriculture", "income inequality", "poverty incidence/rate",
                              "poverty severity", "poverty depth/gap", "people walking to store as a last resort", "capital assets", "demand for X", "demand for farm land", "production costs",
                              "dietary income differential", "economic benefit/increase in output value of additional production of X", "inflation", "poverty rate/incidence", "sales of X", 
-                             "selling time of X")
+                             "selling time of X", "unemployed", "demand for agrochemicals", "demand for capital", "demand for farm labour", "price of agrochemicals", 
+                             "price of labour", "price of land")
 FSi_classes[["utilisation"]] <- c("consumption of X", "Healthy Eating Index", "share of X in diet", "quality adjusted life years", "dietary income inequality", "food losses", "purchase of X")
 FSi_classes[["stability"]] <- c("resilience to water scarcity", "water security", "food shortage", "stocks of X", "incidence of higher average income with higher variance (%)",
                                 "incidence of higher average income with lower variance (%)", "incidence of identical average income and variance (%)", 
