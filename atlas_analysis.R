@@ -781,7 +781,7 @@ mstyp_sum <- mstyp_sum %>%
   arrange(desc(n))
 
 ismeas <- which(quotes_long$code_group == "per measure - measure")
-n_measures <- length(unique(paste(quotes_long$Document[ismeas],quotes_long$name[ismeas]))) #to do: figure out why the number of measures differs 
+n_measures <- length(unique(paste(quotes_long$Document[ismeas],quotes_long$name[ismeas]))) 
 
 mstyp_sum$type <- factor(mstyp_sum$type, levels = rev(unique(mstyp_sum$type)))
 mstyp_sum$proportion <- round(mstyp_sum$n/n_measures, 2)
@@ -942,63 +942,56 @@ rm(list = c("mstyp", "mstyp_sum"))
 ###################### per measure - target implementer ########################
 
 ###################### per measure - spatially targeted? ########################
-mstyp <- quotes_long[quotes_long$code_group == "per measure - spatially targeted?",]
-mstyp <- mstyp[!is.na(mstyp$code_group),]
-mstyp_sum <- level1_count(sheet = mstyp)
+mdat <- level2_summ(level1code = "per measure - measure", level2code = "per measure - spatially targeted?", dat_long = quotes_long)
+colnames(mdat) <- c("spatially targeted governance?", "number")
+mdat$proportion <- round(mdat$number/n_measures, 2)
+mdat$number <- color_bar("red")(mdat$number)
 
-mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
-colnames(mstyp_sum) <- c("spatially targeted governance?", "number")
-mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
-
-mstyp_sum$number <- color_bar("red")(mstyp_sum$number)
-
-ft_sptg <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_sptg <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures.")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_sptg
+ft_sptg %>% as_image(file = paste0(figdir, "/per-measure_spatially-targeted_table.png")) 
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per measure - spatially targeted? ########################
 
 ###################### per effect - FS indicator ########################
-meas <- quotes_long[quotes_long$code_group == "per effect - FS indicator",]
-meas <- meas[!is.na(meas$code_group),]
-meas_sum <- level1_count(sheet = meas)
+mdat <- level2_summ(level1code = "per effect - direct?", level2code = "per effect - FS indicator", dat_long = quotes_long)
+colnames(mdat) <- c("food security indicator", "number")
 
-meas_sum$name <- factor(meas_sum$name, levels = rev(unique(meas_sum$name)))
-colnames(meas_sum) <- c("food security indicator", "number")
-meas_sum$proportion <- round(meas_sum$number/n_studies, 2)
+isfsi <- which(quotes_long$code_group == "per effect - FS indicator")
+n_effects <- length(unique(paste(quotes_long$Document[isfsi],quotes_long$name[isfsi]))) 
 
-meas_sum$number <- color_bar("yellow")(meas_sum$number)
+mdat$proportion <- round(mdat$number/n_effects, 2)
+mdat$number <- color_bar("yellow")(mdat$number)
 
-ft_FSin <- meas_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_FSin <- mdat[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_effects, "impacts of", n_measures, "governance measures.")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_FSin 
+ft_FSin %>% as_image(file = paste0(figdir, "/per-effect_FS-indicator-top20_table.png"))
 
-# measure classes
-meas$class <- ""
-meas <- dict_classification(sheet = meas, dct = FSi_classes, clm = 16, class_clm = 17)
-colnames(meas)[16:17] <- c("food security indicator type", "name")
-meas_sum <- level1_count(sheet = meas)
-meas_sum$name <- factor(meas_sum$name, levels = rev(unique(meas_sum$name)))
-colnames(meas_sum) <- c("food security indicator type", "number")
-meas_sum$proportion <- round(meas_sum$number/n_studies, 2)
+# FS indicator classes
+mdatclss <- level2_class_summ(level1code = "per effect - direct?", level2code = "per effect - FS indicator", dat_long = quotes_long, classdct = FSi_classes)
+colnames(mdatclss) <- c("food security indicator grouped", "number")
+mdatclss$proportion <- round(mdatclss$number/n_effects, 2)
 
-meas_sum$number <- color_bar("yellow")(meas_sum$number)
+mdatclss$number <- color_bar("yellow")(mdatclss$number)
 
-ft_fsigr <- meas_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_fsigr <- mdatclss %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers.")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_effects, "impacts of", n_measures, "governance measures.")) %>%
+  kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_fsigr
+ft_fsigr %>% as_image(file = paste0(figdir, "/per-effect_FS-indicator-grouped_table.png"))
 
-rm(list = c("meas", "meas_sum"))
+rm(list = c("mdat", "mdatclss"))
 ###################### per effect - FS indicator ########################
 
 ###################### per effect - direct? ########################
