@@ -353,18 +353,22 @@ measure_class[["nature-centered measures"]] <- c("soil erosion control",
 
 # commodities
 comm_classes <- list()
-comm_classes[["cereals & cerealproducts"]] <- c("rice", "maize", "wheat", "sorghum", "millet", "grain", "coarse grains", "barley", "bread", "maize flour", "oats", "other cereals", "pasta", "refined grains", "teff", "whole grains", "cereals")
+comm_classes[["cereals & cereal products"]] <- c("rice", "maize", "wheat", "sorghum", "millet", "grain", "coarse grains", "barley", "bread", "maize flour", "oats", "other cereals", "pasta", "refined grains", "teff", "whole grains", "cereals")
 comm_classes[["fruits and derived products"]] <- c("fruit", "plantain", "avocado", "banana", "mango")
 comm_classes[["vegetables and derived products"]] <- c("vegetable", "onion", "tomato", "broccoli", "cabbage", "garlic")
 comm_classes[["sugar crops and sweeteners, and derived products"]] <- c("sugar", "sugarcane", "candy")
 comm_classes[["fibres of vegetal and animal origin"]] <- c("cotton", "plant-based fibers", "raw cotton")
-comm_classes[["abstract 'foods'"]] <- c("food", "other food", "food at home", "food away from home", "processed food")
-comm_classes[["non-applicable crop groups"]] <- c("crops","trees", "other crops", "cash crops", "horticultural crops", "industrial crops", "non-food crops", "other starchy staples","seeds")
-comm_classes[["not applicable"]] <- c("wood", "enset", "salt", "eucalyptus", "wood products", "livestock products")
+comm_classes[["abstract 'foods'*"]] <- c("food", "other food", "food at home", "food away from home", "processed food",
+                                        "healthy food", "unhealthy food", "food of plant origin", "own-produced food")
+comm_classes[["non-applicable crop groups*"]] <- c("crops","trees", "other crops", "cash crops", "horticultural crops", "industrial crops", "non-food crops", 
+                                                  "other starchy staples")
+comm_classes[["seeds for planting*"]] <- c("hybrid/improved maize seed", "seeds", "local maize seed")
+comm_classes[["not applicable*"]] <- c("wood", "enset", "salt", "eucalyptus", "wood products", "livestock products")
 comm_classes[["products from live animals"]] <- c("milk", "dairy", "egg")
 comm_classes[["oil-bearing crops and derived products"]] <- c("groundnut", "soybean", "coconut", "jatropha", "linseed", "oil palm", "oil seeds", "oilseed", "palm oil", "rape seed", "sesame")
 comm_classes[["products from slaughtered animals"]] <- c("meat", "fish", "beef", "other meat")
-comm_classes[["livestock"]] <- c("cattle", "goat", "poultry", "sheep", "livestock", "broiler chicken", "buffalo", "camel", "chicken", "cow", "crossbred cattle", "laying hen")
+comm_classes[["livestock"]] <- c("cattle", "goat", "poultry", "sheep", "livestock", "broiler chicken", "buffalo", "camel", "chicken", "cow", 
+                                 "crossbred cattle", "laying hen", "male calf")
 comm_classes[["stimulant crops and derived products"]] <- c("tobacco", "coffee", "cocoa", "chat", "cocoa beans", "tea")
 comm_classes[["beverages"]] <- c("beverages", "alcoholic beverages", "carbonated soft drinks")
 comm_classes[["roots and tubers, and derived products"]] <- c("cassava", "potato", "roots", "sweet potato", "tubers", "yam", "cocoyam")
