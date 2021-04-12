@@ -18,7 +18,6 @@ library("ggpubr") #to make nice figures
 library("magick") # image formatting
 library("sparkline") #making nice tables
 library("grid") #to place text in plots
-webshot::install_phantomjs()
 ###################### load libraries ###################### 
 
 ###################### define paths for import and export ###################### 
@@ -368,8 +367,8 @@ rsc_sum$name <- factor(rsc_sum$name, levels = rev(c("earth",
                                                     "municipality",
                                                     "municipality > x > city",
                                                     "city",
-                                                    "city > x > city_district",
-                                                    "city district")))
+                                                    "city > x > village/city_district",
+                                                    "village/city district")))
 rsc_sum <- rsc_sum[order(rsc_sum$name),]
 colnames(rsc_sum) <- c("scale of model", "number")
 rsc_sum$proportion <- round(rsc_sum$number/n_studies, 2)
@@ -443,7 +442,7 @@ dc_spext <- ggdotchart(spext_sum, x = "Document", y = "name",
   geom_hline(yintercept=783800000, col = "deeppink", linetype = "dashed") + annotate("text", x = 3, y = 783800000, label = "New York", col = "grey30") + #new york
   annotation_logticks(sides="l")
 
-png(filename = paste0(figdir, "/spatial&temporal_spatial-extent_dotchart.png"), width = 750, height = 800)
+png(filename = paste0(figdir, "/spatial&temporal_spatial-extent_dotchart.png"), width = 800, height = 800)
 dc_spext 
 dev.off()
 
@@ -607,7 +606,7 @@ com_sum$number <- color_bar("orange")(com_sum$number)
 
 ft_comgr <- com_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers. Grouped using FAO commodity list.")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers. Grouped using FAO commodity list. *Groups used for commodities not listed by FAO")) %>%
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
