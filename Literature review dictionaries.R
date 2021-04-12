@@ -165,7 +165,8 @@ goals_class[["availability"]] <- c("increase agricultural productivity",
                              "increase domestic availability of X",
                              "increase production of X",
                              "protect farm land resources",
-                             "secure food supply")
+                             "secure food supply",
+                             "increase yield of X")
 goals_class[["accessibility"]] <- c("improve (healthy) food access",
                        "poverty reduction",
                        "reduce income inequality",
@@ -177,6 +178,11 @@ goals_class[["accessibility"]] <- c("improve (healthy) food access",
                        "improve farmer livelihoods",
                        "increase farm incomes",
                        "reduce domestic prices of X",
+                       "increase household incomes",
+                       "improve market access",
+                       "improve rural livelihoods",
+                       "reduce disparities in food security",
+                       "reestablish an equitable balance of land ownership",
                        "increase household incomes",
                        "improve market access",
                        "improve rural livelihoods")
@@ -210,7 +216,8 @@ goals_class[["environmental/climate"]] <- c("maximise delivery of ecosystem serv
                               "reduce carbon footprint from food production",
                               "reduce ecological footprint from food production",
                               "reduce land use intensity",
-                              "reduce water footprint from food production")
+                              "reduce water footprint from food production",
+                            "reduce agrochemical use")
 goals_class[["economic"]] <- c("economic growth",
                          "improve market",
                          "increase profitability of businesses",
@@ -237,9 +244,10 @@ measure_class[["education & training"]] <- c("promotion of improved seed",
                                                                            "improving female workers' education levels",
                                                                            "training and scholarship scheme",
                                                                            "development of farm schools",
-                                                                           "education & training")
+                                                                           "education & training",
+                                             "trust-building between extension services and farmers")
 
-measure_class[["compaigns"]] <- c("awareness campaign on water conservation",
+measure_class[["campaigns"]] <- c("awareness campaign on water conservation",
                                   "introduce additional legume cultivation schemes",
                                   "family planning programme",
                                   "improving willingness to walk",
@@ -257,8 +265,8 @@ measure_class[["incentives for certain production systems/land uses"]] <- c("abo
                                                                             "quantity & area-based cotton production requirements") 
 
 measure_class[["store policies"]] <- c("creating new stores",
-                                       "increase availability of healthy foods in stores",
-                                       "subsidies on farm inputs")
+                                       "subsidies on farm inputs",
+                                       "increase availability of (healthy) foods in stores")
 
 measure_class[["infrastructure projects"]] <- c("improving public transport",
                                                 "construction of hydro-electric dams",
@@ -268,7 +276,7 @@ measure_class[["infrastructure projects"]] <- c("improving public transport",
                                                 "improve irrigation facilities")
 
 measure_class[["affordability & pricing policies"]] <- c("cheaper healthy food/relative pricing",
-                                                         "food stamps with incentives for fruit and vegetable",
+                                                         "food stamps to low-income households with incentives for fruit and vegetable",
                                                          "cheaper food products that will soon expire",
                                                          "cash transfers to low-income households")
 
@@ -290,9 +298,9 @@ measure_class[["tax policies"]] <- c("decreased value added tax on hotels and re
                                      "reduced value added tax for poor households",
                                      "tax rebate",
                                      "increased value added tax with exemptions for agricultural and food processing goods",
-                                     "abolish producer tax on rice")
+                                     "abolish producer tax on X")
 
-measure_class[["targeted subsidies"]] <- c("subsidies on fertilizer",
+measure_class[["domestic subsidies"]] <- c("subsidies on fertilizer",
                                            "elimination of irrigation subsidies",
                                            "subsidies for establishment of perennials",
                                            "subsidies for primary processing and marketing activities",
@@ -305,15 +313,18 @@ measure_class[["targeted subsidies"]] <- c("subsidies on fertilizer",
                                            "subsidies on farm inputs",
                                            "subsidies on fertiliser",
                                            "subsidies on fuel",
-                                           "subsidies on seeds",
-                                           "reduce subsidies on agrochemicals")
+                                           "subsidies on (hybrid/improved) seeds",
+                                           "reduce subsidies on agrochemicals",
+                                           "short-term subsidies on (hybrid/improved) seeds",
+                                           "short-term subsidies on fertiliser")
 
 measure_class[["international trade"]] <- c("trade liberalisation",
                                             "trade deliberalisation",
                                             "accession into trade partnership",
                                             "open for trade with neighbouring countries")
 
-measure_class[["other"]] <- c("rice self-sufficiency program", "two-child policy", "rural settlement consolidation")
+measure_class[["other"]] <- c("rice self-sufficiency program", "two-child policy", "rural settlement consolidation", "allow land rental", 
+                              "land market closure", "land reform/redistribution")
 
 measure_class[["targeted investment"]] <- c("(increased) investment in agricultural sector",
                                             "increased investment general",
@@ -342,10 +353,13 @@ measure_class[["export policies"]] <- c("export ban on wheat and coarse grains",
                                         "export tariffs on wheat & coarse grains",
                                         "abolish quantiative export quotas of rice",
                                         "export tax on X",
-                                        "reduce export tax on X")
+                                        "reduce export tax on X",
+                                        "abolish export subsidies for X",
+                                        "abolish export taxes for X")
 
 measure_class[["direct support for food producers"]] <- c("minimum support price for rice",
-                                                          "minimum support price for milk")
+                                                          "minimum support price for milk",
+                                                          "abolish production subsidies for X")
 
 measure_class[["nature-centered measures"]] <- c("soil erosion control",
                                                  "afforestation (also agro-forestry)",
@@ -387,11 +401,11 @@ FSi_classes[["access"]] <- c("profitability of land", "profitability of water us
                              "farm gate/producer price of X", "import of X", "export of X", "price of X", "import price of X", "price of irrigation water", "added value of X", 
                              "contribution of X to GDP", "income/wage/salary", "discretionary income", "income from X", "income from agriculture", "income inequality", "poverty incidence/rate",
                              "poverty severity", "poverty depth/gap", "people walking to store as a last resort", "capital assets", "demand for X", "demand for farm land", "production costs",
-                             "dietary income differential", "economic benefit/increase in output value of additional production of X", "inflation", "poverty rate/incidence", "sales of X", 
-                             "selling time of X", "unemployed", "demand for agrochemicals", "demand for capital", "demand for farm labour", "price of agrochemicals", 
-                             "price of labour", "price of land")
+                             "dietary income differential", "economic benefit/increase in output value of additional production of X", "inflation", "poverty rate/incidence/headcount ratio", 
+                             "sales of X", "selling time of X", "unemployed", "demand for agrochemicals", "demand for capital", "demand for farm labour", "price of agrochemicals", 
+                             "price of labour", "price of land", "land use inequality")
 FSi_classes[["utilisation"]] <- c("consumption of X", "Healthy Eating Index", "share of X in diet", "quality adjusted life years", "dietary income inequality", "food losses", "purchase of X")
-FSi_classes[["stability"]] <- c("resilience to water scarcity", "water security", "food shortage", "stocks of X", "incidence of higher average income with higher variance (%)",
+FSi_classes[["stability"]] <- c("resilience to water scarcity", "water security", "food shortage/deficit", "stock/surplus of X", "incidence of higher average income with higher variance (%)",
                                 "incidence of higher average income with lower variance (%)", "incidence of identical average income and variance (%)", 
                                 "incidence of ïdentical average income with lower variance (%)", "incidence of lower average income with higher variance", 
                                 "incidence of lower average income with lower variance [%]", "variance in income", "self-sufficiency of X", "food security risk", 
