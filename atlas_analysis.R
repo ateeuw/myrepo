@@ -22,7 +22,7 @@ library("grid") #to place text in plots
 
 ###################### define paths for import and export ###################### 
 datadir <- "../Atlas_export_sheets"
-figdir <- "../Figures"
+figdir <- "../13042021_Figures"
 ###################### define paths for import and export ###################### 
 
 ###################### source functions ###################### 
@@ -35,10 +35,16 @@ source("./functions/level1_count.R")
 source("./functions/level2_count.R")
 source("./functions/level2_summ.R")
 source("./functions/level2_class_summ.R")
+source("./functions/check_dictionary.R")
 ###################### source functions ######################
 
 ###################### source dictionaries ######################
-source("./Literature review dictionaries.R")
+#source("./Literature review dictionaries.R")
+source("./dictionaries/goals_class.R")
+source("./dictionaries/measure_class.R")
+source("./dictionaries/comm_class.R")
+source("./dictionaries/FSi_class.R")
+source("./dictionaries/timpl_class.R")
 ###################### source dictionaries ######################
 
 ###################### load data ###################### 
@@ -79,6 +85,14 @@ n_studies <- as.numeric(as.character(length(unique(quotes_long$Document))))
 
 rm(list = c("new_row", "code", "codes_vec", "codes", "i", "j"))
 ###################### pre-process quotes ########################
+
+###################### check whether dictionaries are up to date ########################
+check_dictionary(codegroup = "food system - commodity", codedictionary = comm_class, dat_long = quotes_long)
+check_dictionary(codegroup = "per effect - FS indicator", codedictionary = FSi_class, dat_long = quotes_long)
+check_dictionary(codegroup = "per measure - objective", codedictionary = goals_class, dat_long = quotes_long)
+check_dictionary(codegroup = "per measure - measure", codedictionary = measure_class, dat_long = quotes_long)
+check_dictionary(codegroup = "per measure - target implementer", codedictionary = timpl_class, dat_long = quotes_long)
+###################### check whether dictionaries are up to date ########################
 
 ###################### prepare papers - year ########################
 year <- quotes_long[quotes_long$code_group == "papers - year",]
