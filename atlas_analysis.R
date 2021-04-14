@@ -611,7 +611,7 @@ ft_com <- com_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome
 ft_com %>% as_image(file = paste0(figdir, "/food-system_commodity-top20_table.png")) 
 # commodity classes
 com$class <- ""
-com <- dict_classification(sheet = com, dct = comm_classes, clm = 16, class_clm = 17)
+com <- dict_classification(sheet = com, dct = comm_class, clm = 16, class_clm = 17)
 colnames(com)[16:17] <- c("commodity", "name")
 com_sum <- level1_count(sheet = com)
 com_sum$name <- factor(com_sum$name, levels = rev(unique(com_sum$name)))
@@ -1013,10 +1013,8 @@ ft_fsigr %>% as_image(file = paste0(figdir, "/per-effect_FS-indicator-grouped_ta
 rm(list = c("mdat", "mdatclss"))
 ###################### per effect - FS indicator ########################
 
-# to do: make function detecting codes not in library
-
 ###################### per effect - direct? ########################
-mdat <- level2_summ(level1code = "per effect - FS indicator", level2code = "per effect - direct?", dat_long = quotes_long)
+mdat <- level2_summ(level1code = "per measure - measure", level2code = "per effect - direct?", dat_long = quotes_long)
 colnames(mdat) <- c("direct impact?", "number")
 
 mdat$proportion <- round(mdat$number/n_effects, 2)
@@ -1159,7 +1157,7 @@ gov_s <- dict_classification(sheet = gov_s, dct = measure_class, clm = 3, class_
 gov_t$m_class <- ""
 gov_t$f_class <- ""
 gov_t <- dict_classification(sheet = gov_t, dct = measure_class, clm = 2, class_clm = 4)
-gov_t <- dict_classification(sheet = gov_t, dct = FSi_classes, clm = 3, class_clm = 5)
+gov_t <- dict_classification(sheet = gov_t, dct = FSi_class, clm = 3, class_clm = 5)
 
 # colnames(intract_m) <- c("ID", "agent", "other", "codes", "exchange")
 # intract_m <- intract_m[-which(intract_m$agent == "not applicable" | intract_m$exchange == "not applicable"| intract_m$other == "not applicable"),]
