@@ -3,7 +3,9 @@
 # Countries x extents
 countries <- list()
 countries["Australia"] <- 7682300000000
+countries[["Benin"]] <- 114763000000
 countries["Brazil"] <- 8516000000000
+countries[["Burkina Faso"]] <- 274200000000
 countries[["China"]] <- 9597000000000
 countries[["earth"]] <- 510100000000000
 countries[["EU-27"]] <- 4476000000000
@@ -13,9 +15,11 @@ countries[["Indonesia"]] <- 1905000000000
 countries[["Malaysia"]] <- 329847000000
 countries[["Malawi"]] <- 118484000000
 countries["Mozambique"] <- 801590000000
-countries["Niger"]
+countries[["Niger"]] <- 1267000000000
+countries[["Nigeria"]] <- 923768000000
 countries[["Norway"]] <- 385207000000
 countries["Philippines"] <- 300000000000
+countries[["Togo"]] <- 56785000000
 countries["USA"] <- 9834000000000
 countries[["Vietnam"]] <- 331212000000
 countries[["Zimbabwe"]] <- 390757000000
@@ -65,19 +69,24 @@ space["680,000 ha"] <- 680000*10000                               #6800000000   
 space["14000 km2"] <- sprintf("%.1f", 14000*1000000)              #14000000000          10
 space[["23,000 km2"]] <- sprintf("%.1f", 23000*1000000)           #23000000000          10 
 space["46,717.48 km2"] <- sprintf("%.1f", 46717.48*1000000)       #46717480000          10
+space[["56.785 km²"]] <- sprintf("%.0f", 56785*1000000)           #56785000000
 space["91.646 km?"] <- sprintf("%.1f", 91646*1000000)             #91646000000          10
+space[["114.763 km²"]] <- sprintf("%.0f", 114763*1000000)         #114763000000
 space[["118.484 km²"]] <- sprintf("%.0f", 118484*1000000)         #118484000000
 space["238.535 km?"] <- sprintf("%.1f",238535*1000000)            #238535000000         11
 space["268303 km2"]  <- sprintf("%.1f", 268303*1000000)           #268303000000         11
+space[["274.200 km²"]] <- sprintf("%.0f", 274200*1000000)         #274200000000
 space["300000 km2"] <- sprintf("%.1f", 300000*1000000)            #300000000000         11
 space[["329.847 km²"]] <- sprintf("%.1f", 329847*1000000)         #329847000000         11
 space["331.212 km²"] <- sprintf("%.1f", 331212*1000000)           #331212000000         11
 space[["357.386 km²"]] <- sprintf("%.0f", 357386*1000000)         #357386000000         11
 space[["385.207 km²"]] <- sprintf("%.1f", 385207*1000000)         #385207000000         11
 space[["390.757 km²"]] <- sprintf("%.0f", 390757*1000000)         #390757000000         11
+space[["400,000 km2  "]] <- sprintf("%.0f", 400000*1000000)
 space["4.73 * 10^7 hm2"] <- sprintf("%.1f",4.73*10^7*10000)       #473000000000         11
 space[["537,023 sq km"]] <- sprintf("%.1f", 537023*1000000)       #537023000000         11
 space["881,913 km2"] <- sprintf("%.1f", 881913*1000000)           #881913000000         11
+space[["923.768 km²"]] <- sprintf("%.0f", 923768*1000000)         #923768000000
 space["1 100 000 km2"] <- sprintf("%.1f", 1100000*1000000)        #1100000000000        12
 space["1.267.000 km?"] <- sprintf("%.1f", 1267000*1000000)        #1267000000000        12
 space[["1.905.000 km?"]] <- sprintf("%.1f", 1905000*1000000)      #1905000000000        12
@@ -166,7 +175,9 @@ goals_class[["availability"]] <- c("increase agricultural productivity",
                              "increase production of X",
                              "protect farm land resources",
                              "secure food supply",
-                             "increase yield of X")
+                             "increase yield of X",
+                             "sustain food production",
+                             "water sufficiency")
 goals_class[["accessibility"]] <- c("improve (healthy) food access",
                        "poverty reduction",
                        "reduce income inequality",
@@ -185,10 +196,14 @@ goals_class[["accessibility"]] <- c("improve (healthy) food access",
                        "reestablish an equitable balance of land ownership",
                        "increase household incomes",
                        "improve market access",
-                       "improve rural livelihoods")
+                       "improve rural livelihoods",
+                       "rural development",
+                       "reduce disparities in food security")
 goals_class[["utilisation"]] <- c("increase consumption of fruits and vegetables",
                             "improve diets (more healthy)",
-                            "stimulate consumption")
+                            "stimulate consumption",
+                            "increase nutritional status",
+                            "increase food consumption")
 goals_class[["stability"]] <- c("maintain food self-sufficiency",
                           "obtain rice self-sufficiency",
                           "reduce food shortages",
@@ -298,7 +313,8 @@ measure_class[["tax policies"]] <- c("decreased value added tax on hotels and re
                                      "reduced value added tax for poor households",
                                      "tax rebate",
                                      "increased value added tax with exemptions for agricultural and food processing goods",
-                                     "abolish producer tax on X")
+                                     "abolish producer tax on X",
+                                     "tax exemption to fertiliser")
 
 measure_class[["domestic subsidies"]] <- c("subsidies on fertilizer",
                                            "elimination of irrigation subsidies",
@@ -316,7 +332,8 @@ measure_class[["domestic subsidies"]] <- c("subsidies on fertilizer",
                                            "subsidies on (hybrid/improved) seeds",
                                            "reduce subsidies on agrochemicals",
                                            "short-term subsidies on (hybrid/improved) seeds",
-                                           "short-term subsidies on fertiliser")
+                                           "short-term subsidies on fertiliser",
+                                           "abolish subsidies on fertiliser")
 
 measure_class[["international trade"]] <- c("trade liberalisation",
                                             "trade deliberalisation",
@@ -367,19 +384,21 @@ measure_class[["nature-centered measures"]] <- c("soil erosion control",
 
 # commodities
 comm_classes <- list()
-comm_classes[["cereals & cereal products"]] <- c("rice", "maize", "wheat", "sorghum", "millet", "grain", "coarse grains", "barley", "bread", "maize flour", "oats", "other cereals", "pasta", "refined grains", "teff", "whole grains", "cereals")
+comm_classes[["cereals & cereal products"]] <- c("rice", "maize", "wheat", "sorghum", "millet", "grain", "coarse grains", "barley", "bread", "maize flour", "oats", "other cereals", "pasta", 
+                                                 "refined grains", "teff", "whole grains", "cereals", "maize hybrid/improved", "maize local")
 comm_classes[["fruits and derived products"]] <- c("fruit", "plantain", "avocado", "banana", "mango")
 comm_classes[["vegetables and derived products"]] <- c("vegetable", "onion", "tomato", "broccoli", "cabbage", "garlic")
 comm_classes[["sugar crops and sweeteners, and derived products"]] <- c("sugar", "sugarcane", "candy")
 comm_classes[["fibres of vegetal and animal origin"]] <- c("cotton", "plant-based fibers", "raw cotton")
-comm_classes[["abstract 'foods'*"]] <- c("food", "other food", "food at home", "food away from home", "processed food",
-                                        "healthy food", "unhealthy food", "food of plant origin", "own-produced food")
-comm_classes[["non-applicable crop groups*"]] <- c("crops","trees", "other crops", "cash crops", "horticultural crops", "industrial crops", "non-food crops", 
+comm_classes[["compisite 'foods'*"]] <- c("food", "other food", "food at home", "food away from home", "processed food",
+                                        "healthy food", "unhealthy food", "food of plant origin", "own-produced food", "livestock products")
+comm_classes[["composite crops*"]] <- c("crops","trees", "other crops", "cash crops", "horticultural crops", "industrial crops", "non-food crops", 
                                                   "other starchy staples")
 comm_classes[["seeds for planting*"]] <- c("hybrid/improved maize seed", "seeds", "local maize seed")
-comm_classes[["not applicable*"]] <- c("wood", "enset", "salt", "eucalyptus", "wood products", "livestock products")
+comm_classes[["non-food tree crops and derived products*"]] <- c("wood", "eucalyptus", "wood products")
 comm_classes[["products from live animals"]] <- c("milk", "dairy", "egg")
-comm_classes[["oil-bearing crops and derived products"]] <- c("groundnut", "soybean", "coconut", "jatropha", "linseed", "oil palm", "oil seeds", "oilseed", "palm oil", "rape seed", "sesame")
+comm_classes[["oil-bearing crops and derived products"]] <- c("groundnut", "soybean", "coconut", "jatropha", "linseed", "oil palm", "oil seeds", "oilseed", "palm oil", "rape seed", "sesame", 
+                                                              "peanut")
 comm_classes[["products from slaughtered animals"]] <- c("meat", "fish", "beef", "other meat")
 comm_classes[["livestock"]] <- c("cattle", "goat", "poultry", "sheep", "livestock", "broiler chicken", "buffalo", "camel", "chicken", "cow", 
                                  "crossbred cattle", "laying hen", "male calf")
@@ -392,18 +411,20 @@ comm_classes[["nuts and derived products"]] <- c("cashews", "nuts")
 comm_classes[["beverage crops and spices"]] <- c("hop")
 comm_classes[["vegetable and animal oils and fats"]] <- c("edible oil", "biodiesel", "vegetable oil")
 comm_classes[["hides and skins"]] <- c("leather")
+comm_classes[["other commodities*"]] <- c("enset", "salt")
 
 # FS indicators
 FSi_classes <- list()
 FSi_classes[["availability"]] <- c("number of (active/passive) farms", "area used for X", "supply of water for irrigation", "area irrigated", "production of X", "productivity of X", 
-                                   "yield of X", "yield gap of X", "availability of X", "area left fallow/unused", "supply of X", "consumption of agricultural water")
+                                   "yield of X", "yield gap of X", "availability of X", "area left fallow/unused", "supply of X", "consumption of agricultural water", "fertiliser use for X",
+                                   )
 FSi_classes[["access"]] <- c("profitability of land", "profitability of water use", "profitability of labour", "farm profit", "marginal cost of producing X", "marginal cost of shipping X",
                              "farm gate/producer price of X", "import of X", "export of X", "price of X", "import price of X", "price of irrigation water", "added value of X", 
                              "contribution of X to GDP", "income/wage/salary", "discretionary income", "income from X", "income from agriculture", "income inequality", "poverty incidence/rate",
                              "poverty severity", "poverty depth/gap", "people walking to store as a last resort", "capital assets", "demand for X", "demand for farm land", "production costs",
                              "dietary income differential", "economic benefit/increase in output value of additional production of X", "inflation", "poverty rate/incidence/headcount ratio", 
-                             "sales of X", "selling time of X", "unemployed", "demand for agrochemicals", "demand for capital", "demand for farm labour", "price of agrochemicals", 
-                             "price of labour", "price of land", "land use inequality")
+                             "sales of X", "selling time of X", "unemployed", "demand for agrochemicals", "demand for capital", "demand for farm labour", "demand for agricultural water", 
+                             "price of agrochemicals", "price of labour", "price of land", "land use inequality")
 FSi_classes[["utilisation"]] <- c("consumption of X", "Healthy Eating Index", "share of X in diet", "quality adjusted life years", "dietary income inequality", "food losses", "purchase of X")
 FSi_classes[["stability"]] <- c("resilience to water scarcity", "water security", "food shortage/deficit", "stock/surplus of X", "incidence of higher average income with higher variance (%)",
                                 "incidence of higher average income with lower variance (%)", "incidence of identical average income and variance (%)", 
