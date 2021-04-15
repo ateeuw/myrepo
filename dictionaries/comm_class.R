@@ -23,7 +23,7 @@ comm_class[["products from live animals"]] <- c("milk", "dairy", "egg")
 comm_class[["oil-bearing crops and derived products"]] <- c("groundnut", "soybean", "coconut", "jatropha", "linseed", "oil palm", "oil seeds", "oilseed", "palm oil", "rape seed", "sesame", 
                                                               "peanut")
 comm_class[["products from slaughtered animals"]] <- c("meat", "fish", "beef", "other meat")
-comm_class[["livestock"]] <- c("cattle", "goat", "poultry", "sheep", "livestock", "broiler chicken", "buffalo", "camel", "chicken", "cow", 
+comm_class[["livestock"]] <- c("cattle", "goat", "poultry", "sheep", "livestock", "broiler chicken", "buffalo", "camel", "chicken", "cow", "other livestock", "oxen",
                                  "crossbred cattle", "laying hen", "male calf")
 comm_class[["stimulant crops and derived products"]] <- c("tobacco", "coffee", "cocoa", "chat", "cocoa beans", "tea")
 comm_class[["beverages"]] <- c("beverages", "alcoholic beverages", "carbonated soft drinks")
