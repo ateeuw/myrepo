@@ -147,7 +147,9 @@ coup <- quotes_long[quotes_long$code_group == "modelling - coupling?",]
 coup <- coup [!is.na(coup $code_group),]
 coup_sum <- level1_count(sheet = coup )
 
-coup_sum$name <- factor(coup_sum$name, levels = rev(unique(coup_sum$name)))
+coup_sum$name <- factor(coup_sum$name, levels = c("yes", "no", "not applicable"))
+coup_sum <- coup_sum[order(coup_sum$name),]
+
 colnames(coup_sum) <- c("model coupling?", "number")
 coup_sum$proportion <- round(coup_sum$number/n_studies, 2)
 
@@ -191,7 +193,9 @@ loop <- quotes_long[quotes_long$code_group == "modelling - feedback-loop?",]
 loop <- loop[!is.na(loop$code_group),]
 loop_sum <- level1_count(sheet = loop)
 
-loop_sum$name <- factor(loop_sum$name, levels = rev(unique(loop_sum$name)))
+loop_sum$name <- factor(loop_sum$name, levels = c("yes", "no"))
+loop_sum <- loop_sum[order(loop_sum$name),]
+
 colnames(loop_sum) <- c("feedback loops in model?", "number")
 loop_sum$proportion <- round(loop_sum$number/n_studies, 2)
 
@@ -213,7 +217,9 @@ sens <- quotes_long[quotes_long$code_group == "modelling - sensitivity analysis?
 sens <- sens[!is.na(sens$code_group),]
 sens_sum <- level1_count(sheet = sens)
 
-sens_sum$name <- factor(sens_sum$name, levels = rev(unique(sens_sum$name)))
+sens_sum$name <- factor(sens_sum$name, levels = c("yes", "no"))
+sens_sum <- sens_sum[order(sens_sum$name),]
+
 colnames(sens_sum) <- c("sensitivity analysis in model?", "number")
 sens_sum$proportion <- round(sens_sum$number/n_studies, 2)
 
@@ -235,7 +241,9 @@ val <- quotes_long[quotes_long$code_group == "modelling - validation?",]
 val <- val[!is.na(val$code_group),]
 val_sum <- level1_count(sheet = val)
 
-val_sum$name <- factor(val_sum$name, levels = rev(unique(val_sum$name)))
+val_sum$name <- factor(val_sum$name, levels = c("yes", "no"))
+val_sum <- val_sum[order(val_sum$name),]
+
 colnames(val_sum) <- c("model validated?", "number")
 val_sum$proportion <- round(val_sum$number/n_studies, 2)
 
