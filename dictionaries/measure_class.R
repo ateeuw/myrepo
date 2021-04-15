@@ -125,7 +125,8 @@ measure_class[["export policies"]] <- c("export ban on wheat and coarse grains",
 
 measure_class[["direct support for food producers"]] <- c("minimum support price for rice",
                                                           "minimum support price for milk",
-                                                          "abolish production subsidies for X")
+                                                          "abolish production subsidies for X",
+                                                          "create off-farm off-season work opportunities")
 
 measure_class[["nature-centered measures"]] <- c("soil erosion control",
                                                  "afforestation (also agro-forestry)",
