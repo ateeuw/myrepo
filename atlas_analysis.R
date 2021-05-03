@@ -1041,7 +1041,11 @@ rm(list = c("mdat"))
 
 ###################### per effect - place ########################
 mdat <- level2_summ(level1code = "per effect - FS indicator", level2code = "per effect - place", dat_long = quotes_long)
+
 colnames(mdat) <- c("place", "number")
+mdat$place <- as.character(mdat$place)
+mdat$place[which(mdat$place == "local")] <- "within jurisdiction"
+mdat$place[which(mdat$place == "far away")] <- "outside jurisdiction"
 
 mdat$proportion <- round(mdat$number/n_effects, 2)
 mdat$number <- color_bar("yellow")(mdat$number)
