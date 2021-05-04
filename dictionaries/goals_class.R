@@ -2,7 +2,7 @@
 # availability, accessibility, utilisation, stability, environmental/climate, macro-economic, macro-logistics, infrastructure & technology, health & wellbeing, & other
 
 goals_class <- list()
-goals_class[["availability"]] <- c("increase agricultural productivity",
+goals_class[["availability"]] <- c("increase productivity of X",
                                    "supply water for irrigation",
                                    "increase grain production",
                                    "maximize food production",
@@ -18,7 +18,10 @@ goals_class[["availability"]] <- c("increase agricultural productivity",
                                    "increase/secure food supply",
                                    "increase yield of X",
                                    "sustain food production",
-                                   "water sufficiency")
+                                   "water sufficiency",
+                                   "food sufficiency",
+                                   "increase fertiliser production")
+
 goals_class[["accessibility"]] <- c("improve (healthy) food access",
                                     "poverty reduction",
                                     "reduce income inequality",
@@ -40,12 +43,17 @@ goals_class[["accessibility"]] <- c("improve (healthy) food access",
                                     "improve rural livelihoods",
                                     "rural development",
                                     "reduce disparities in food security",
-                                    "increase household expenditure")
+                                    "increase household expenditure",
+                                    "reduce price of fertilisers",
+                                    "reduce trade margins of X",
+                                    "reduce food losses")
+
 goals_class[["utilisation"]] <- c("increase consumption of fruits and vegetables",
                                   "improve diets (more healthy)",
                                   "stimulate consumption",
                                   "increase nutritional status",
-                                  "increase food consumption")
+                                  "increase consumption of X")
+
 goals_class[["stability"]] <- c("maintain food self-sufficiency",
                                 "obtain rice self-sufficiency",
                                 "reduce food shortages",
@@ -56,6 +64,7 @@ goals_class[["stability"]] <- c("maintain food self-sufficiency",
                                 "stabilise domestic food prices",
                                 "increase food consumption during economic shocks",
                                 "obtain/maintain food self-sufficiency of X")
+
 goals_class[["environmental/climate"]] <- c("maximise delivery of ecosystem services",
                                             "digest organic wastes",
                                             "regulate pollution",
@@ -75,6 +84,7 @@ goals_class[["environmental/climate"]] <- c("maximise delivery of ecosystem serv
                                             "reduce land use intensity",
                                             "reduce water footprint from food production",
                                             "reduce agrochemical use")
+
 goals_class[["macro-economic"]] <- c("economic growth",
                                "improve market",
                                "increase profitability of businesses",
@@ -84,12 +94,18 @@ goals_class[["macro-economic"]] <- c("economic growth",
                                "ensure stability of national export revenues",
                                "increase economic efficiency",
                                "increase public revenues")
+
 goals_class[["macro-logistics"]] <- c("increase supply chain efficiency")
+
 goals_class[["infrastructure & technology"]] <- c("speed up technology diffusion",
-                                                  "finance infrastructure")
+                                                  "finance infrastructure",
+                                                  "energy sufficiency")
+
 goals_class[["health & wellbeing"]] <- c("improve public health",
                                          "improve living standards",
                                          "improve welfare of low-income households",
+                                         "improve welfare",
                                          "improve human health")
+
 goals_class[["other"]] <- c("reduce population growth",
                             "stimulate employment of less skilled manpower")

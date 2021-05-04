@@ -4,6 +4,9 @@
 # direct support for food producers, nature-centered measures, other, unclear
 
 measure_class <- list()
+
+measure_class[["penalties"]] <- c("increased penalties for unregistered businesses")
+
 measure_class[["education & training"]] <- c("promotion of improved seed",
                                              "improving female workers' education levels",
                                              "training and scholarship scheme",
@@ -20,7 +23,8 @@ measure_class[["campaigns"]] <- c("awareness campaign on water conservation",
                                   "promotion of agricultural machinery & equipment",
                                   "share seasonal forecasts with farmers",
                                   "dietary guidelines",
-                                  "encourage environmentally friendly farm inputs")
+                                  "encourage environmentally friendly farm inputs",
+                                  "campaign to promote shopping in supermarkets (versus convenience stores)")
 
 measure_class[["incentives for certain production systems/land uses"]] <- c("abolish quantitative and area-based cotton production restrictions",
                                                                             "land protection policy",
@@ -30,19 +34,25 @@ measure_class[["incentives for certain production systems/land uses"]] <- c("abo
 
 measure_class[["store policies"]] <- c("creating new stores",
                                        "subsidies on farm inputs",
-                                       "increase availability of (healthy) foods in stores")
+                                       "increase availability of (healthy) foods in stores",
+                                       "increased shelf life for X")
 
 measure_class[["infrastructure projects"]] <- c("improving public transport",
                                                 "construction of hydro-electric dams",
                                                 "sewage treatment",
                                                 "improve market infrastructure for fertiliser",
                                                 "construction of water storage infrastructure",
-                                                "improve irrigation facilities")
+                                                "improve irrigation facilities",
+                                                "construction of electric grids",
+                                                "construction of irrigation network",
+                                                "construction of water canals")
 
 measure_class[["affordability & pricing policies"]] <- c("cheaper healthy food/relative pricing",
                                                          "food stamps to low-income households with incentives for fruit and vegetable",
                                                          "cheaper food products that will soon expire",
-                                                         "cash transfers to low-income households")
+                                                         "cash transfers to low-income households",
+                                                         "food stamps to low-income households",
+                                                         "compensation for resource dispossession due to infrastructure construction")
 
 measure_class[["credit policies"]] <- c("credit provision for agricultural production-related expenses",
                                         "reduced interest rates",
@@ -82,7 +92,8 @@ measure_class[["domestic subsidies"]] <- c("subsidies on fertilizer",
                                            "reduce subsidies on agrochemicals",
                                            "short-term subsidies on (hybrid/improved) seeds",
                                            "short-term subsidies on fertiliser",
-                                           "abolish subsidies on fertiliser")
+                                           "abolish subsidies on fertiliser",
+                                           "reduce subsidies on fertilisers")
 
 measure_class[["international trade agreements"]] <- c("trade liberalisation",
                                             "trade deliberalisation",
@@ -100,7 +111,9 @@ measure_class[["activity- or sector-based investments"]] <- c("(increased) inves
                                             "investment in agricultural machinery & equipment",
                                             "(increased) investment in farm inputs",
                                             "(increased) investment in irrigation",
-                                            "(increased) investment in infrastructure")
+                                            "(increased) investment in infrastructure",
+                                            "investment in fertiliser industry",
+                                            "investment in road infrastructure")
 
 measure_class[["unclear"]] <- "unclear"
 
