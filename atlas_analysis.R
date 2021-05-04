@@ -260,7 +260,38 @@ ft_val %>% as_image(file = paste0(figdir, "/modelling_validation_table.png"))
 rm(list = c("val", "val_sum"))
 ###################### prepare modelling - validation? ########################
 
-#to do: combine sensitivity analysis & validation in one table
+###################### prepare modelling - sensitivity analysis and/or validation? ########################
+sens <- quotes_long[quotes_long$code_group %in% c("modelling - sensitivity analysis?", "modelling - validation?"),]
+sens <- sens[!is.na(sens$code_group),]
+
+data_sum <- sens %>% 
+  group_by(code_group, name, Document) %>%
+  count(code_group, name)
+
+data_sum$n <- 1
+
+data_wide <- spread(data_sum, code_group, name)
+colnames(data_wide)[3:4] <- c("sensitivity", "validation")
+
+
+data_sum <- data_wide %>% 
+  group_by(sensitivity, validation) %>%
+  count(sensitivity, validation)
+
+data_sum$proportion <- round(data_sum$n/n_studies, 2)
+
+data_sum$n <- color_bar("lightblue")(data_sum$n)
+
+ft_seval <- data_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(n) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_seval %>% as_image(file = paste0(figdir, "/modelling_sensitivity-&-validation_table.png"))
+
+rm(list = c("sens", "data_wide", "data_sum"))
+###################### prepare modelling - sensitivity analysis and/or validation? ########################
 
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
