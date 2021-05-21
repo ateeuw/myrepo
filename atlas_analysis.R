@@ -37,6 +37,7 @@ source("./functions/level2_count.R")
 source("./functions/level2_summ.R")
 source("./functions/level2_class_summ.R")
 source("./functions/check_dictionary.R")
+source("./functions/make_cooc_doc.R")
 ###################### source functions ######################
 
 ###################### source dictionaries ######################
@@ -947,7 +948,25 @@ rm(list = c("com", "com_sum", "code_vec"))
 
 ###################### prepare food system - commodity ########################
 
-# to do: make table of nonfood system commodities
+###################### prepare nonfood system - commodity ########################
+com <- quotes_long[quotes_long$code_group == "nonfood system - commodity",]
+com <- com[!is.na(com$code_group),]
+com_sum <- level1_count(sheet = com)
+com_sum$name <- factor(com_sum$name, levels = rev(unique(com_sum$name)))
+colnames(com_sum) <- c("food commodity", "number")
+com_sum$proportion <- round(com_sum$number/n_studies, 2)
+
+com_sum$number <- color_bar("orange")(com_sum$number)
+
+ft_noncom <- com_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Top 20 non-food commodities, gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_noncom %>% as_image(file = paste0(figdir, "/nonfood-system_commodity-top20_table.png")) 
+
+###################### prepare nonfood system - commodity ########################
 
 ###################### governance - combined measures? ########################
 gov <- quotes_long[quotes_long$code_group == "governance - combined measures?",]
