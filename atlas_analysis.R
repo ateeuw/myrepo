@@ -133,7 +133,7 @@ ft_year <- year_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
 
 ft_year %>% as_image(file = paste0(figdir, "/papers_year_table.png"))
 
-rm(list = c("year", "year_sum"))
+rm(list = c("year", "year_sum", "y_range"))
 ###################### prepare papers - year ########################
 
 ###################### prepare papers - journal ########################
@@ -276,8 +276,8 @@ ft_val %>% as_image(file = paste0(figdir, "/modelling_validation_table.png"))
 rm(list = c("val", "val_sum"))
 ###################### prepare modelling - validation? ########################
 
-###################### prepare modelling - feedback-loops, sensitivity analysis and/or validation? ########################
-sens <- quotes_long[quotes_long$code_group %in% c("modelling - sensitivity analysis?", "modelling - validation?", "modelling - feedback-loop?"),]
+###################### prepare modelling - sensitivity analysis and/or validation? ########################
+sens <- quotes_long[quotes_long$code_group %in% c("modelling - sensitivity analysis?", "modelling - validation?"),]
 sens <- sens[!is.na(sens$code_group),]
 
 data_sum <- sens %>% 
@@ -287,27 +287,27 @@ data_sum <- sens %>%
 data_sum$n <- 1
 
 data_wide <- spread(data_sum, code_group, name)
-colnames(data_wide)[3:5] <- c("feedback", "sensitivity", "validation")
+colnames(data_wide)[3:4] <- c( "sensitivity", "validation")
 
 
 data_sum <- data_wide %>% 
-  group_by(feedback, sensitivity, validation) %>%
-  count(feedback, sensitivity, validation)
+  group_by(sensitivity, validation) %>%
+  count(sensitivity, validation)
 
 data_sum$proportion <- round(data_sum$n/n_studies, 2)
 
 data_sum$n <- color_bar("lightblue")(data_sum$n)
 
-ft_feseval <- data_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_seval <- data_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(n) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_feseval %>% as_image(file = paste0(figdir, "/modelling_feedback-sensitivity-&-validation_table.png"))
+ft_seval %>% as_image(file = paste0(figdir, "/modelling_feedback-sensitivity-&-validation_table.png"))
 
 rm(list = c("sens", "data_wide", "data_sum"))
-###################### prepare modelling - feedback-loops, sensitivity analysis and/or validation? ########################
+###################### prepare modelling - sensitivity analysis and/or validation? ########################
 
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
@@ -432,7 +432,72 @@ venn.diagram(
 
 ###################### per model - domain co-occurence ########################
 
-# to do: model type x domain co-occurence
+###################### per model - domain x type co-occurence ########################
+dat <- quotes_long[quotes_long$code_group %in% c("per model - domain", "per model - type"),]
+dat <- dat[!is.na(dat$code_group),]
+dat <- dat[!is.na(dat$name),]
+dat_sum <- dat %>% 
+  group_by(Document, ID, code_group, name) %>%
+  count(Document, ID, code_group, name)
+
+dat_sum <- dat_sum[,-which(colnames(dat_sum)=="n")]
+str(dat_sum)
+dat_sum <- pivot_wider(data = dat_sum, id_cols = c(Document, ID), names_from = code_group, values_from = name, values_fn = list)
+
+dat_cooc <- dat_sum[1,]
+dat_cooc[,3:4] <- ""
+str(dat_cooc[,3:4])
+
+for(i in 1:nrow(dat_sum)){
+  doms <- unlist(dat_sum$`per model - domain`[i])
+  if(is.null(doms)){next
+  }else{
+      typs <- unlist(dat_sum$`per model - type`[i])
+      if(is.null(typs)){next
+      }else{
+          for(j in 1:length(doms)){
+            for(k in 1:length(typs)){
+              newrow <- dat_cooc[i,]
+              newrow$`per model - domain` <- doms[j]
+              newrow$`per model - type` <- typs[k]
+              newrow[,1:2] <- dat_sum[i,1:2]
+              dat_cooc <- rbind(dat_cooc, newrow)
+            }
+          }
+        } 
+  }
+}
+
+dat_cooc <- dat_cooc[-1,] 
+
+dat_cooc <- dat_cooc %>% 
+  group_by(`per model - domain`, `per model - type`) %>%
+  count(`per model - domain`, `per model - type`)
+
+x <- 2
+
+png(filename = paste0(figdir, "/per-model_type_domain_co-occurence.png"), width = 1300, height = 1300)
+ggplot(dat_cooc, aes(y = `per model - domain`, x = `per model - type`, col = `per model - type`, label = n)) +
+  geom_point(aes(size = n)) +
+  geom_text(col = "black", fontface = "bold", size = 10) +
+  #ggtitle(paste("Total number of studies =", n_studies, ". Studies with combined governances measures =", n_combined)) +
+  ylab("Model type") +
+  xlab("Model domain") +
+  theme_classic() +
+  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.4*x), angle = 90), 
+        axis.text.y = element_text(size = rel(1.4*x)), 
+        axis.title = element_text(size=rel(1.2*x), face="bold"),
+        legend.title = element_text(size = rel(1.3*x), face = "bold"), 
+        legend.position = "none",
+        legend.text = element_text(size = rel(1.4*x)),
+        title = element_text(size = rel(1.4*x))) + 
+  scale_size(range = c(10,50), breaks = c(0:max(dat_cooc$n))) +
+  #scale_color_gradient(low = "white", high = "red") +
+  coord_flip()
+dev.off()
+
+rm(list = c("dat", "dat_sum", "dat_cooc", "x"))
+###################### per model - domain x type co-occurence ########################
 
 ###################### prepare per model - subdomain ########################
 mdom <- quotes_long[quotes_long$code_group == "per model - subdomain",]
