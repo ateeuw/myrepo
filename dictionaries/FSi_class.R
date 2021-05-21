@@ -16,16 +16,19 @@ FSi_class[["access - economic"]] <- c("profitability of land", "profitability of
                              "poverty severity", "poverty depth/gap", "capital assets", "demand for X", "demand for farm land", "production costs",
                              "dietary income differential", "economic benefit/increase in output value of additional production of X", "inflation", "poverty rate/incidence/headcount ratio", 
                              "sales of X", "selling time of X", "unemployed", "demand for agrochemicals", "demand for capital", "demand for farm labour", "demand for agricultural water", 
-                             "price of agrochemicals", "price of labour", "price of land", "price of fertilisers", "profitability of livestock", "return to investments (in agriculture)")
+                             "price of agrochemicals", "price of labour", "price of land", "price of fertilisers", "profitability of livestock", "return to investments (in agriculture)", 
+                             "equivalent variation", "agricultural production value of X", "max price of X", "minimum equivalent variation")
 
 FSi_class[["access - physical"]] <- c("import of X", "export of X", "people walking to store as a last resort")
 
-FSi_class[["utilisation"]] <- c("consumption of X", "Healthy Eating Index", "share of X in diet", "quality adjusted life years", "dietary income inequality", "food losses of X", "purchase of X")
+FSi_class[["utilisation"]] <- c("consumption of X", "Healthy Eating Index", "share of X in diet", "quality adjusted life years", "dietary income inequality", "food losses of X", "purchase of X",
+                                "quality of life")
 
-FSi_class[["stability"]] <- c("resilience to water scarcity", "water security", "food shortage/deficit", "stocks/surplus of X", "incidence of higher average income with higher variance (%)",
-                                "incidence of higher average income with lower variance (%)", "incidence of identical average income and variance (%)", 
-                                "incidence of ïdentical average income with lower variance (%)", "incidence of lower average income with higher variance", 
-                                "incidence of lower average income with lower variance [%]", "variance in income", "self-sufficiency of X", "food security risk", 
-                                "incidence of identical average income with lower variance (%)", "incidence of lower income with higher variance")
+FSi_class[["stability"]] <- c("resilience to water scarcity", "water security", "shortage of X", "stocks/surplus of X", "incidence of higher average income with higher variance (%)",
+                                "incidence of higher average income with lower variance (%)", "incidence of identical average income and variance (%)", "variability in price of X",
+                                "incidence of ïdentical average income with lower variance (%)", "incidence of lower average income with higher variance", "variability in equivalent variation",
+                                "incidence of lower average income with lower variance [%]", "variance in income", "self-sufficiency of X", "food security risk", "variability in income",
+                                "incidence of identical average income with lower variance (%)", "incidence of lower income with higher variance", "trade balance of X", "volatility of X prices",
+                              "volatility of equivalent variation", "probability of food shortages/deficits/stockout falls", "volatility of X consumption")
 
 FSi_class[["unclear"]] <- "unclear"
