@@ -965,7 +965,7 @@ ft_noncom <- com_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awes
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
 ft_noncom %>% as_image(file = paste0(figdir, "/nonfood-system_commodity-top20_table.png")) 
-
+rm(list = c("com", "com_sum"))
 ###################### prepare nonfood system - commodity ########################
 
 ###################### governance - combined measures? ########################
@@ -995,12 +995,24 @@ n_combined <- length(unique(gov$Document))
 gov <- gov[gov$code_group == "per measure - measure",]
 gov <- gov[!is.na(gov$code_group),]
 gov <- gov[!is.na(gov$name),]
-gov_sum <- gov %>% 
-  group_by(ID, name) %>%
-  count(ID, name)
 
-V <- crossprod(table(gov_sum[1:2]))
-diag(V) <- 0
+gov$class <- ""
+gov <- dict_classification(sheet = gov, dct = measure_class, clm = 16, class_clm = 17)
+
+gov_sum <- gov %>% 
+  group_by(ID, name, class) %>%
+  count(ID, name, class)
+
+selfcooc <- gov %>% 
+  group_by(ID, class) %>%
+  count(ID, class)
+
+selfcooc <- selfcooc[selfcooc$n > 1,]
+
+selfcooc <- selfcooc %>% group_by(class) %>% count(class)
+
+V <- crossprod(table(gov_sum[c(1,3)]))
+diag(V) <- 0 #figure out how to do it properly with selfcooc$n
 V
 
 Vdat <- as.data.frame(V)
@@ -1043,29 +1055,28 @@ visNetwork(nodes, edges) %>%
   visPhysics( maxVelocity = 35)
 # to do: create grouped visNetwork
 
-
+x = 2
 png(filename = paste0(figdir, "/governance_combined-measures_co-occurence.png"), width = 1300, height = 1300)
-ggplot(Vedges, aes(x = from, y = to, col = width)) +
+ggplot(Vedges, aes(x = from, y = to, col = width, label = width)) +
   geom_point(aes(size = width)) +
+  geom_text(col = "black", fontface = "bold", size = 10) +
   ggtitle(paste("Total number of studies =", n_studies, ". Studies with combined governances measures =", n_combined)) +
   ylab("Governance measure") +
-  xlab("Governance measure") +
+  xlab("Co-occuring governance measure") +
   theme_classic() +
-  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.6), angle = 90), 
-        axis.text.y = element_text(size = rel(1.6)), 
-        axis.title = element_text(size=rel(1.4), face="bold"),
-        legend.title = element_text(size = rel(1.3), face = "bold"), 
-        #legend.position = "none",
-        legend.text = element_text(size = rel(1.4)),
-        title = element_text(size = rel(1.4))) + 
-  scale_size(breaks = c(0:max(Vedges$width))) +
-  scale_color_gradient(low = "white", high = "red") +
-  coord_flip()
+  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.4*x), angle = 90), 
+        axis.text.y = element_text(size = rel(1.4*x)), 
+        axis.title = element_text(size=rel(0.6*x), face="bold"),
+        legend.title = element_text(size = rel(1.3*x), face = "bold"), 
+        legend.position = "none",
+        legend.text = element_text(size = rel(1.4*x)),
+        title = element_text(size = rel(1.4*x))) + 
+  scale_size(range = c(10,30), breaks = c(0:max(Vedges$width))) +
+  scale_color_gradient(low = "lightblue", high = "blue") #+
+  # coord_flip()
 dev.off()
 
-# to do: make grouped co-occurence plot
-
-rm(list = c("gov", "gov_sum", "Vedges", "edges", "nodes", "Vnodes", "cluster_df", "graph", "cluster", "V", "Vdat", "Vlong"))
+rm(list = c("x", "gov", "gov_sum", "Vedges", "edges", "nodes", "Vnodes", "cluster_df", "graph", "cluster", "V", "Vdat", "Vlong"))
 ###################### governance - combined measures? ########################
 
 ###################### per measure - measure ########################
@@ -1109,6 +1120,7 @@ ft_measgr %>% as_image(file = paste0(figdir, "/per-measure_measure-grouped_table
 
 rm(list = c("meas", "meas_sum"))
 
+# to do: make a list with all measures grouped per type
 ###################### per measure - measure ########################
 
 ###################### per measure - type ########################
@@ -1150,6 +1162,8 @@ ft_mstyp <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_ta
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
 ft_mstyp %>% as_image(file = paste0(figdir, "/per-measure_measure-type_table.png")) 
+
+# to do: tool venn cooc diagram
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per measure - type ########################
@@ -1217,6 +1231,22 @@ objclss <- level2_class_summ(level1code = "per measure - measure", level2code = 
 colnames(objclss) <- c("governance objective groups", "number")
 objclss$number <- color_bar("red")(objclss$number)
 
+objclss$`governance objective groups`
+objclss$`governance objective groups` <- factor(objclss$`governance objective groups`, 
+                                                levels = c("availability",
+                                                           "access  - general",
+                                                           "access - economic",
+                                                           "access  - physical",
+                                                           "utilisation",
+                                                           "stability",
+                                                           "macro-economic",
+                                                           "environmental/climate",
+                                                           "infrastructure & technology",
+                                                           "health & wellbeing",
+                                                           "macro-logistics",
+                                                           "other"))
+
+objclss <- objclss[order(objclss$`governance objective groups`),]
 ft_objgr <- objclss %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures.")) %>%
@@ -1279,7 +1309,7 @@ ft_impl <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in
 ft_impl %>% as_image(file = paste0(figdir, "/per-measure_target-implementer_table.png")) 
 
 # target implementer grouped
-mdatclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - target implementer", dat_long = quotes_long, classdct = timpl_classes)
+mdatclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - target implementer", dat_long = quotes_long, classdct = timpl_class)
 colnames(mdatclss) <- c("target implementing entities", "number")
 mdatclss$number <- color_bar("red")(mdatclss$number)
 
@@ -1292,7 +1322,7 @@ ft_objgr <- mdatclss %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
 ft_objgr %>% as_image(file = paste0(figdir, "/per-measure_target-implementer-grouped_table.png")) 
 
 
-rm(list = c("mstyp", "mstyp_sum"))
+rm(list = c("mstyp", "mstyp_sum", "mdatclss"))
 ###################### per measure - target implementer ########################
 
 ###################### per measure - spatially targeted? ########################
@@ -1421,7 +1451,7 @@ rm(list = c("mdat"))
 mstyp <- quotes_long[quotes_long$code_group == "per effect - on FS?",]
 mstyp <- mstyp[!is.na(mstyp$code_group),]
 mstyp$class <- ""
-mstyp_sum <- level2_count(sheet = mstyp)
+mstyp_sum <- level2_count(sheet = mstyp) #something goes wrong here
 
 n_effects <- length(unique(mstyp$ID))
 
@@ -1949,7 +1979,7 @@ agent_class$class <- factor(as.character(agent_class$class), levels = c("not app
 
 agent_class <- agent_class[order(agent_class$code, agent_class$class),]
 
-
+x = 2
 
 png(paste0(figdir, "/agent_types.png"), width = 900, height = 700)
 ggplot(agent_class, aes(fill=code, y=n, x = class)) +
@@ -1962,13 +1992,13 @@ ggplot(agent_class, aes(fill=code, y=n, x = class)) +
   expand_limits(y = 7) +
   xlab("Agent type") +
   theme_classic() +
-  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.6)), 
-        axis.text.y = element_text(size = rel(1.6)), 
-        axis.title = element_text(size=rel(1.4), face="bold"),
-        legend.title = element_text(size = rel(1.3), face = "bold"), 
+  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.4*x), angle = 90), 
+        axis.text.y = element_text(size = rel(1.4*x)), 
+        axis.title = element_text(size=rel(1.2*x), face="bold"),
+        legend.title = element_text(size = rel(1.3*x), face = "bold"), 
         legend.position = "none",
-        legend.text = element_text(size = rel(1.4)),
-        title = element_text(size = rel(1.4))) + 
+        legend.text = element_text(size = rel(1.4*x)),
+        title = element_text(size = rel(1.4*x))) + 
   scale_y_continuous(breaks = seq(0,10,2)) +
   coord_flip()
 dev.off()
