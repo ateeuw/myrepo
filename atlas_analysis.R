@@ -526,8 +526,8 @@ rm(list = c("mdom", "mdom_sum"))
 mdom <- quotes_long[quotes_long$code_group == "per model - subtype",]
 mdom <- mdom[!is.na(mdom$code_group),]
 mdom_sum <- level1_count(sheet = mdom)
-nota <- which(unique(mdom_sum$name) == "not applicable")
-mdom_sum$name <- factor(mdom_sum$name, levels = c(unique(mdom_sum$name)[-nota], "not applicable"))
+nota <- which(unique(mdom_sum$name) == "not specified")
+mdom_sum$name <- factor(mdom_sum$name, levels = c(unique(mdom_sum$name)[-nota], "not specified"))
 mdom_sum <- mdom_sum[order(mdom_sum$name),]
 colnames(mdom_sum) <- c("model subtype", "number")
 mdom_sum$proportion <- round(mdom_sum$number/n_studies, 2)
@@ -542,7 +542,7 @@ ft_msdom <- mdom_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
 
 ft_msdom %>% as_image(file = paste0(figdir, "/per-model_subtype_table.png"))
 
-rm(list = c("mdom", "mdom_sum"))
+rm(list = c("mdom", "mdom_sum", "nota"))
 ###################### prepare per model - subtype ########################
 
 ###################### prepare spatial & temporal - country ########################
@@ -553,6 +553,7 @@ cntr_sum$name <- factor(cntr_sum$name, levels = rev(unique(cntr_sum$name)))
 colnames(cntr_sum) <- c("country", "number")
 cntr_sum$proportion <- round(cntr_sum$number/n_studies, 2)
 
+cntr_summ <- cntr_sum
 cntr_sum$number <- color_bar("lightpink")(cntr_sum$number)
 
 ft_cntr <- cntr_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
@@ -564,6 +565,32 @@ ft_cntr <- cntr_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/aweso
 ft_cntr %>% as_image(file = paste0(figdir, "/spatial&temporal_country-top20_table.png"))
 
 rm(list = c("cntr", "cntr_sum"))
+
+library("rworldmap")
+cntr_summ <- as.data.frame(cntr_summ)
+nmap <- joinCountryData2Map(cntr_summ, joinCode = "NAME", suggestForFailedCodes = TRUE, nameJoinColumn = "country")
+
+mycol <- scale_colour_gradientn(colours=c("brown", "purple"))
+
+png(filename = paste0(figdir, "/spatial&temporal_country_map.png"), width = 1300, height = 800)
+mapParams <- mapCountryData(nmap, 
+                            nameColumnToPlot="number",
+                            oceanCol = "azure",
+                            catMethod = "fixedWidth",
+                            missingCountryCol = gray(.8),
+                            colourPalette = "terrain",
+                            addLegend = F,
+                            mapTitle = "",
+                            border = NA)
+# add legend and display map
+do.call(addMapLegendBoxes, c(mapParams,
+                             x = 'bottom',
+                             title = "Number of studies",
+                             horiz = TRUE,
+                             bg = "transparent",
+                             bty = "n"))
+dev.off()
+
 ###################### prepare spatial & temporal - country ########################
 
 ###################### prepare spatial & temporal - ref scale ########################
@@ -581,7 +608,7 @@ rsc_sum$name <- factor(rsc_sum$name, levels = rev(c("earth",
                                                     "municipality",
                                                     "municipality > x > city",
                                                     "city",
-                                                    "city > x > village/city_district",
+                                                    "city > x > village/city district",
                                                     "village/city district",
                                                     "village/city district > x")))
 rsc_sum <- rsc_sum[order(rsc_sum$name),]
@@ -602,7 +629,6 @@ rm(list = c("rsc", "rsc_sum"))
 ###################### prepare spatial & temporal - ref scale ########################
 
 ###################### prepare spatial & temporal - representation ########################
-# to do: standardize representation types (spatial -> geographic)
 repr <- quotes_long[quotes_long$code_group == "spatial & temporal - representation",]
 repr <- repr[!is.na(repr$code_group),]
 repr_sum <- level1_count(sheet = repr)
@@ -730,7 +756,7 @@ png(filename = paste0(figdir, "/spatial&temporal_temporal-extent_dotchart.png"),
 dc_tmext
 dev.off()
 
-rm(list = c("tmext", "tmext_sum", "quant_n"))
+rm(list = c("tmext", "tmext_sum", "quant_n", "tm_range"))
 ###################### prepare spatial & temporal - temporal extent ########################
 
 ###################### prepare spatial & temporal - temporal resolution ########################
@@ -769,10 +795,11 @@ rm(list = c("tmres", "tmres_sum", "quant_n"))
 ###################### prepare spatial & temporal - temporal resolution ########################
 
 ###################### prepare food system - echelon ########################
-ech <- quotes_long[quotes_long$code_group == "food system - echelon",]
+ech_long <- quotes_long
+ech_long$name[ech_long$name %in% c("distribution", "transport", "trade")] <- "distribution/transport/trade"
+ech_long$name[ech_long$name %in% c("processing", "manufacturing", "storage")] <- "processing/manufacturing/storage"
+ech <- ech_long[ech_long$code_group == "food system - echelon",]
 ech <- ech[!is.na(ech$code_group),]
-ech$name[ech$name %in% c("distribution", "transport", "trade")] <- "distribution/transport/trade"
-ech$name[ech$name %in% c("processing", "manufacturing", "storage")] <- "processing/manufacturing/storage"
 ech_sum <- level1_count(sheet = ech)
 ech_sum$name <- factor(ech_sum$name, levels = rev(unique(ech_sum$name)))
 colnames(ech_sum) <- c("value chain echelon", "number")
@@ -840,7 +867,45 @@ venn.diagram(
   # rotation = 1
 )
 
-rm(list = c("ech", "ech_sum"))
+# model type x echelon cooc
+dat_cooc <- make_cooc_doc(sheet = ech_long, codegr1 = "per model - type", codegr2 = "food system - echelon")
+
+dat_cooc <- dat_cooc %>% 
+  group_by(`food system - echelon`, `per model - type`) %>%
+  count(`food system - echelon`, `per model - type`)
+
+x <- 2
+
+dat_cooc$`food system - echelon` <- factor(dat_cooc$`food system - echelon`, levels = c("hunting/fishing/gathering",
+                                                                                        "production",
+                                                                                        "distribution/transport/trade",
+                                                                                        "processing/manufacturing/storage",
+                                                                                        "retail",
+                                                                                        "comsumption"))
+
+dat_cooc <- dat_cooc[order(dat_cooc$`food system - echelon`),] 
+png(filename = paste0(figdir, "/per-model_type_food-system_echelon_co-occurence.png"), width = 1300, height = 1300)
+ggplot(dat_cooc, aes(y = `food system - echelon`, x = `per model - type`, col = `per model - type`, label = n)) +
+  geom_point(aes(size = n)) +
+  geom_text(col = "black", fontface = "bold", size = 10) +
+  #ggtitle(paste("Total number of studies =", n_studies, ". Studies with combined governances measures =", n_combined)) +
+  ylab("Value chain echelon") +
+  xlab("Model type") +
+  theme_classic() +
+  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.4*x), angle = 90), 
+        axis.text.y = element_text(size = rel(1.4*x)), 
+        axis.title = element_text(size=rel(1.2*x), face="bold"),
+        legend.title = element_text(size = rel(1.3*x), face = "bold"), 
+        legend.position = "none",
+        legend.text = element_text(size = rel(1.4*x)),
+        title = element_text(size = rel(1.4*x))) + 
+  scale_size(range = c(10,50), breaks = c(0:max(dat_cooc$n))) +
+  #scale_color_gradient(low = "white", high = "red") +
+  coord_flip()
+dev.off()
+
+rm(list = c("dat", "dat_sum", "dat_cooc", "x"))
+rm(list = c("ech", "ech_sum", "ech_long"))
 ###################### prepare food system - echelon ########################
 
 ###################### prepare food system - commodity ########################
