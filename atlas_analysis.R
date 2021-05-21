@@ -54,11 +54,17 @@ quotes <- read_excel(paste0(datadir, "/", "all_quotes.xlsx"))
 
 ###################### show progress ###################### 
 eligible <- length(unique(quotes[quotes$`Document Groups`=="!Read for Lit review - eligible",]$Document))
+eligible
 ineligible <- length(unique(quotes[quotes$`Document Groups`=="!Read for Lit review - ineligible",]$Document))
+ineligible
 read <- eligible + ineligible
+read
 to_read <- length(unique(quotes[quotes$`Document Groups`=="!To read for Lit review",]$Document))
+to_read
 progress <- round(100*read/(read+to_read), 1)
-print(paste("progress:", progress))
+print(paste("progress:", progress, "%"))
+
+rm(list = c("eligible", "ineligible", "read", "to_read", "progress"))
 ###################### show progress ###################### 
 
 ###################### pre-process quotes ########################
