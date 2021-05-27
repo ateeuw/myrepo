@@ -132,7 +132,7 @@ ft_year <- year_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
 
-ft_year %>% as_image(file = paste0(figdir, "/papers_year_table.png"))
+ft_year %>% as_image(width = 22, file = paste0(figdir, "/papers_year_table.png"))
 
 rm(list = c("year", "year_sum", "y_range"))
 ###################### prepare papers - year ########################
@@ -154,7 +154,7 @@ ft_jrnl <- jrnl_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/aweso
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_jrnl %>% as_image(file = paste0(figdir, "/papers_journal_top20_table.png"))
+ft_jrnl %>% as_image(width = 22, file = paste0(figdir, "/papers_journal_top20_table.png"))
 
 rm(list = c("jrnl", "jrnl_sum"))
 ###################### prepare papers - journal ########################
@@ -178,7 +178,7 @@ ft_coup <- coup_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_coup %>% as_image(file = paste0(figdir, "/modelling_coupling_table.png"))
+ft_coup %>% as_image(width = 22, file = paste0(figdir, "/modelling_coupling_table.png"))
 
 rm(list = c("coup", "coup_sum"))
 ###################### prepare modelling - coupling? ########################
@@ -224,7 +224,7 @@ ft_loop <- loop_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_loop %>% as_image(file = paste0(figdir, "/modelling_feedback-loop_table.png"))
+ft_loop %>% as_image(width = 22, file = paste0(figdir, "/modelling_feedback-loop_table.png"))
 
 rm(list = c("loop", "loop_sum"))
 ###################### prepare modelling - feedback-loops? ########################
@@ -248,7 +248,7 @@ ft_sens <- sens_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_sens %>% as_image(file = paste0(figdir, "/modelling_sensitivity-analysis_table.png"))
+ft_sens %>% as_image(width = 22, file = paste0(figdir, "/modelling_sensitivity-analysis_table.png"))
 
 rm(list = c("sens", "sens_sum"))
 ###################### prepare modelling - sensitivity analysis? ########################
@@ -272,7 +272,7 @@ ft_val <- val_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_val %>% as_image(file = paste0(figdir, "/modelling_validation_table.png"))
+ft_val %>% as_image(width = 22, file = paste0(figdir, "/modelling_validation_table.png"))
 
 rm(list = c("val", "val_sum"))
 ###################### prepare modelling - validation? ########################
@@ -305,7 +305,7 @@ ft_seval <- data_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_seval %>% as_image(file = paste0(figdir, "/modelling_feedback-sensitivity-&-validation_table.png"))
+ft_seval %>% as_image(width = 22, file = paste0(figdir, "/modelling_feedback-sensitivity-&-validation_table.png"))
 
 rm(list = c("sens", "data_wide", "data_sum"))
 ###################### prepare modelling - sensitivity analysis and/or validation? ########################
@@ -327,7 +327,7 @@ ft_data <- modelling_data_sum %>% #see https://haozhu233.github.io/kableExtra/aw
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_data %>% as_image(file = paste0(figdir, "/modelling_data_table.png"))
+ft_data %>% as_image(width = 22, file = paste0(figdir, "/modelling_data_table.png"))
 
 rm(list = c("modelling_data", "modelling_data_sum"))
 
@@ -349,7 +349,7 @@ ft_mtyp <- mtype_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_mtyp %>% as_image(file = paste0(figdir, "/per-model_type_table.png"))
+ft_mtyp %>% as_image(width = 22, file = paste0(figdir, "/per-model_type_table.png"))
 
 rm(list = c("mtype", "mtype_sum"))
 ###################### prepare per model - type ########################
@@ -370,7 +370,7 @@ ft_mdom <- mdom_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_mdom %>% as_image(file = paste0(figdir, "/per-model_domain_table.png"))
+ft_mdom %>% as_image(width = 22, file = paste0(figdir, "/per-model_domain_table.png"))
 
 rm(list = c("mdom", "mdom_sum"))
 ###################### prepare per model - domain ########################
@@ -518,7 +518,7 @@ ft_msdom <- mdom_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_msdom %>% as_image(file = paste0(figdir, "/per-model_subdomain_table.png"))
+ft_msdom %>% as_image(width = 22, file = paste0(figdir, "/per-model_subdomain_table.png"))
 
 rm(list = c("mdom", "mdom_sum"))
 ###################### prepare per model - subdomain ########################
@@ -541,7 +541,7 @@ ft_msdom <- mdom_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_msdom %>% as_image(file = paste0(figdir, "/per-model_subtype_table.png"))
+ft_msdom %>% as_image(width = 22, file = paste0(figdir, "/per-model_subtype_table.png"))
 
 rm(list = c("mdom", "mdom_sum", "nota"))
 ###################### prepare per model - subtype ########################
@@ -563,7 +563,7 @@ ft_cntr <- cntr_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/aweso
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_cntr %>% as_image(file = paste0(figdir, "/spatial&temporal_country-top20_table.png"))
+ft_cntr %>% as_image(width = 22, file = paste0(figdir, "/spatial&temporal_country-top20_table.png"))
 
 rm(list = c("cntr", "cntr_sum"))
 
@@ -624,7 +624,7 @@ ft_rsc <- rsc_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_rsc %>% as_image(file = paste0(figdir, "/spatial&temporal_ref-scale_table.png"))
+ft_rsc %>% as_image(width = 22, file = paste0(figdir, "/spatial&temporal_ref-scale_table.png"))
 
 rm(list = c("rsc", "rsc_sum"))
 ###################### prepare spatial & temporal - ref scale ########################
@@ -645,7 +645,7 @@ ft_repr <- repr_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_repr %>% as_image(file = paste0(figdir, "/spatial&temporal_representation_table.png"))
+ft_repr %>% as_image(width = 22, file = paste0(figdir, "/spatial&temporal_representation_table.png"))
 
 rm(list = c("repr", "repr_sum"))
 ###################### prepare spatial & temporal - representation ########################
@@ -814,7 +814,7 @@ ft_ech <- ech_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_ech %>% as_image(file = paste0(figdir, "/food-system_echelon_table.png"))
+ft_ech %>% as_image(width = 22, file = paste0(figdir, "/food-system_echelon_table.png"))
 
 ech_sum <- ech %>% group_by(Document, name) %>% count(Document, name)
 ech_sum$n <- 1
@@ -925,7 +925,7 @@ ft_com <- com_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_com %>% as_image(file = paste0(figdir, "/food-system_commodity-top20_table.png")) 
+ft_com %>% as_image(width = 22, file = paste0(figdir, "/food-system_commodity-top20_table.png")) 
 # commodity classes
 com$class <- ""
 com <- dict_classification(sheet = com, dct = comm_class, clm = 16, class_clm = 17)
@@ -943,7 +943,7 @@ ft_comgr <- com_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_comgr %>% as_image(file = paste0(figdir, "/food-system_commodity-grouped_table.png")) 
+ft_comgr %>% as_image(width = 22, file = paste0(figdir, "/food-system_commodity-grouped_table.png")) 
 rm(list = c("com", "com_sum", "code_vec"))
 
 ###################### prepare food system - commodity ########################
@@ -964,7 +964,7 @@ ft_noncom <- com_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awes
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_noncom %>% as_image(file = paste0(figdir, "/nonfood-system_commodity-top20_table.png")) 
+ft_noncom %>% as_image(width = 22, file = paste0(figdir, "/nonfood-system_commodity-top20_table.png")) 
 rm(list = c("com", "com_sum"))
 ###################### prepare nonfood system - commodity ########################
 
@@ -984,7 +984,7 @@ ft_gov <- gov_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_gov %>% as_image(file = paste0(figdir, "/governance_combined-measures_table.png")) 
+ft_gov %>% as_image(width = 22, file = paste0(figdir, "/governance_combined-measures_table.png")) 
 
 # which governance measures are combined?
 
@@ -1096,7 +1096,7 @@ ft_meas <- meas_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/aweso
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_meas %>% as_image(file = paste0(figdir, "/per-measure_measure-top20_table.png")) 
+ft_meas %>% as_image(width = 22, file = paste0(figdir, "/per-measure_measure-top20_table.png")) 
 
 # measure classes
 # to do: add total number of governance measures to caption
@@ -1116,7 +1116,7 @@ ft_measgr <- meas_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_ta
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_measgr %>% as_image(file = paste0(figdir, "/per-measure_measure-grouped_table.png")) 
+ft_measgr %>% as_image(width = 22, file = paste0(figdir, "/per-measure_measure-grouped_table.png")) 
 
 rm(list = c("meas", "meas_sum"))
 
@@ -1161,7 +1161,7 @@ ft_mstyp <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_ta
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_mstyp %>% as_image(file = paste0(figdir, "/per-measure_measure-type_table.png")) 
+ft_mstyp %>% as_image(width = 22, file = paste0(figdir, "/per-measure_measure-type_table.png")) 
 
 # to do: tool venn cooc diagram
 
@@ -1205,7 +1205,7 @@ ft_mstyp2 <- mstyp2_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_mstyp2 %>% as_image(file = paste0(figdir, "/per-measure_measure-type2_table.png")) 
+ft_mstyp2 %>% as_image(width = 22, file = paste0(figdir, "/per-measure_measure-type2_table.png")) 
 
 rm(list = c("mstyp2", "mstyp2_sum"))
 ###################### per measure - type 2 ########################
@@ -1224,7 +1224,7 @@ ft_obj <- obj[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_obj %>% as_image(file = paste0(figdir, "/per-measure_objective-top20_table.png")) 
+ft_obj %>% as_image(width = 22, file = paste0(figdir, "/per-measure_objective-top20_table.png")) 
 
 #objectives grouped according to food security dimension or - if not related to food security - other societal domains
 objclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - objective", dat_long = quotes_long, classdct = goals_class)
@@ -1253,7 +1253,7 @@ ft_objgr <- objclss %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_objgr %>% as_image(file = paste0(figdir, "/per-measure_objective-grouped_table.png")) 
+ft_objgr %>% as_image(width = 22, file = paste0(figdir, "/per-measure_objective-grouped_table.png")) 
 
 rm(list = c("obj", "objclss"))
 
@@ -1287,7 +1287,7 @@ ft_msc <- msc %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_h
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_msc %>% as_image(file = paste0(figdir, "/per-measure_scale_table.png")) 
+ft_msc %>% as_image(width = 22, file = paste0(figdir, "/per-measure_scale_table.png")) 
 
 rm(list = c("msc"))
 ###################### per measure - scale ########################
@@ -1306,7 +1306,7 @@ ft_impl <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_impl %>% as_image(file = paste0(figdir, "/per-measure_target-implementer_table.png")) 
+ft_impl %>% as_image(width = 22, file = paste0(figdir, "/per-measure_target-implementer_table.png")) 
 
 # target implementer grouped
 mdatclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - target implementer", dat_long = quotes_long, classdct = timpl_class)
@@ -1319,7 +1319,7 @@ ft_objgr <- mdatclss %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_objgr %>% as_image(file = paste0(figdir, "/per-measure_target-implementer-grouped_table.png")) 
+ft_objgr %>% as_image(width = 22, file = paste0(figdir, "/per-measure_target-implementer-grouped_table.png")) 
 
 
 rm(list = c("mstyp", "mstyp_sum", "mdatclss"))
@@ -1337,7 +1337,7 @@ ft_sptg <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_sptg %>% as_image(file = paste0(figdir, "/per-measure_spatially-targeted_table.png")) 
+ft_sptg %>% as_image(width = 22, file = paste0(figdir, "/per-measure_spatially-targeted_table.png")) 
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per measure - spatially targeted? ########################
@@ -1357,7 +1357,7 @@ ft_FSin <- mdat[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_t
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_FSin %>% as_image(file = paste0(figdir, "/per-effect_FS-indicator-top20_table.png"))
+ft_FSin %>% as_image(width = 22, file = paste0(figdir, "/per-effect_FS-indicator-top20_table.png"))
 
 # FS indicator classes
 mdatclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per effect - FS indicator", dat_long = quotes_long, classdct = FSi_class)
@@ -1384,7 +1384,7 @@ ft_fsigr <- mdatclss %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_fsigr %>% as_image(file = paste0(figdir, "/per-effect_FS-indicator-grouped_table.png"))
+ft_fsigr %>% as_image(width = 22, file = paste0(figdir, "/per-effect_FS-indicator-grouped_table.png"))
 
 rm(list = c("mdat", "mdatclss"))
 ###################### per effect - FS indicator ########################
@@ -1402,7 +1402,7 @@ ft_dir <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_dir %>% as_image(file = paste0(figdir, "/per-effect_direct_table.png"))
+ft_dir %>% as_image(width = 22, file = paste0(figdir, "/per-effect_direct_table.png"))
 
 rm(list = c("mdat"))
 ###################### per effect - direct? ########################
@@ -1424,7 +1424,7 @@ ft_plc <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_plc %>% as_image(file = paste0(figdir, "/per-effect_place_table.png"))
+ft_plc %>% as_image(width = 22, file = paste0(figdir, "/per-effect_place_table.png"))
 
 rm(list = c("mdat"))
 ###################### per effect - place ########################
@@ -1442,7 +1442,7 @@ ft_intd <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_intd %>% as_image(file = paste0(figdir, "/per-effect_intended_table.png"))
+ft_intd %>% as_image(width = 22, file = paste0(figdir, "/per-effect_intended_table.png"))
 
 rm(list = c("mdat"))
 ###################### per effect - intended ########################
@@ -1585,7 +1585,7 @@ ft_arep <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_arep %>% as_image(file = paste0(figdir, "/agent_representation_table.png"))
+ft_arep %>% as_image(width = 22, file = paste0(figdir, "/agent_representation_table.png"))
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### agent - agent representation ########################
@@ -1606,7 +1606,7 @@ ft_apar <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_apar %>% as_image(file = paste0(figdir, "/agent_paradigm_table.png"))
+ft_apar %>% as_image(width = 22, file = paste0(figdir, "/agent_paradigm_table.png"))
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### agent - paradigm ########################
@@ -1627,7 +1627,7 @@ ft_athe <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_athe %>% as_image(file = paste0(figdir, "/agent_theory_table.png"))
+ft_athe %>% as_image(width = 22, file = paste0(figdir, "/agent_theory_table.png"))
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### agent - theory ########################
@@ -1648,7 +1648,7 @@ ft_amet <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_amet %>% as_image(file = paste0(figdir, "/agent_method_table.png"))
+ft_amet %>% as_image(width = 22, file = paste0(figdir, "/agent_method_table.png"))
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### agent - method ########################
@@ -1669,7 +1669,7 @@ ft_agnt <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_agnt %>% as_image(file = paste0(figdir, "/per-agent_agent_table.png"))
+ft_agnt %>% as_image(width = 22, file = paste0(figdir, "/per-agent_agent_table.png"))
 
 # measure classes
 mstyp$class <- ""
@@ -1687,7 +1687,7 @@ ft_agntgr <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_t
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers.")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_agntgr %>% as_image(file = paste0(figdir, "/per-agent_agent-grouped_table.png"))
+ft_agntgr %>% as_image(width = 22, file = paste0(figdir, "/per-agent_agent-grouped_table.png"))
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per agent - agent ########################
@@ -1709,7 +1709,7 @@ ft_ahet <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_ahet %>% as_image(file = paste0(figdir, "/per-agent_heterogeneity_table.png"))
+ft_ahet %>% as_image(width = 22, file = paste0(figdir, "/per-agent_heterogeneity_table.png"))
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per agent - heterogeneity ########################
@@ -2029,6 +2029,10 @@ p <- sankeyNetwork(Links = links, Nodes = nodes,
                    Value = "value", NodeID = "name", 
                    sinksRight=FALSE, fontSize = 10)
 p
+
+saveNetwork(p, paste0(figdir, "/per-interaction_agents_exchange_sankey.html"))
+webshot(paste0(figdir, "/per-interaction_agents_exchange_sankey.html"),paste0(figdir, "/per-interaction_agents_exchange_sankey.png"), vwidth = 1200, vheight = 900)
+
 
 other_agent <- intract[intract$code_group == "per interaction - other agent",]
 View(other_agent)
