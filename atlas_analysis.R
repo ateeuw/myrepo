@@ -107,8 +107,11 @@ rm(list = c("new_row", "code", "codes_vec", "codes", "i", "j"))
 check_dictionary(codegroup = "food system - commodity", codedictionary = comm_class, dat_long = quotes_long)
 check_dictionary(codegroup = "per effect - FS indicator", codedictionary = FSi_class, dat_long = quotes_long)
 check_dictionary(codegroup = "per measure - objective", codedictionary = goals_class, dat_long = quotes_long) # to do: split stability into economic and physical
-check_dictionary(codegroup = "per measure - measure", codedictionary = measure_class, dat_long = quotes_long)
+#check_dictionary(codegroup = "per measure - measure", codedictionary = measure_class, dat_long = quotes_long)
+#check_dictionary(codegroup = "per measure - measure", codedictionary = NOTA_simpl, dat_long = quotes_long)
+check_dictionary(codegroup = "per measure - measure", codedictionary = undir_gov, dat_long = quotes_long)
 check_dictionary(codegroup = "per measure - target implementer", codedictionary = timpl_class, dat_long = quotes_long)
+check_dictionary(codegroup = "per agent - agent", codedictionary = timpl_class, dat_long = quotes_long)
 ###################### check whether dictionaries are up to date ########################
 
 ###################### prepare papers - year ########################
@@ -1662,6 +1665,10 @@ mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
 colnames(mstyp_sum) <- c("agent", "number")
 mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
 
+none <- which(levels(mstyp_sum$agent) == "none")
+mstyp_sum$agent <- factor(mstyp_sum$agent, levels = rev(c(levels(mstyp_sum$agent)[none], levels(mstyp_sum$agent)[-none])))
+mstyp_sum <- mstyp_sum[order(mstyp_sum$agent),] 
+
 mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
 
 ft_agnt <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
@@ -1673,7 +1680,7 @@ ft_agnt %>% as_image(width = 22, file = paste0(figdir, "/per-agent_agent_table.p
 
 # measure classes
 mstyp$class <- ""
-mstyp <- dict_classification(sheet = mstyp, dct = agent_types, clm = 16, class_clm = 17)
+mstyp <- dict_classification(sheet = mstyp, dct = timpl_class, clm = 16, class_clm = 17)
 colnames(mstyp)[16:17] <- c("agent type", "name")
 mstyp_sum <- level1_count(sheet = mstyp)
 mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
