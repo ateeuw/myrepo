@@ -16,20 +16,20 @@ comm_class[["fibres of vegetal and animal origin"]] <- c("cotton", "plant-based 
 comm_class[["compisite foods*"]] <- c("food", "other food", "food at home", "food away from home", "processed food", "staple food",
                                           "healthy food", "unhealthy food", "food of plant origin", "own-produced food", "livestock products", "other animal products", "oil")
 comm_class[["composite crops*"]] <- c("crops","trees", "other crops", "cash crops", "horticultural crops", "industrial crops", "non-food crops", 
-                                        "other starchy staples", "export crops", "food crops", "agroforestry", "upland crop")
+                                        "other starchy staples", "export crops", "food crops", "agroforestry", "upland crop", "arable crops", "orchard")
 comm_class[["seeds for planting*"]] <- c("hybrid/improved maize seed", "seeds", "local maize seed")
 comm_class[["non-food tree crops, and derived products*"]] <- c("wood", "eucalyptus", "wood products")
 comm_class[["products from live animals"]] <- c("milk", "dairy", "egg", "dairy products", "milk fat", "non-fat milk solid", "raw milk")
 comm_class[["oil-bearing crops and derived products"]] <- c("groundnut", "soybean", "coconut", "jatropha", "linseed", "oil palm", "oil seeds", "oilseed", "palm oil", "rape seed", "sesame", 
                                                               "peanut", "biodiesel", "biomass fuel")
-comm_class[["products from slaughtered animals"]] <- c("meat", "fish", "beef", "other meat", "cattle meat", "shrimp")
+comm_class[["products from slaughtered animals"]] <- c("meat", "fish", "beef", "other meat", "cattle meat", "shrimp", "pork")
 comm_class[["livestock"]] <- c("cattle", "goat", "poultry", "sheep", "livestock", "broiler chicken", "buffalo", "camel", "chicken", "cow", "other livestock", "oxen",
                                  "crossbred cattle", "laying hen", "male calf", "beef cattle", "dairy cattle")
 comm_class[["stimulant crops and derived products"]] <- c("tobacco", "coffee", "cocoa", "chat", "cocoa beans", "tea")
 comm_class[["beverages"]] <- c("beverages", "alcoholic beverages", "carbonated soft drinks")
 comm_class[["roots and tubers, and derived products"]] <- c("cassava", "potato", "roots", "sweet potato", "tubers", "yam", "cocoyam")
 comm_class[["pulses and derived products"]] <- c("cowpea", "pulses", "beans", "chickpea", "dry beans", "faba bean", "haricot bean", "legumes", "lentil", "vetch")
-comm_class[["fodder crops and derived products"]] <- c("animal feed", "feedgrain", "fodder crop", "fonio", "grass", "napier grass", "feed")
+comm_class[["fodder crops and derived products"]] <- c("animal feed", "feedgrain", "fodder crop", "fonio", "grass", "napier grass", "feed", "alfalfa")
 comm_class[["nuts and derived products"]] <- c("cashews", "nuts")
 comm_class[["beverage crops and spices"]] <- c("hop")
 comm_class[["vegetable and animal oils and fats"]] <- c("edible oil", "vegetable oil", "vegetable fat")
