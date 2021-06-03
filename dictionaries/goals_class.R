@@ -76,7 +76,12 @@ goals_class[["stability"]] <- c("maintain food self-sufficiency",
                                 "stabilise rural livelihoods",
                                 "protect vulnerable households against X price volatility",
                                 "increase farm incomes during price shocks",
-                                "reduce food shortage due to natural disasters")
+                                "reduce food shortage due to natural disasters",
+                                "calorie self-sufficiency",
+                                "stabilise X prices",
+                                "increase access to X during drought",
+                                "increase availability of X during drought",
+                                "increase irrigation water supply reliability")
 
 goals_class[["environmental/climate"]] <- c("maximise delivery of ecosystem services",
                                             "digest organic wastes",
