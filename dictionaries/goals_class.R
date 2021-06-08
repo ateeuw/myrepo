@@ -132,4 +132,5 @@ goals_class[["health & wellbeing"]] <- c("improve public health",
 
 goals_class[["other"]] <- c("reduce population growth",
                             "stimulate employment of less skilled manpower",
-                            "reduce migration to cities")
+                            "reduce migration to cities",
+                            "protect employment of small farmers")
