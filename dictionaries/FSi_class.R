@@ -17,7 +17,8 @@ FSi_class[["access - economic"]] <- c("profitability of land", "profitability of
                              "dietary income differential", "economic benefit/increase in output value of additional production of X", "inflation", "poverty rate/incidence/headcount ratio", 
                              "sales of X", "selling time of X", "unemployed", "demand for agrochemicals", "demand for capital", "demand for farm labour", "demand for agricultural water", 
                              "price of agrochemicals", "price of labour", "price of land", "price of fertilisers", "profitability of livestock", "return to investments (in agriculture)", 
-                             "equivalent variation", "agricultural production value of X", "max price of X", "minimum equivalent variation")
+                             "equivalent variation", "agricultural production value of X", "max price of X", "minimum equivalent variation", "profit from X production",
+                             "production costs for X")
 
 FSi_class[["access - physical"]] <- c("import of X", "export of X", "people walking to store as a last resort", "use of irrigation water")
 
@@ -32,6 +33,6 @@ FSi_class[["stability"]] <- c("resilience to water scarcity", "water security", 
                               "volatility of equivalent variation", "probability of food shortages/deficits/stockout falls", "volatility of X consumption", 
                               "contribution of X to GDP during drought", "price of X during drought", "income during drought", 
                               "access to X during drought", "availability of X during drought", "reliability of irrigation water supply",
-                              "vulnerability of irrigation water supply")
+                              "vulnerability of irrigation water supply", "import reliance for X")
 
 FSi_class[["unclear"]] <- "unclear"
