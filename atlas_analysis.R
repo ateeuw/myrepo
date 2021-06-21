@@ -38,6 +38,7 @@ source("./functions/level2_summ.R")
 source("./functions/level2_class_summ.R")
 source("./functions/check_dictionary.R")
 source("./functions/make_cooc_doc.R")
+source("./functions/reverse_dict.R")
 ###################### source functions ######################
 
 ###################### source dictionaries ######################
@@ -47,6 +48,7 @@ source("./dictionaries/measure_class.R")
 source("./dictionaries/comm_class.R")
 source("./dictionaries/FSi_class.R")
 source("./dictionaries/timpl_class.R")
+source("./dictionaries/NOTA_class.R")
 ###################### source dictionaries ######################
 
 ###################### load data ###################### 
@@ -112,6 +114,7 @@ check_dictionary(codegroup = "per measure - objective", codedictionary = goals_c
 check_dictionary(codegroup = "per measure - measure", codedictionary = undir_gov, dat_long = quotes_long)
 check_dictionary(codegroup = "per measure - target implementer", codedictionary = timpl_class, dat_long = quotes_long)
 check_dictionary(codegroup = "per agent - agent", codedictionary = timpl_class, dat_long = quotes_long)
+check_dictionary(codegroup = "per effect - affected agent", codedictionary = timpl_class, dat_long = quotes_long)
 ###################### check whether dictionaries are up to date ########################
 
 ###################### prepare papers - year ########################
@@ -355,6 +358,88 @@ ft_mtyp <- mtype_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
 ft_mtyp %>% as_image(width = 22, file = paste0(figdir, "/per-model_type_table.png"))
 
 rm(list = c("mtype", "mtype_sum"))
+
+# Co-occurence
+gov <- quotes_long[grep("modelling - coupling?: yes", quotes_long$Codes, fixed = TRUE),]
+n_combined <- length(unique(gov$Document))
+
+gov <- gov[gov$code_group == "per model - type",]
+gov <- gov[!is.na(gov$code_group),]
+gov <- gov[!is.na(gov$name),]
+
+gov$class <- ""
+#gov <- dict_classification(sheet = gov, dct = measure_class, clm = 16, class_clm = 17)
+
+gov_sum <- gov %>% 
+  group_by(ID, name) %>%
+  count(ID, name)
+
+V <- crossprod(table(gov_sum[c(1,2)]))
+diag(V) <- 0 #figure out how to do it properly with selfcooc$n
+V
+
+Vdat <- as.data.frame(V)
+colnames(Vdat) <- gsub("\\s*\\([^\\)]+\\)","", colnames(Vdat)) #remove parentheses because they cause problems later
+rownames(Vdat) <- gsub("\\s*\\([^\\)]+\\)","", rownames(Vdat))
+colnames(Vdat) <- trimws(colnames(Vdat), which = c("both"), whitespace = "[ \t\r\n]") #remove white spaces at the beginning and end because they cause problems later 
+rownames(Vdat) <- trimws(rownames(Vdat), which = c("both"), whitespace = "[ \t\r\n]")
+colnames(Vdat) <- gsub(" ","_", colnames(Vdat)) #remove spaces because they cause problems later
+rownames(Vdat) <- gsub(" ","_", rownames(Vdat))
+Vdat$measures1 <- rownames(Vdat)
+
+library(reshape2)
+library(igraph)
+library(visNetwork)
+Vlong <- melt(Vdat, id.vars = c("measures1"))
+colnames(Vlong)[2] <- "measures2"
+
+Vnodes <- as.data.frame(cbind(unique(Vlong$measures1), unique(Vlong$measures1)))
+colnames(Vnodes) <- c("id", "label")
+Vedges <- Vlong
+colnames(Vedges) <- c("from", "to", "width")
+
+#Create graph for Louvain
+graph <- graph_from_data_frame(Vedges, directed = FALSE)
+#Louvain Comunity Detection
+cluster <- cluster_louvain(graph)
+cluster_df <- data.frame(as.list(membership(cluster)))
+cluster_df <- as.data.frame(t(cluster_df))
+cluster_df$label <- rownames(cluster_df)
+colnames(Vnodes) <- c("id", "label")
+#Create group column
+Vnodes <- left_join(Vnodes, cluster_df, by = "label")
+colnames(Vnodes)[3] <- "group"
+nodes <- Vnodes
+edges <- Vedges
+
+visNetwork(nodes, edges) %>%
+  visOptions( highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+  visInteraction( navigationButtons = TRUE) %>%
+  visPhysics( maxVelocity = 35)
+# to do: create grouped visNetwork
+
+x = 2
+png(filename = paste0(figdir, "/modelling-coupled_model-types_co-occurence.png"), width = 1300, height = 1300)
+ggplot(Vedges, aes(x = from, y = to, col = width, label = width)) +
+  geom_point(aes(size = width)) +
+  geom_text(col = "black", fontface = "bold", size = 10) +
+  ggtitle(paste("Total number of studies =", n_studies, ". Studies with coupled models =", n_combined)) +
+  ylab("Model type") +
+  xlab("Co-occuring model type") +
+  theme_classic() +
+  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.4*x), angle = 90), 
+        axis.text.y = element_text(size = rel(1.4*x)), 
+        axis.title = element_text(size=rel(0.6*x), face="bold"),
+        legend.title = element_text(size = rel(1.3*x), face = "bold"), 
+        legend.position = "none",
+        legend.text = element_text(size = rel(1.4*x)),
+        title = element_text(size = rel(1.4*x))) + 
+  scale_size(range = c(10,30), breaks = c(0:max(Vedges$width))) +
+  scale_color_gradient(low = "lightblue", high = "blue") #+
+# coord_flip()
+dev.off()
+
+
 ###################### prepare per model - type ########################
 
 ###################### prepare per model - domain ########################
@@ -1451,15 +1536,15 @@ rm(list = c("mdat"))
 ###################### per effect - intended ########################
 
 ###################### per effect - on FS? ########################
-mstyp <- quotes_long[quotes_long$code_group == "per effect - on FS?",]
+mstyp <- quotes_long[quotes_long$code_group %in% c("per effect - on FS?", "per measure - measure"),]
 mstyp <- mstyp[!is.na(mstyp$code_group),]
 mstyp$class <- ""
-mstyp_sum <- level2_count(sheet = mstyp) #something goes wrong here
+mstyp_sum <- level2_summ(level1code = "per measure - measure", level2code = "per effect - on FS?", dat_long = mstyp) #something goes wrong here
 
 n_effects <- length(unique(mstyp$ID))
 
-mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
-#colnames(mstyp_sum) <- c("food security impact?", "number")
+mstyp_sum$codeB <- factor(mstyp_sum$codeB , levels = rev(unique(mstyp_sum$codeB)))
+colnames(mstyp_sum) <- c("food security impact?", "number")
 mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
 
 mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
@@ -1469,40 +1554,68 @@ ft_eofs <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_eofs
+ft_eofs %>% as_image(width = 22, file = paste0(figdir, "/per-effect_on-FS_table.png"))
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per effect - on FS? ########################
 
 ###################### per effect - affected agent ########################
-mstyp <- quotes_long[quotes_long$code_group == "per effect - affected agent",]
+mstyp <- quotes_long[quotes_long$code_group %in% c("per effect - affected agent", "per measure - measure"),]
 mstyp <- mstyp[!is.na(mstyp$code_group),]
-mstyp_sum <- level2_count(sheet = mstyp)
+mstyp$class <- ""
+mstyp_sum <- level2_summ(dat_long = mstyp, level1code = "per measure - measure", level2code = "per effect - affected agent")
 
-mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+mstyp_sum$codeB <- factor(mstyp_sum$codeB, levels = rev(unique(mstyp_sum$codeB)))
 colnames(mstyp_sum) <- c("affected agent", "number")
 mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
 
 mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
 
-ft_eafa <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_eafa <- mstyp_sum[c(1:20),] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
+  kable("html", escape = F, caption = paste("Top 20. Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_eafa
+ft_eafa %>% as_image(width = 22, file = paste0(figdir, "/per-effect_affected-agent-top20_table.png"))
+
+# agent classes
+mstyp$class <- ""
+mstyp <- dict_classification(sheet = mstyp, dct = timpl_class, clm = 16, class_clm = 17)
+colnames(mstyp)[16:17] <- c("agent type", "name")
+mstyp_sum <- level1_count(sheet = mstyp)
+mstyp_sum <- mstyp_sum[mstyp_sum$name != "",] 
+
+mstyp_sum$name <- as.factor(mstyp_sum$name)
+mstyp_sum$name <- factor(mstyp_sum$name, levels = unique(mstyp_sum$name)) 
+
+# none <- which(levels(mstyp_sum$name) == "none")
+# mstyp_sum$name <- factor(mstyp_sum$name, levels = c(levels(mstyp_sum$name)[-none], levels(mstyp_sum$name)[none]))
+mstyp_sum <- mstyp_sum[order(mstyp_sum$name),] 
+
+colnames(mstyp_sum) <- c("affected agent types", "number")
+mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
+
+mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
+
+ft_eafagr <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(number) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers.")) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_eafagr %>% as_image(width = 22, file = paste0(figdir, "/per-effect_affected-agent-grouped_table.png"))
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per effect - affected agent ########################
 
 ###################### per effect - type other ########################
-mstyp <- quotes_long[quotes_long$code_group == "per effect - type other",]
+mstyp <- quotes_long[quotes_long$code_group %in% c("per effect - type other", "per measure - measure"),]
 mstyp <- mstyp[!is.na(mstyp$code_group),]
-mstyp_sum <- level2_count(sheet = mstyp)
+mstyp$class <- ""
+mstyp_sum <- level2_summ(level1code = "per measure - measure", level2code = "per effect - type other", dat_long = mstyp)
 
 n_effects <- length(unique(mstyp$ID))
 
-mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+mstyp_sum$codeB <- factor(mstyp_sum$codeB, levels = rev(unique(mstyp_sum$codeB)))
 colnames(mstyp_sum) <- c("type of non-food security effects", "number")
 mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
 
@@ -1513,7 +1626,7 @@ ft_etpo <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_etpo
+ft_etpo %>% as_image(width = 22, file = paste0(figdir, "/per-effect_type-other_table.png"))
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per effect - type other ########################
@@ -1678,12 +1791,19 @@ ft_agnt <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
 
 ft_agnt %>% as_image(width = 22, file = paste0(figdir, "/per-agent_agent_table.png"))
 
-# measure classes
+# agent classes
 mstyp$class <- ""
 mstyp <- dict_classification(sheet = mstyp, dct = timpl_class, clm = 16, class_clm = 17)
 colnames(mstyp)[16:17] <- c("agent type", "name")
 mstyp_sum <- level1_count(sheet = mstyp)
-mstyp_sum$name <- factor(mstyp_sum$name, levels = rev(unique(mstyp_sum$name)))
+
+mstyp_sum$name <- as.factor(mstyp_sum$name)
+mstyp_sum$name <- factor(mstyp_sum$name, levels = unique(mstyp_sum$name)) 
+
+none <- which(levels(mstyp_sum$name) == "none")
+mstyp_sum$name <- factor(mstyp_sum$name, levels = c(levels(mstyp_sum$name)[-none], levels(mstyp_sum$name)[none]))
+mstyp_sum <- mstyp_sum[order(mstyp_sum$name),] 
+
 colnames(mstyp_sum) <- c("agent type", "number")
 mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
 
