@@ -11,14 +11,14 @@ FSi_class[["availability"]] <- c("number of (active/passive) farms", "area used 
 FSi_class[["access - general"]] <- c("land use inequality", "access to X")
 
 FSi_class[["access - economic"]] <- c("profitability of land", "profitability of water use", "profitability of labour", "farm profit", "marginal cost of producing X", "marginal cost of shipping X",
-                             "farm gate/producer price of X", "price of X", "import price of X", "price of irrigation water", "added value of X", 
+                             "farm gate price of X", "price of X", "import price of X", "price of irrigation water", "added value of X", 
                              "contribution of X to GDP", "income", "discretionary income", "income from X", "income from agriculture", "income inequality", "poverty incidence/rate",
                              "poverty severity", "poverty depth/gap", "capital assets", "demand for X", "demand for farm land", "production costs",
                              "dietary income differential", "economic benefit/increase in output value of additional production of X", "inflation", "poverty rate/incidence/headcount ratio", 
                              "sales of X", "selling time of X", "unemployed", "demand for agrochemicals", "demand for capital", "demand for farm labour", "demand for agricultural water", 
                              "price of agrochemicals", "price of labour", "price of land", "price of fertilisers", "profitability of livestock", "return to investments (in agriculture)", 
                              "equivalent variation", "agricultural production value of X", "max price of X", "minimum equivalent variation", "profit from X production",
-                             "production costs for X")
+                             "production costs for X", "compensation variation", "economic surplus", "transportation cost of X")
 
 FSi_class[["access - physical"]] <- c("import of X", "export of X", "people walking to store as a last resort", "use of irrigation water")
 

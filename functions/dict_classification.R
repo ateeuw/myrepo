@@ -5,11 +5,12 @@ dict_classification <- function(sheet, dct, clm, class_clm){
   sheet[, class_clm] <- as.character(sheet[, class_clm])
   sheet[, clm] <- as.character(sheet[, clm])
   for(i in 1:nrow(sheet)){
-    #print(i)
+    print(sheet[i,clm])
     for(j in names(dct)){
-      #print(j)
+      print(j)
       if((sheet[i,clm] %in% dct[[j]])){
         sheet[i, class_clm] <- j
+        print(paste(j, "found!!!!!!!!!!!!!"))
       }
     }
   }
