@@ -1,0 +1,189 @@
+# Cluster data test
+
+# libraries
+library(readxl) #for reading data
+library(dplyr) #for piping
+library(tidyr) #for data processing
+
+# functions
+source("./functions/split_and_add_by_ID.R")
+source("./functions/split_and_add_by_doc.R")
+source("./functions/dict_classification.R")
+
+# dictionaries
+source("./dictionaries/timpl_class.R")
+source("./dictionaries/comm_class.R")
+
+# Load data ###################
+datadir <- "../Atlas_export_sheets"
+review_all_columns <- read_excel(paste0(datadir, "/", "all_quotes.xlsx")) # read_excel("C:/Users/MeyerMA/OneDrive - Universiteit Twente/Paper/Review paper/Import_R_case_studies.xlsx")
+# Load data ###################
+
+# Pre-process data ########################
+quotes <- review_all_columns[review_all_columns$`Document Groups` == "!Read for Lit review - eligible",] #ignore codes attached in papers ineligible for literature review
+
+#quotes <- quotes[quotes$Document %in% unique(quotes$Document)[1:10],]
+
+# make quotes into long format
+quotes_long <- quotes[1,]
+quotes_long$code <- NA
+quotes_long[,] <- NA
+
+for(i in 1:nrow(quotes)){
+  codes <- quotes$Codes[i]
+  codes_vec <- unlist(strsplit(codes, "\r\n"))
+  for(j in codes_vec){
+    new_row <- quotes[i,]
+    new_row$code <- j
+    quotes_long <- rbind(quotes_long, new_row)
+  }
+}
+
+quotes_long <- quotes_long[-1,]
+
+quotes_long$code_group <- ""
+quotes_long$name <- ""
+
+for(i in 1:nrow(quotes_long)){
+  code <- quotes_long$code[i]
+  code_vec <- unlist(strsplit(code, ": "))
+  quotes_long$code_group[i] <- code_vec[1]
+  quotes_long$name[i] <- code_vec[2]
+}
+
+n_studies <- as.numeric(as.character(length(unique(quotes_long$Document))))
+
+quotes_long <- quotes_long[!is.na(quotes_long$name),]
+
+rm(list = c("new_row", "code", "codes_vec", "code_vec", "codes", "i", "j"))
+
+quotes_long$name_id <- 1:nrow(quotes_long)
+
+# Fix spatial & temporal - extent and resolution
+quotes_long2 <- quotes_long
+quotes_long2$code_group[which(quotes_long2$code_group == "spatial & temporal - spatial extent [m2]")] <- "spatial & temporal - spatial extent"
+quotes_long2$code_group[which(quotes_long2$code_group == "spatial & temporal - spatial resolution [m2]")] <- "spatial & temporal - spatial resolution"
+quotes_long2$code_group[which(quotes_long2$code_group == "spatial & temporal - temporal extent [d]")] <- "spatial & temporal - temporal extent"
+quotes_long2$code_group[which(quotes_long2$code_group == "spatial & temporal - temporal resolution [d]")] <- "spatial & temporal - temporal resolution"
+
+
+quotes_wide <- quotes_long2 %>% spread(code_group, name)
+
+# Pre-process data ########################
+
+# modelling #############################
+modelling <- quotes_wide
+modelling$`modelling - data` <- gsub("\\s*\\([^\\)]+\\)","",as.character(modelling$`modelling - data`)) #disregarding whether data are primary or secondary
+modelling$`modelling - coupling?`[which(modelling$`modelling - coupling?` == "not applicable")] <- "just one"
+
+modelling_codes <- c("modelling - aim", "modelling - feedback-loop?", "modelling - sensitivity analysis?", "modelling - validation?", "modelling - data",
+                     "per model - type") #not included: subtype and subdomain
+
+keep <- which(colnames(modelling) %in% c(modelling_codes, "name_id", "Document", "ID"))
+modelling <- modelling[,keep]
+empty_rows <- which(rowSums(is.na(modelling[,4:ncol(modelling)]))==length(4:ncol(modelling)))
+modelling <- modelling[-empty_rows,]
+
+# nested data
+nest <- quotes_wide[,which(colnames(quotes_wide) %in% c("per model - type", "modelling - coupling?", "name_id", "Document", "ID"))]
+empty_rows <- which(rowSums(is.na(nest[,4:ncol(nest)]))==length(4:ncol(nest)))
+nest <- nest[-empty_rows,]
+
+nest <- split_and_add_by_ID(sheet = nest, clm = 4) #coupling
+nest <- nest[-which(is.na(nest$`per model - type`)),]
+nest <- nest[,-which(colnames(nest) %in% c("name_id","ID"))]
+
+nest2 <- quotes_wide[,which(colnames(quotes_wide) %in% c("per model - type", "per model - domain", "name_id", "Document", "ID"))]
+empty_rows <- which(rowSums(is.na(nest2[,4:ncol(nest2)]))==length(4:ncol(nest2)))
+nest2 <- nest2[-empty_rows,]
+
+nest2 <- split_and_add_by_ID(sheet = nest2, clm = 4) #domain
+nest2 <- nest2[-which(is.na(nest2$`per model - type`)),]
+nest2 <- nest2[,-which(colnames(nest2) %in% c("name_id","ID"))]
+
+# level one non-nested data
+for(i in c(4:9)){
+  modelling <- split_and_add_by_doc(sheet = modelling, clm = i)
+}
+
+modelling <- modelling[,-which(colnames(modelling) %in% c("name_id","ID"))]
+modelling <- modelling %>% distinct()
+
+modelling <- merge(modelling, nest)
+modelling <- merge(modelling, nest2)
+# modelling #############################
+
+
+# agent & per agent - agent #############################
+agent <- quotes_wide
+agent_codes <- c("agent - representation", "per agent - agent")
+keep <- which(colnames(agent) %in% c(agent_codes, "name_id", "Document"))
+agent<- agent[,keep]
+empty_rows <- which(rowSums(is.na(agent[,3:ncol(agent)]))==length(3:ncol(agent)))
+agent <- agent[-empty_rows,]
+
+agent_rep <- agent[,-c(4)]
+agent_rep <- agent_rep[!is.na(agent_rep$`agent - representation`),]
+agent_rep <- agent_rep[,-(which(colnames(agent_rep)=="name_id"))]
+agent_rep <- agent_rep %>% distinct()
+
+agent_agt <- agent[,-c(3)]
+agent_agt$class <- ""
+agent_agt <- dict_classification(sheet = agent_agt, dct = timpl_class, clm = 3, class_clm = 4)
+agent_agt <- agent_agt[!is.na(agent_agt$class),]
+agent_agt <- agent_agt[-which(agent_agt$class == ""),]
+agent_agt <- agent_agt[,-(which(colnames(agent_agt) %in% c("name_id")))]
+agent_agt <- agent_agt %>% distinct()
+
+agent <- merge(agent_rep, agent_agt)
+agent <- agent[,-(which(colnames(agent) %in% c("per agent - agent")))]
+agent <- agent %>% distinct()
+
+# agent & per agent - agent #############################
+
+agmod <- merge(agent, modelling)
+
+# food system #############################
+food <- quotes_wide
+food_codes <- c("food system - commodity", "food system - echelon")
+keep <- which(colnames(food) %in% c(food_codes, "name_id", "Document"))
+food <- food[,keep]
+empty_rows <- which(rowSums(is.na(food[,3:ncol(food)]))==length(3:ncol(food)))
+food <- food[-empty_rows,]
+
+food_com <- food[,-c(4)]
+food_com$class <- ""
+food_com <- dict_classification(sheet = food_com, dct = comm_class, clm = 3, class_clm = 4)
+food_com <- food_com[!is.na(food_com$class),]
+food_com <- food_com[-which(food_com$class == ""),]
+food_com <- food_com[,-(which(colnames(food_com)=="name_id"))]
+food_com <- food_com %>% distinct()
+
+food_ech <- food[,-c(3)]
+food_ech <- food_ech[!is.na(food_ech$`food system - echelon`),]
+food_ech <- food_ech[,-(which(colnames(food_ech)=="name_id"))]
+food_ech <- food_ech %>% distinct()
+
+food <- merge(food_com, food_ech)
+food <- food[,-(which(colnames(food) %in% c("food system - commodity")))]
+food <- food %>% distinct()
+
+colnames(food)[which(colnames(food) == "class")] <- "food system - commodity class"
+# food system #############################
+
+foagmod <- merge(agmod, food)
+
+# spatial & temporal #############################
+spat <- quotes_wide
+spat_codes <- c("spatial & temporal - representation split", "spatial & temporal - representation features", "spatial & temporal - country", "spatial & temporal - ref scale")
+keep <- which(colnames(spat) %in% c(spat_codes, "name_id", "Document"))
+spat <- spat[,keep]
+empty_rows <- which(rowSums(is.na(spat[,3:ncol(spat)]))==length(3:ncol(spat)))
+spat <- spat[-empty_rows,]
+
+# level one non-nested data
+spat <- split_and_merge_by_doc(clms = 3:6, sheet = spat)
+
+# spatial & temporal #############################
+
+spfoagmod <- merge(foagmod, spat)
