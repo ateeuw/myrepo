@@ -46,7 +46,7 @@ undir_gov[["disaster control"]] <- c("disaster control")
 undir_gov[["afforestation"]] <- c("afforestation (also agro-forestry)")
 undir_gov[["sewage treatment"]] <- c("sewage treatment")
 undir_gov[["soil erosion control"]] <- c("soil erosion control")
-undir_gov[["construction of hydro-electric dams"]] <- c("construction of hydro-electric dams")
+undir_gov[["construction of dams"]] <- c("construction of hydro-electric dams", "construction of dam")
 undir_gov[["relocation of water demanding crops"]] <- c("relocation of water-demanding crops")
 undir_gov[["creating new stores"]] <- c("creating new stores")
 
@@ -189,7 +189,7 @@ nodality[["group targeted messages"]] <- c("encourage environmentally friendly f
 
 nodality[["packaged self-serve messages"]] <- c("share seasonal weather forcasts with farmers")
 
-nodality[["propaganda"]] <- c("capaign to promote shopping in supermarkets",
+nodality[["propaganda"]] <- c("campaign to promote shopping in supermarkets",
                               "dietary guidelines",
                               "improving willingness to walk",
                               "awareness campaign on water conservation")
@@ -203,7 +203,8 @@ organisation[["transportation and redistribution"]] <- c("relocation of water de
                                                          "crowd-shipping food rescue programme",
                                                          "improve transport and distribution of food in public distribution programme",
                                                          "improv public transport",
-                                                         "set up a distribution network for a commodity X")
+                                                         "set up a distribution network for a commodity X",
+                                                         "improve public transport")
 
 organisation[["at large treatment"]] <- c("construction of irrigation infrastructure",
                                           "construction of market facilities",
@@ -214,8 +215,9 @@ organisation[["at large treatment"]] <- c("construction of irrigation infrastruc
                                           "soil erosion control",
                                           "construction of electric grids",
                                           "afforestation",
-                                          "construction of hydro-electric dams",
-                                          "construction of water storage infrastructure")
+                                          "construction of dams",
+                                          "construction of water storage infrastructure"~,
+                                          "creating new stores")
 
 organisation[["storage and custody"]] <- c("strategic storage reserves of a commodity X") 
 
@@ -308,7 +310,7 @@ authority[["standard constraints"]] <- c("ban on land sales and/or rental",
                                          "quantity-based export restrictions for a commodity X")
 
 authority[["open compacts"]] <- c("allow cultivation of bio-fuel in marginal grasslands",
-                                  "allow farmers to colonise new land for agriculture",
+                                  "allow farmer to colonise new land for agriculture",
                                   "allow farmers to perform agroforestry in timber production areas",
                                   "value added tax exemptions for a commodity X")
 
@@ -321,3 +323,5 @@ NOTA_simpl <- nodality_rev
 NOTA_simpl <- append(NOTA_simpl, organisation_rev)
 NOTA_simpl <- append(NOTA_simpl, treasure_rev)
 NOTA_simpl <- append(NOTA_simpl, authority_rev)
+
+
