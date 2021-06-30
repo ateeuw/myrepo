@@ -4,15 +4,18 @@
 library(readxl) #for reading data
 library(dplyr) #for piping
 library(tidyr) #for data processing
+library(countrycode)
 
 # functions
 source("./functions/split_and_add_by_ID.R")
 source("./functions/split_and_add_by_doc.R")
 source("./functions/dict_classification.R")
+source("./functions/split_and_merge_by_doc.R")
 
 # dictionaries
 source("./dictionaries/timpl_class.R")
 source("./dictionaries/comm_class.R")
+source("./dictionaries/NOTA_class.R") #dictionary linking governance measures to NATO subclasses
 
 # Load data ###################
 datadir <- "../Atlas_export_sheets"
@@ -55,7 +58,7 @@ n_studies <- as.numeric(as.character(length(unique(quotes_long$Document))))
 
 quotes_long <- quotes_long[!is.na(quotes_long$name),]
 
-rm(list = c("new_row", "code", "codes_vec", "code_vec", "codes", "i", "j"))
+rm(list = c("new_row", "code", "codes_vec", "code_vec", "codes", "i", "j", "review_all_columns"))
 
 quotes_long$name_id <- 1:nrow(quotes_long)
 
@@ -122,10 +125,10 @@ agent<- agent[,keep]
 empty_rows <- which(rowSums(is.na(agent[,3:ncol(agent)]))==length(3:ncol(agent)))
 agent <- agent[-empty_rows,]
 
-agent_rep <- agent[,-c(4)]
-agent_rep <- agent_rep[!is.na(agent_rep$`agent - representation`),]
-agent_rep <- agent_rep[,-(which(colnames(agent_rep)=="name_id"))]
-agent_rep <- agent_rep %>% distinct()
+# agent_rep <- agent[,-c(4)]
+# agent_rep <- agent_rep[!is.na(agent_rep$`agent - representation`),]
+# agent_rep <- agent_rep[,-(which(colnames(agent_rep)=="name_id"))]
+# agent_rep <- agent_rep %>% distinct()
 
 agent_agt <- agent[,-c(3)]
 agent_agt$class <- ""
@@ -135,7 +138,8 @@ agent_agt <- agent_agt[-which(agent_agt$class == ""),]
 agent_agt <- agent_agt[,-(which(colnames(agent_agt) %in% c("name_id")))]
 agent_agt <- agent_agt %>% distinct()
 
-agent <- merge(agent_rep, agent_agt)
+#agent <- merge(agent_rep, agent_agt)
+agent <- agent_agt
 agent <- agent[,-(which(colnames(agent) %in% c("per agent - agent")))]
 agent <- agent %>% distinct()
 
@@ -178,11 +182,12 @@ spat <- quotes_wide
 spat_codes <- c("spatial & temporal - representation split", "spatial & temporal - representation features", "spatial & temporal - country", "spatial & temporal - ref scale")
 keep <- which(colnames(spat) %in% c(spat_codes, "name_id", "Document"))
 spat <- spat[,keep]
+spat$continent <- countrycode(sourcevar = spat$`spatial & temporal - country`, origin = "country.name", destination = "continent")
 empty_rows <- which(rowSums(is.na(spat[,3:ncol(spat)]))==length(3:ncol(spat)))
 spat <- spat[-empty_rows,]
 
 # level one non-nested data
-spat <- split_and_merge_by_doc(clms = 3:6, sheet = spat)
+spat <- split_and_merge_by_doc(clms = 3:7, sheet = spat)
 
 # spatial & temporal #############################
 
