@@ -10,7 +10,7 @@ comm_class <- list()
 comm_class[["cereals & cereal products"]] <- c("rice", "maize", "wheat", "sorghum", "millet", "grain", "coarse grains", "barley", "bread", "maize flour", "oats", "other cereals", "pasta", 
                                                  "refined grains", "teff", "whole grains", "cereals", "maize hybrid/improved", "maize local", "processed rice", "hybrid rice", "foodgrain",
                                                "spring maize", "summer maize", "winter wheat", "flour", "genetically modified maize")
-comm_class[["fruits and derived products"]] <- c("fruit", "plantain", "avocado", "banana", "mango")
+comm_class[["fruits and derived products"]] <- c("durian", "fruit", "plantain", "avocado", "banana", "mango")
 comm_class[["vegetables and derived products"]] <- c("vegetable", "onion", "tomato", "broccoli", "cabbage", "garlic")
 comm_class[["sugar crops and sweeteners, and derived products"]] <- c("sugar", "sugarcane", "candy")
 comm_class[["fibres of vegetal and animal origin"]] <- c("cotton", "plant-based fibers", "raw cotton")

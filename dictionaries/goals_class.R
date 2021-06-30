@@ -143,7 +143,8 @@ goals_class[["health & wellbeing"]] <- c("improve public health",
                                          "improve welfare",
                                          "improve human health",
                                          "improve rural quality of life",
-                                         "improve welfare of consumers")
+                                         "improve welfare of consumers",
+                                         "improve farmer satisfaction")
 
 goals_class[["other"]] <- c("reduce population growth",
                             "stimulate employment of less skilled manpower",
