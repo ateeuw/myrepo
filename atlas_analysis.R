@@ -49,6 +49,7 @@ source("./dictionaries/comm_class.R")
 source("./dictionaries/FSi_class.R")
 source("./dictionaries/timpl_class.R")
 source("./dictionaries/NOTA_class.R")
+source("./dictionaries/NOTA_subclass.R")
 ###################### source dictionaries ######################
 
 ###################### load data ###################### 
@@ -112,6 +113,10 @@ check_dictionary(codegroup = "per measure - objective", codedictionary = goals_c
 #check_dictionary(codegroup = "per measure - measure", codedictionary = measure_class, dat_long = quotes_long)
 #check_dictionary(codegroup = "per measure - measure", codedictionary = NOTA_simpl, dat_long = quotes_long)
 check_dictionary(codegroup = "per measure - measure", codedictionary = undir_gov, dat_long = quotes_long)
+quotes_long$class <- ""
+quotes_long2 <- dict_classification(sheet = quotes_long, dct = undir_gov, clm = 16, class_clm = 17)
+quotes_long2$name[which(quotes_long2$code_group == "per measure - measure")] <- quotes_long2$class[which(quotes_long2$code_group == "per measure - measure")]
+check_dictionary(codegroup = "per measure - measure", codedictionary = NOTA_subclass, dat_long = quotes_long2)
 check_dictionary(codegroup = "per measure - target implementer", codedictionary = timpl_class, dat_long = quotes_long)
 check_dictionary(codegroup = "per agent - agent", codedictionary = timpl_class, dat_long = quotes_long)
 check_dictionary(codegroup = "per effect - affected agent", codedictionary = timpl_class, dat_long = quotes_long)
