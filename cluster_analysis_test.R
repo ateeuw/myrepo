@@ -1,6 +1,8 @@
 
 # libraries
 library(refund)
+library(factoextra)
+library(FactoMineR)
 
 # data
 head(modelling) #this is my test dataset, containing nested data about models for the first 10 papers I reviewed
@@ -24,7 +26,6 @@ mfpca.DTI =  mfpca.sc(Y=Y, id = id, twoway = TRUE)
 
 
 # correspondence analysis
-library(FactoMineR)
 data(tea)
 res.mca = MCA(tea, quanti.sup=19, quali.sup=c(20:36))
 plot.MCA(res.mca, invisible=c("var","quali.sup"), cex=0.7)
@@ -39,7 +40,7 @@ qualcols <- 2:13
 #agmod <- agmod[!(agmod$Document %in% c("Berger 2017")),]
 spfoagmod <- spfoagmod[,-c(1)]
 #foagmod <- foagmod %>% distinct()
-qualcols <- c(1:2,4:17)
+qualcols <- c(1,3:16)
 
 res.mca = MCA(spfoagmod, quali.sup = c(qualcols), ncp = 5)
 plot.MCA(res.mca, invisible=c("var","quali.sup"), cex=0.7, max.overlaps = 20000)
@@ -47,8 +48,11 @@ plot.MCA(res.mca, invisible=c("ind","quali.sup"), cex=0.7, max.overlaps = 20000)
 plot.MCA(res.mca, invisible=c("ind"), cex=0.7, max.overlaps = 20000)
 plot.MCA(res.mca, invisible=c("ind"), cex=0.7, max.overlaps = 20000, xlim = c(0,1), ylim = c(0,1))
 plot.MCA(res.mca, invisible=c("ind", "var"), cex=0.7, max.overlaps = 20000)
-dimdesc(res.mca)
-plotellipses(res.mca,keepvar="all", max.overlaps = 20000)
+#dimdesc(res.mca)
+
+#png("./serverfigures/correspondence_ellipses.png", width = 2500, height = 1500)
+plotellipses(res.mca,keepvar="all", max.overlaps = 20000) #this takes a long time ~~~~~~~~~~~
+#dev.off()
 
 library("factoextra")
 eig.val <- get_eigenvalue(res.mca)
