@@ -42,7 +42,14 @@ govspfoagmod <- govspfoagmod[,-c(1)]
 #foagmod <- foagmod %>% distinct()
 qualcols <- c(1,3:23)
 
+memory.limit()
+# set max memory usage is 2G
+memory.size(max=999999999999)
+
+Sys.time()
 res.mca = MCA(govspfoagmod, quali.sup = c(qualcols), ncp = 5)
+Sys.time()
+
 plot.MCA(res.mca, invisible=c("var","quali.sup"), cex=0.7, max.overlaps = 20000)
 plot.MCA(res.mca, invisible=c("ind","quali.sup"), cex=0.7, max.overlaps = 20000)
 plot.MCA(res.mca, invisible=c("ind"), cex=0.7, max.overlaps = 20000)
@@ -50,9 +57,12 @@ plot.MCA(res.mca, invisible=c("ind"), cex=0.7, max.overlaps = 20000, xlim = c(0,
 plot.MCA(res.mca, invisible=c("ind", "var"), cex=0.7, max.overlaps = 20000)
 #dimdesc(res.mca)
 
-#png("./serverfigures/correspondence_ellipses.png", width = 2500, height = 1500)
+
+
+
+Sys.time()
 plotellipses(res.mca,keepvar="all", max.overlaps = 20000) #this takes a long time ~~~~~~~~~~~
-#dev.off()
+Sys.time()
 
 library("factoextra")
 eig.val <- get_eigenvalue(res.mca)
