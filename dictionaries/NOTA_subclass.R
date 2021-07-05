@@ -48,7 +48,7 @@ NOTA_subclass[["at large treatment"]] <- c("construction of irrigation infrastru
                                           "construction of water storage infrastructure",
                                           "creating new stores")
 
-NOTA_subclass[["unclear"]] <- c("unclear", "")
+NOTA_subclass[["unclear"]] <- c("unclear")
 
 NOTA_subclass[["storage and custody"]] <- c("strategic storage reserves of a commodity X") 
 
