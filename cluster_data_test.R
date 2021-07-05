@@ -15,7 +15,9 @@ source("./functions/split_and_merge_by_doc.R")
 # dictionaries
 source("./dictionaries/timpl_class.R")
 source("./dictionaries/comm_class.R")
-source("./dictionaries/NOTA_class.R") #dictionary linking governance measures to NATO subclasses
+source("./dictionaries/NOTA_class.R") 
+source("./dictionaries/NOTA_subclass.R")#dictionary linking governance measures to NATO subclasses
+source("./dictionaries/goals_class.R")
 
 # Load data ###################
 datadir <- "../Atlas_export_sheets"
@@ -192,3 +194,89 @@ spat <- split_and_merge_by_doc(clms = 3:7, sheet = spat)
 # spatial & temporal #############################
 
 spfoagmod <- merge(foagmod, spat)
+
+# governance #############################
+gov <- quotes_wide
+gov_codes <- c("governance - combined measures?", "per measure - measure", "per measure - type 2", "per measure - objective", "per measure - formulation", "per measure - scale", "per measure - target implementer", "per measure - spatially targeted?")
+keep <- which(colnames(gov) %in% c(gov_codes, "name_id", "Document", "ID"))
+gov <- gov[,keep]
+empty_rows <- which(rowSums(is.na(gov[,4:ncol(gov)]))==length(4:ncol(gov)))
+gov <- gov[-empty_rows,]
+
+# nested data
+gov$class <- ""
+gov <- dict_classification(sheet = gov, dct = undir_gov, clm = 6, class_clm = 12)
+colnames(gov)[12] <- "per measure - measure undirected"
+gov$class <- ""
+gov <- dict_classification(sheet = gov, dct = NOTA_subclass, clm = 12, class_clm = 13)
+colnames(gov)[13] <- "per measure - NATO subclass"
+
+nest <- gov[,which(colnames(gov) %in% c("governance - combined measures?", "per measure - NATO subclass", "name_id", "Document", "ID"))]
+empty_rows <- which(rowSums(is.na(nest[,4:ncol(nest)]))==length(4:ncol(nest)))
+if(sum(empty_rows) != 0){
+  nest <- nest[-empty_rows,]
+}
+
+nest <- split_and_add_by_ID(sheet = nest, clm = 4) #combined measures <-- there is a mistake here
+nest <- nest[-which(nest$`per measure - NATO subclass` == ""),]
+nest <- nest[,-which(colnames(nest) %in% c("name_id","ID"))]
+
+nest2 <- gov[,which(colnames(gov) %in% c("per measure - type 2", "per measure - NATO subclass", "name_id", "Document", "ID"))]
+empty_rows <- which(rowSums(is.na(nest2[,4:ncol(nest)]))==length(4:ncol(nest)))
+if(sum(empty_rows) != 0){
+  nest2 <- nest2[-empty_rows,]
+}
+
+nest2 <- split_and_add_by_ID(sheet = nest2, clm = 4) #type 2
+nest2 <- nest2[-which(nest2$`per measure - NATO subclass` == ""),]
+nest2 <- nest2[,-which(colnames(nest2) %in% c("name_id","ID"))]
+
+nest3 <- gov[,which(colnames(gov) %in% c("per measure - objective", "per measure - NATO subclass", "name_id", "Document", "ID"))]
+nest3$class <- ""
+nest3 <- dict_classification(sheet = nest3, dct = goals_class, clm = 4, class_clm = 6)
+colnames(nest3)[6] <- "per measure - goal class"
+empty_rows <- which(rowSums(is.na(nest3[,4:ncol(nest3)]))==length(4:ncol(nest3)))
+if(sum(empty_rows) != 0){
+  nest3 <- nest3[-empty_rows,]
+}
+
+nest3 <- split_and_add_by_ID(sheet = nest3, clm = 6) #objective class
+nest3 <- nest3[-which(nest3$`per measure - NATO subclass` == ""),]
+nest3 <- nest3[-which(nest3$`per measure - goal class` == ""),]
+nest3 <- nest3[,-which(colnames(nest3) %in% c("name_id","ID", "per measure - objective"))]
+
+nest <- merge(nest, nest2)
+nest <- nest %>% distinct()
+nest <- merge(nest, nest3)
+nest <- nest %>% distinct()
+
+nest2 <- gov[,which(colnames(gov) %in% c("per measure - formulation", "per measure - NATO subclass", "name_id", "Document", "ID"))]
+empty_rows <- which(rowSums(is.na(nest2[,4:ncol(nest)]))==length(4:ncol(nest)))
+if(sum(empty_rows) != 0){
+  nest2 <- nest2[-empty_rows,]
+}
+
+nest2 <- split_and_add_by_ID(sheet = nest2, clm = 4) #formulation
+nest2 <- nest2[-which(nest2$`per measure - NATO subclass` == ""),]
+nest2 <- nest2[,-which(colnames(nest2) %in% c("name_id","ID"))]
+
+nest <- merge(nest, nest2)
+nest <- nest %>% distinct()
+
+nest2 <- gov[,which(colnames(gov) %in% c("per measure - spatially targeted?", "per measure - NATO subclass", "name_id", "Document", "ID"))]
+empty_rows <- which(rowSums(is.na(nest2[,4:ncol(nest2)]))==length(4:ncol(nest2)))
+if(sum(empty_rows) != 0){
+  nest2 <- nest2[-empty_rows,]
+}
+
+nest2 <- split_and_add_by_ID(sheet = nest2, clm = 4) #formulation
+nest2 <- nest2[-which(nest2$`per measure - NATO subclass` == ""),]
+nest2 <- nest2[,-which(colnames(nest2) %in% c("name_id","ID"))]
+
+nest <- merge(nest, nest2)
+nest <- nest %>% distinct()
+
+gov <- nest
+# governance #############################
+
+govspfoagmod <- merge(spfoagmod, gov)

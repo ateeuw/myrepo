@@ -4,45 +4,45 @@ library(refund)
 library(factoextra)
 library(FactoMineR)
 
-# data
-head(modelling) #this is my test dataset, containing nested data about models for the first 10 papers I reviewed
-
-# analysis
-?mfpca.sc
-
-id <- modelling$Document
-Y <- modelling[,c(2:9)]
-
-mfpca.DTI =  mfpca.sc(Y=Y, id = id, twoway = TRUE)
-
-
-
-# example provided by https://rdrr.io/cran/refund/man/mfpca.sc.html
-data(DTI)
-DTI = subset(DTI, Nscans < 6)  ## example where all subjects have 6 or fewer visits
-id  = DTI$ID
-Y = DTI$cca
-mfpca.DTI =  mfpca.sc(Y=Y, id = id, twoway = TRUE)
-
-
-# correspondence analysis
-data(tea)
-res.mca = MCA(tea, quanti.sup=19, quali.sup=c(20:36))
-plot.MCA(res.mca, invisible=c("var","quali.sup"), cex=0.7)
-plot.MCA(res.mca, invisible=c("ind","quali.sup"), cex=0.7)
-plot.MCA(res.mca, invisible=c("ind"))
-plot.MCA(res.mca, invisible=c("ind", "var"))
-
-dimdesc(res.mca)
-
-qualcols <- 2:13
+# # data
+# head(modelling) #this is my test dataset, containing nested data about models for the first 10 papers I reviewed
+# 
+# # analysis
+# ?mfpca.sc
+# 
+# id <- modelling$Document
+# Y <- modelling[,c(2:9)]
+# 
+# mfpca.DTI =  mfpca.sc(Y=Y, id = id, twoway = TRUE)
+# 
+# 
+# 
+# # example provided by https://rdrr.io/cran/refund/man/mfpca.sc.html
+# data(DTI)
+# DTI = subset(DTI, Nscans < 6)  ## example where all subjects have 6 or fewer visits
+# id  = DTI$ID
+# Y = DTI$cca
+# mfpca.DTI =  mfpca.sc(Y=Y, id = id, twoway = TRUE)
+# 
+# 
+# # correspondence analysis
+# data(tea)
+# res.mca = MCA(tea, quanti.sup=19, quali.sup=c(20:36))
+# plot.MCA(res.mca, invisible=c("var","quali.sup"), cex=0.7)
+# plot.MCA(res.mca, invisible=c("ind","quali.sup"), cex=0.7)
+# plot.MCA(res.mca, invisible=c("ind"))
+# plot.MCA(res.mca, invisible=c("ind", "var"))
+# 
+# dimdesc(res.mca)
+# 
+# qualcols <- 2:13
 
 #agmod <- agmod[!(agmod$Document %in% c("Berger 2017")),]
-spfoagmod <- spfoagmod[,-c(1)]
+govspfoagmod <- govspfoagmod[,-c(1)]
 #foagmod <- foagmod %>% distinct()
-qualcols <- c(1,3:16)
+qualcols <- c(1,3:23)
 
-res.mca = MCA(spfoagmod, quali.sup = c(qualcols), ncp = 5)
+res.mca = MCA(govspfoagmod, quali.sup = c(qualcols), ncp = 5)
 plot.MCA(res.mca, invisible=c("var","quali.sup"), cex=0.7, max.overlaps = 20000)
 plot.MCA(res.mca, invisible=c("ind","quali.sup"), cex=0.7, max.overlaps = 20000)
 plot.MCA(res.mca, invisible=c("ind"), cex=0.7, max.overlaps = 20000)
