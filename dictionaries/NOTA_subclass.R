@@ -46,9 +46,11 @@ NOTA_subclass[["at large treatment"]] <- c("construction of irrigation infrastru
                                           "afforestation",
                                           "construction of dams",
                                           "construction of water storage infrastructure",
-                                          "creating new stores")
+                                          "creating new stores",
+                                          "construction of road infrastructure")
 
-NOTA_subclass[["unclear"]] <- c("unclear")
+
+NOTA_subclass[["unclear"]] <- c("unclear", "compounded and political", "not sure how to classify check article again")
 
 NOTA_subclass[["storage and custody"]] <- c("strategic storage reserves of a commodity X") 
 
@@ -56,7 +58,8 @@ NOTA_subclass[["group treatment"]] <- c("increase availability of a commodity X 
 
 NOTA_subclass[["processing"]] <- c("start processing factory for a commodity X", "dynamic shelf life policy", 
                                   "increase nutrient content of a commodity X through processing",
-                                  "livestock vaccination programme")
+                                  "livestock vaccination programme", "cheaper food products that will soon expire",
+                                  "increased shelf life for a commodity X")
 
 
 # Then all treasure measures per sub-class
@@ -64,7 +67,8 @@ NOTA_subclass[["transfers"]] <- c("food stamps to low-income households",
                              "cash transfers to ...",
                              "cash transfers to low-income households",
                              "food stamps to ...",
-                             "compensation for resource dispossession due to infrastructure construction")
+                             "compensation for resource dispossession due to infrastructure construction",
+                             "tax rebate")
 
 NOTA_subclass[["bearer-directed payments"]] <- c("minimum support price for a commodity X",
                                             "subsidies on farm inputs",
@@ -72,14 +76,16 @@ NOTA_subclass[["bearer-directed payments"]] <- c("minimum support price for a co
                                             "cheaper healthy food (relative pricing)",
                                             "subsidies on houseing loans",
                                             "subsidies on a commodity X",
-                                            "subsidies on land rent")
+                                            "subsidies on land rent",
+                                            "subsidies on housing loans")
 
 NOTA_subclass[["contracts"]] <- c("credit provision for agricultural production-related expenses",
                              "create off-farm off-season work opportunities",
                              "credit programmes (generic)",
                              "change interest rate on loans",
                              "willing-seller willing-buyer land reform stimulated by government grants",
-                             "forward contracts with producers of a commodity X")
+                             "forward contracts with producers of a commodity X",
+                             "willing-buyer willing-seller land reform stimulated by grants")
 
 NOTA_subclass[["bounties"]] <- c("direct payments to farmers in exchange for food production, land management or delivery of other ecosystem services",
                             "subsidies on irrigation and drainage projects",
@@ -93,7 +99,8 @@ NOTA_subclass[["bounties"]] <- c("direct payments to farmers in exchange for foo
                             "subsidies on agricultural activities",
                             "subsidies for primary processing",
                             "subsidies for marketing activities",
-                            "incentivise GM food production through redused compliance cost")
+                            "incentivise GM food production through redused compliance cost",
+                            "variable cost subsidies for production of a commodity X")
 
 NOTA_subclass[["conduits"]] <- c("investment in ...",
                             "investment in fertiliser industry",
@@ -109,7 +116,8 @@ NOTA_subclass[["conduits"]] <- c("investment in ...",
 
 # Then lastly all authority measures per sub-class
 NOTA_subclass[["directed constraints"]] <- c("value added tax on a commodity X for ...", 
-                                         "land reform/redistribution")
+                                         "land reform/redistribution",
+                                         "reduce value added taxes for poor households")
 
 NOTA_subclass[["open permits"]] <- c("export quotas for a commodity X",
                                  "import quotas for a commodity X")
@@ -131,9 +139,12 @@ NOTA_subclass[["standard constraints"]] <- c("ban on land sales and/or rental",
                                          "area-based restrictions for production of a commodity X",
                                          "area-based production requirements for a commodity X",
                                          "value added tax (generic)",
-                                         "quantity-based export restrictions for a commodity X")
+                                         "quantity-based export restrictions for a commodity X",
+                                         "land protection policy",
+                                         "penalties for unregistered businesses")
 
 NOTA_subclass[["open compacts"]] <- c("allow cultivation of bio-fuel in marginal grasslands",
                                   "allow farmer to colonise new land for agriculture",
                                   "allow farmers to perform agroforestry in timber production areas",
-                                  "value added tax exemptions for a commodity X")
+                                  "value added tax exemptions for a commodity X",
+                                  "allow the cultivation of bio-fuel in marginal grasslands")
