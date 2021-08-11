@@ -25,7 +25,8 @@ NOTA_subclass[["packaged self-serve messages"]] <- c("share seasonal weather for
 NOTA_subclass[["propaganda"]] <- c("campaign to promote shopping in supermarkets",
                               "dietary guidelines",
                               "improving willingness to walk",
-                              "awareness campaign on water conservation")
+                              "awareness campaign on water conservation",
+                              "promote export of X")
 
 # Then all organisational measures per sub-class
 NOTA_subclass[["transportation and redistribution"]] <- c("relocation of water demanding crops",
@@ -33,7 +34,9 @@ NOTA_subclass[["transportation and redistribution"]] <- c("relocation of water d
                                                          "improve transport and distribution of food in public distribution programme",
                                                          "improv public transport",
                                                          "set up a distribution network for a commodity X",
-                                                         "improve public transport")
+                                                         "improve public transport",
+                                                         "mobile market programme targeting food insecure households",
+                                                         "public food distribution programme")
 
 NOTA_subclass[["at large treatment"]] <- c("construction of irrigation infrastructure",
                                           "construction of market facilities",
@@ -47,7 +50,8 @@ NOTA_subclass[["at large treatment"]] <- c("construction of irrigation infrastru
                                           "construction of dams",
                                           "construction of water storage infrastructure",
                                           "creating new stores",
-                                          "construction of road infrastructure")
+                                          "construction of road infrastructure",
+                                          "introduce farmer's markets")
 
 NOTA_subclass[["unclear"]] <- c("unclear", "compounded and political", "not sure how to classify check article again")
 
@@ -76,10 +80,14 @@ NOTA_subclass[["bearer-directed payments"]] <- c("minimum support price for a co
                                             "subsidies on houseing loans",
                                             "subsidies on a commodity X",
                                             "subsidies on land rent",
-                                            "subsidies on housing loans")
+                                            "subsidies on housing loans",
+                                            "ride service to grocery shop for food insecure households",
+                                            "direct payments to large-scale farmers",
+                                            "minimum export price for a commodity X")
 
 NOTA_subclass[["contracts"]] <- c("credit provision for agricultural production-related expenses",
                              "create off-farm off-season work opportunities",
+                             "create off-farm work opportunities",
                              "credit programmes (generic)",
                              "change interest rate on loans",
                              "willing-seller willing-buyer land reform stimulated by government grants",
