@@ -18,15 +18,15 @@ timpl_class[["trade entities"]] <- c("trade partnership", "farmer cooperative", 
 
 timpl_class[["non-food manufacturing/processing entities"]] <- c("pesticide industry", "industry", "agricultural machinery manufacturing industry", "fertiliser industry", "water supplier", "industrial entity")
 
-timpl_class[["food distribution/storage entities"]] <- c("food warehouse operators", "food storage operators", "food distribution operators", "storing agent", "distribution centre")
+timpl_class[["food distribution/storage entities"]] <- c("wholesaler", "storage facility", "food warehouse operators", "food storage operators", "food distribution operators", "storing agent", "distribution centre")
 
-timpl_class[["food consuming entities"]] <- c("consumer population", "customer pool", "global consumer", "international consumer", "consumer in other countries", "tourist", "rural consumer", "consumer", "resident/consumer", "consumer household")
+timpl_class[["food consuming entities"]] <- c("children consumers", "consumer population", "customer pool", "global consumer", "international consumer", "consumer in other countries", "tourist", "rural consumer", "consumer", "resident/consumer", "consumer household")
 
 timpl_class[["citizen entities"]] <- c("resident", "unemployed", "homeless", "citizen", "volunteers", "women", "local community", "population", "residential entity", "villager", "taxpayer", "village", "volunteer")
 
 timpl_class[["food retail entities"]] <- c("food vendor", "hotel", "retailer", "stores", "bakeries", "restaurants", "food vendor/store", "store", "restaurant", "shops")
 
-timpl_class[["knowledge producing entities"]] <- c("university researchers", "independant researchers", "agricultural researchers", "meteorological agency")
+timpl_class[["knowledge producing entities"]] <- c("researchers", "university researchers", "independant researchers", "agricultural researchers", "meteorological agency")
 
 timpl_class[["banks/credit suppliers"]] <- c("credit suppliers", "credit supplier")
 

@@ -2,45 +2,30 @@
 
 # Countries x extents
 countries <- list()
-countries["Australia"] <- 7682300000000
-countries[["Benin"]] <- 114763000000
-countries["Brazil"] <- 8516000000000
-countries[["Burkina Faso"]] <- 274200000000
+countries[["Algeria"]] <- 2382000000000; countries["Australia"] <- 7682300000000
+countries[["Bangladesh"]] <- 148460000000; countries[["Benin"]] <- 114763000000; countries["Brazil"] <- 8516000000000; countries[["Burkina Faso"]] <- 274200000000
 countries[["China"]] <- 9597000000000
-countries[["earth"]] <- 510100000000000
-countries[["Egypt"]] <- 1010000000000
-countries[["Ethiopia"]] <- 1040000000000
-countries[["EU-27"]] <- 4476000000000
+countries[["Djibouti"]] <- 23200000000 #
+countries[["earth"]] <- 510100000000000; countries[["Egypt"]] <- 1010000000000; countries[["Ethiopia"]] <- 1040000000000; countries[["EU-27"]] <- 4476000000000
 countries[["France"]] <- 643801000000
-countries[["Germany"]] <- 357386000000
-countries["Ghana"] <- 238535000000
+countries[["Germany"]] <- 357386000000; countries["Ghana"] <- 238535000000
 countries[["Hungary"]] <- 93030000000
-countries[["India"]] <- 3287000000000
-countries[["Indonesia"]] <- 1905000000000
-countries[["Iran"]] <- 1648000000000
+countries[["India"]] <- 3287000000000; countries[["Indonesia"]] <- 1905000000000; countries[["Iraq"]] <- 438317000000; countries[["Iran"]] <- 1648000000000 
+countries[["Japan"]] <- 377975000000; countries[["Jordan"]] <- 89342000000; 
 countries[["Kenya"]] <- 580367000000
-countries[["Lebanon"]] <- 10452000000
-countries[["Malaysia"]] <- 329847000000
-countries[["Malawi"]] <- 118484000000
-countries[["Mali"]] <- 1240000000000
-countries[["Mexico"]] <- 1973000000000
-countries[["Morocco"]] <- 446550000000
-countries["Mozambique"] <- 801590000000
-countries[["Netherlands"]] <- 41543000000
-countries[["Niger"]] <- 1267000000000
-countries[["Nigeria"]] <- 923768000000
-countries[["Norway"]] <- 385207000000
-countries["Philippines"] <- 300000000000
+countries[["Lebanon"]] <- 10452000000; countries[["Libya"]] <- 1760000000000 #
+countries[["Malaysia"]] <- 329847000000; countries[["Malawi"]] <- 118484000000; countries[["Mali"]] <- 1240000000000; countries[["Mauritania"]] <- 1030000000000; countries[["Mexico"]] <- 1973000000000; countries[["Morocco"]] <- 446550000000; countries["Mozambique"] <- 801590000000
+countries[["Netherlands"]] <- 41543000000; countries[["Niger"]] <- 1267000000000;countries[["Nigeria"]] <- 923768000000; countries[["Norway"]] <- 385207000000
+countries[["Philippines"]] <- 300000000000
 countries[["Quatar"]] <- 11571000000
-countries[["South Africa"]] <- 1220000000000
-countries[["South Korea"]] <- 100210000000
-countries[["Spain"]] <- 505990000000
-countries[["Switzerland"]] <- 41285000000
-countries[["Togo"]] <- 56785000000
-countries[["Turkey"]] <- 783562000000
+countries[["Somalia"]] <- 637657000000; countries[["South Africa"]] <- 1220000000000; countries[["South Korea"]] <- 100210000000; countries[["Spain"]] <- 505990000000; countries[["Sudan"]] <- 1886000000000; countries[["Switzerland"]] <- 41285000000; countries[["Syria"]] <- 185180000000 #
+countries[["Thailand"]] <- 513120000000; countries[["Togo"]] <- 56785000000; countries[["Tunisia"]] <- 163610000000; countries[["Turkey"]] <- 783562000000
 countries["USA"] <- 9834000000000
 countries[["Vietnam"]] <- 331212000000
 countries[["Zimbabwe"]] <- 390757000000
+
+t <- countries[["Japan"]] + countries[["China"]] + countries[["India"]] + countries[["Indonesia"]] + countries[["Bangladesh"]] + countries[["Vietnam"]] + countries[["Thailand"]] + countries[["Philippines"]] + countries[["USA"]] + countries[["Australia"]]
+sprintf("%.0f", t) 
 
 # Extent and resolution
 time <- list()
@@ -49,6 +34,8 @@ time["3 months"] <- 91 #also one season, i.e. spring/summer/autumn/winter
 time["5 months"] <- 152
 time["56 weeks"] <- 56*7
 time["2 years"] <- 730
+time[["3 years"]] <- 1096
+time[["4 years"]] <- 1461
 time["5 years"] <- 1826 #also 60 months
 time["6 years"] <- 2191
 time["7 years"] <- 2557
@@ -68,6 +55,7 @@ time["25 years"] <- 9313
 time["30 years"] <- 10957
 time[["35 years"]] <- 12783
 time[["36 years"]] <- 13149
+time[["40 years"]] <- 14610
 time["50 years"] <- 18262
 time[["55 years"]] <- 20088
 time[["60 years"]] <- 21914
@@ -78,11 +66,14 @@ time[["200 years"]] <- 73048
 
 
 space <- list()
+space["100 ha"] <- 100*10000                                      #1000000              6
 space["3.63 km2"] <- 3.63*1000000                                 #3630000               6
 space["1000 ha"] <- 1000*10000                                    #10000000              7
 space[["24 km2"]] <- 24*1000000                                   #24000000              7
 space[["69,56 km²"]] <- 69.56*1000000                             #69560000              7
 space[["127 km²"]] <- sprintf("%.0f", 127*1000000)                #127000000             8
+space[["136 km²"]] <- sprintf("%.0f", 136*1000000)                #136000000             8
+space[["141 km2"]] <- sprintf("%.0f", 141*1000000)                #141000000             8
 space[["183,19 km²"]] <- sprintf("%.0f", 183.19*1000000)          #183190000             8
 space[["19,637 ha"]] <- sprintf("%.0f", 19637*10000)              #196370000             8
 space[["23.325 ha"]] <- 23325*10000                               #233250000             8
@@ -90,6 +81,7 @@ space[["237 km"]] <- sprintf("%.0f", 237*1000000)                 #237000000    
 space[["458.50 km2"]] <- sprintf("%.0f", 458.50*1000000)          #458500000             8
 space[["577,85 km²"]] <- 577.85*1000000                           #577850000             8
 space[["667 km²"]] <- sprintf("%.0f", 667*1000000)                #667000000             8
+space[["730 km²"]] <- sprintf("%.0f", 730*1000000)                #667000000             8
 space[["783,8 km²"]] <- 783.8*1000000                             #783800000             8
 space[["1593 km2"]] <- sprintf("%.0f", 1593*1000000)              #1593000000            9
 space[["1.602 km²"]] <- sprintf("%.0f", 1602*1000000)             #1602000000
@@ -98,6 +90,7 @@ space[["1975.7 km2"]] <- 1975.7*1000000                           #1975700000   
 space[["3.233 km²"]] <- sprintf("%.0f", 3233*1000000)             #3233000000            9
 space[["3,467.89 km2"]] <- sprintf("%.0f", 3467.89*1000000)       #3467890000
 space["3703 km2"] <- sprintf("%.1f", 3703*1000000)                #3703000000            9
+space[["383,990 ha"]] <- 383990*10000                             #3839900000            9
 space[["5.343 km²"]] <- sprintf("%.0f", 5343*1000000)  
 space[["7.415 km2"]] <- sprintf("%.0f", 7415*1000000)             #7415000000            9
 space[["7714 km2"]] <- sprintf("%.0f", 7714*1000000)              #7714000000            9
@@ -110,16 +103,21 @@ space[["11.571 km²"]] <- sprintf("%.0f", 11571*1000000)           #11571000000 
 space[["13.931 km²"]] <- sprintf("%.0f", 13931*1000000)           #13931000000          10
 space["14000 km2"] <- sprintf("%.1f", 14000*1000000)              #14000000000          10
 space[["23,000 km2"]] <- sprintf("%.1f", 23000*1000000)           #23000000000          10 
+space[["23.200 km²"]] <- sprintf("%.1f", 23200*1000000)           #23200000000          10
 space[["40,000 km2 "]] <- sprintf("%.0f", 40000*1000000)          #40000000000          10
 space[["41.285 km²"]] <- sprintf("%.1f", 41285*1000000)           #41285000000          10 
 space[["41.543 km²"]] <- sprintf("%.1f", 41543*1000000)           #41543000000          10 
 space["46,717.48 km2"] <- sprintf("%.1f", 46717.48*1000000)       #46717480000          10
 space[["56.785 km²"]] <- sprintf("%.0f", 56785*1000000)           #56785000000
+space[["89.342 km²"]] <- sprintf("%.0f", 89342*1000000)           #89342000000          10
 space["91.646 km?"] <- sprintf("%.1f", 91646*1000000)             #91646000000          10
 space[["93.030 km²"]] <- sprintf("%.0f", 93030*1000000)           #93030000000          10
 space[["100.210 km²"]] <- sprintf("%.0f", 100210*1000000)         #100210000000
 space[["114.763 km²"]] <- sprintf("%.0f", 114763*1000000)         #114763000000
 space[["118.484 km²"]] <- sprintf("%.0f", 118484*1000000)         #118484000000
+space[["148.460 km²"]] <- sprintf("%.0f",148460*1000000)          #148460000000         11
+space[["163.610 km²"]] <- sprintf("%.0f", 163610*1000000)         #163610000000
+space[["185.180 km²"]] <- sprintf("%.0f",185180*1000000)          #185180000000         11
 space["238.535 km?"] <- sprintf("%.1f",238535*1000000)            #238535000000         11
 space["268303 km2"]  <- sprintf("%.1f", 268303*1000000)           #268303000000         11
 space[["274.200 km²"]] <- sprintf("%.0f", 274200*1000000)         #274200000000
@@ -127,27 +125,36 @@ space["300000 km2"] <- sprintf("%.1f", 300000*1000000)            #300000000000 
 space[["329.847 km²"]] <- sprintf("%.1f", 329847*1000000)         #329847000000         11
 space["331.212 km²"] <- sprintf("%.1f", 331212*1000000)           #331212000000         11
 space[["357.386 km²"]] <- sprintf("%.0f", 357386*1000000)         #357386000000         11
+space[["377.975 km²"]] <- sprintf("%.0f", 377975*1000000)         #377975000000         11
+space[["380454.36 km2"]] <- sprintf("%.0f", 380454.36*1000000)    #380454360000         11
 space[["385.207 km²"]] <- sprintf("%.1f", 385207*1000000)         #385207000000         11
 space[["390.757 km²"]] <- sprintf("%.0f", 390757*1000000)         #390757000000         11
 space[["400,000 km2  "]] <- sprintf("%.0f", 400000*1000000)
+space[["438.317 km²"]] <- sprintf("%.0f", 438317*1000000)         #438317000000         11
 space[["446.550 km²"]] <- sprintf("%.0f", 446550*1000000)         #446550000000         11
 space["4.73 * 10^7 hm2"] <- sprintf("%.1f",4.73*10^7*10000)       #473000000000         11
 space[["505.990 km²"]] <- sprintf("%.0f", 505990*1000000)         #505990000000         11
+space[["513.120 km²"]] <- sprintf("%.0f", 513120*1000000)         #513120000000         11
 space[["537,023 sq km"]] <- sprintf("%.1f", 537023*1000000)       #537023000000         11
 space[["580.367 km²"]] <- sprintf("%.0f", 580367*1000000)         #580367000000         11
+space[["637.657 km²"]] <- sprintf("%.0f", 637657*1000000)         #637657000000         11
 space[["643.801 km²"]] <- sprintf("%.0f", 643801*1000000)         #643801000000         11
 space[["783.562 km²"]] <- sprintf("%.0f", 783562*1000000)         #783562000000         11
 space["881,913 km2"] <- sprintf("%.1f", 881913*1000000)           #881913000000         11
 space[["923.768 km²"]] <- sprintf("%.0f", 923768*1000000)         #923768000000
 space[["1.010.000 km²"]] <- sprintf("%.0f", 1010000*1000000)      #1010000000000        12
+space[["1.030.000 km²"]] <- sprintf("%.0f", 1030000*1000000)      #1030000000000        12
 space["1 100 000 km2"] <- sprintf("%.1f", 1100000*1000000)        #1100000000000        12
 space[["1.104.000 km²"]] <- sprintf("%.0f", 1040000*1000000)      #1040000000000        12
 space[["1.220.000 km²"]] <- sprintf("%.0f", 1220000*1000000)      #1220000000000        12
 space[["1.240.000 km²"]] <- sprintf("%.0f", 1240000*1000000)      #1240000000000        12
 space["1.267.000 km?"] <- sprintf("%.1f", 1267000*1000000)        #1267000000000        12
 space[["1.648.000 km²"]] <- sprintf("%.0f", 1648000*1000000)      #1648000000000        12
+space[["1.760.000 km²"]] <- sprintf("%.0f", 1760000*1000000)      #1760000000000        12
+space[["1.886.000 km²"]] <- sprintf("%.0f", 1886000*1000000)      #1886000000000        12
 space[["1.905.000 km?"]] <- sprintf("%.1f", 1905000*1000000)      #1905000000000        12
 space[["1.973.000 km²"]] <- sprintf("%.0f", 1973000*1000000)      #1973000000000        12
+space[["2.382.000 km²"]] <- sprintf("%.0f", 2382000*1000000)      #2382000000000        12
 space[["3.287.000 km²"]] <- sprintf("%.0f", 3287000*1000000)      #3287000000000        12
 space[["4.476.000 km²"]] <- sprintf("%.1f", 4476000*1000000)      #4476000000000        12
 space[["4 986 515 km2"]] <- sprintf("%.0f", 4986515*1000000)      #4986515000000

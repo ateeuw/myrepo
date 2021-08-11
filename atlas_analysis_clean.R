@@ -1,7 +1,10 @@
-# This is a document where I test how I can analyse my atlas ti data
-# Now I will clean it (23.3.2021)
+#this is a cleaner version of atlas_analysis.R
+#initiated: 09.08.2021
+#finished:
+#author: Aleid Teeuwen
+#project: The impact of governance on food security: a systematic review of simulation models
 
-rm(list = ls())
+rm(list = ls()) #start with a clean environment
 
 ###################### load libraries ###################### 
 library("readxl") #for reading excel files
@@ -9,8 +12,8 @@ library("tidyr") #for data processing
 library("dplyr") #for data processing 
 library("ggplot2") #for visualisation
 library("RColorBrewer") #for color pallettes
-library("formattable") #for making ncie tables
-library("kableExtra") #for making nice tables
+library("formattable") #for making ncie tables #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+library("kableExtra") #for making nice tables #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
 library("networkD3") #for sankey diagrams
 library("htmltools") #to manage html objects
 library("webshot") #to save screenshots of html objects
@@ -19,19 +22,24 @@ library("magick") # image formatting
 library("sparkline") #making nice tables
 library("grid") #to place text in plots
 library("VennDiagram") #to make venn diagrams
+library("reshape2") #data processing
+library("igraph") #to make network graphs
+library("visNetwork") #to make network graphs
 ###################### load libraries ###################### 
+
 
 ###################### define paths for import and export ###################### 
 datadir <- "../Atlas_export_sheets"
 figdir <- "../13042021_Figures"
 ###################### define paths for import and export ###################### 
 
-###################### source functions ###################### 
-source("./functions/away_codegr.R")
+
+###################### source functions ######################  
+source("./functions/away_codegr.R") #!! check which functions are really used
 source("./functions/away_gr.R")
 source("./functions/away_spaces.R")
 source("./functions/away_totals.R")
-source("./functions/dict_classification.R")
+source("./functions/dict_classification.R") 
 source("./functions/level1_count.R")
 source("./functions/level2_count.R")
 source("./functions/level2_summ.R")
@@ -41,9 +49,9 @@ source("./functions/make_cooc_doc.R")
 source("./functions/reverse_dict.R")
 ###################### source functions ######################
 
-###################### source dictionaries ######################
-#source("./Literature review dictionaries.R")
-source("./dictionaries/goals_class.R")
+
+###################### source dictionaries ######################  
+source("./dictionaries/goals_class.R") #!! check which dictionaries are really used
 source("./dictionaries/measure_class.R")
 source("./dictionaries/comm_class.R")
 source("./dictionaries/FSi_class.R")
@@ -52,9 +60,11 @@ source("./dictionaries/NOTA_class.R")
 source("./dictionaries/NOTA_subclass.R")
 ###################### source dictionaries ######################
 
+
 ###################### load data ###################### 
 quotes <- read_excel(paste0(datadir, "/", "all_quotes.xlsx"))
 ###################### load data ###################### 
+
 
 ###################### show progress ###################### 
 eligible <- length(unique(quotes[quotes$`Document Groups`=="!Read for Lit review - eligible",]$Document))
@@ -71,7 +81,8 @@ print(paste("progress:", progress, "%"))
 rm(list = c("eligible", "ineligible", "read", "to_read", "progress"))
 ###################### show progress ###################### 
 
-###################### pre-process quotes ########################
+
+###################### pre-process quotes ######################## 
 quotes <- quotes[quotes$`Document Groups` == "!Read for Lit review - eligible",] #ignore codes attached in papers ineligible for literature review
 
 # make quotes into long format
@@ -110,8 +121,6 @@ rm(list = c("new_row", "code", "codes_vec", "codes", "i", "j"))
 check_dictionary(codegroup = "food system - commodity", codedictionary = comm_class, dat_long = quotes_long)
 check_dictionary(codegroup = "per effect - FS indicator", codedictionary = FSi_class, dat_long = quotes_long)
 check_dictionary(codegroup = "per measure - objective", codedictionary = goals_class, dat_long = quotes_long) # to do: split stability into economic and physical
-#check_dictionary(codegroup = "per measure - measure", codedictionary = measure_class, dat_long = quotes_long)
-#check_dictionary(codegroup = "per measure - measure", codedictionary = NOTA_simpl, dat_long = quotes_long)
 check_dictionary(codegroup = "per measure - measure", codedictionary = undir_gov, dat_long = quotes_long)
 quotes_long$class <- ""
 quotes_long2 <- dict_classification(sheet = quotes_long, dct = undir_gov, clm = 16, class_clm = 17)
@@ -122,7 +131,7 @@ check_dictionary(codegroup = "per agent - agent", codedictionary = timpl_class, 
 check_dictionary(codegroup = "per effect - affected agent", codedictionary = timpl_class, dat_long = quotes_long)
 ###################### check whether dictionaries are up to date ########################
 
-###################### prepare papers - year ########################
+###################### FIGURES ########################
 year <- quotes_long[quotes_long$code_group == "papers - year",]
 year <- year[!is.na(year$code_group),]
 year_sum <- level1_count(sheet = year)
@@ -170,12 +179,13 @@ ft_jrnl %>% as_image(width = 22, file = paste0(figdir, "/papers_journal_top20_ta
 rm(list = c("jrnl", "jrnl_sum"))
 ###################### prepare papers - journal ########################
 
+
 ###################### prepare modelling - coupling? ########################
 coup <- quotes_long[quotes_long$code_group == "modelling - coupling?",]
 coup <- coup [!is.na(coup $code_group),]
 coup_sum <- level1_count(sheet = coup )
 
-coup_sum$name <- factor(coup_sum$name, levels = c("yes", "no", "not applicable"))
+coup_sum$name <- factor(coup_sum$name, levels = c("yes", "no", "no, just one"))
 coup_sum <- coup_sum[order(coup_sum$name),]
 
 colnames(coup_sum) <- c("model coupling?", "number")
@@ -193,6 +203,7 @@ ft_coup %>% as_image(width = 22, file = paste0(figdir, "/modelling_coupling_tabl
 
 rm(list = c("coup", "coup_sum"))
 ###################### prepare modelling - coupling? ########################
+
 
 ###################### prepare modelling - aim ########################
 aim <- quotes_long[quotes_long$code_group == "modelling - aim",]
@@ -215,6 +226,7 @@ ft_aim %>% as_image(file = paste0(figdir, "/modelling_aim_table.png"))
 
 rm(list = c("aim", "aim_sum"))
 ###################### prepare modelling - aim ########################
+
 
 ###################### prepare modelling - feedback-loops? ########################
 loop <- quotes_long[quotes_long$code_group == "modelling - feedback-loop?",]
@@ -239,6 +251,7 @@ ft_loop %>% as_image(width = 22, file = paste0(figdir, "/modelling_feedback-loop
 
 rm(list = c("loop", "loop_sum"))
 ###################### prepare modelling - feedback-loops? ########################
+
 
 ###################### prepare modelling - sensitivity analysis? ########################
 sens <- quotes_long[quotes_long$code_group == "modelling - sensitivity analysis?",]
@@ -288,6 +301,7 @@ ft_val %>% as_image(width = 22, file = paste0(figdir, "/modelling_validation_tab
 rm(list = c("val", "val_sum"))
 ###################### prepare modelling - validation? ########################
 
+
 ###################### prepare modelling - sensitivity analysis and/or validation? ########################
 sens <- quotes_long[quotes_long$code_group %in% c("modelling - sensitivity analysis?", "modelling - validation?"),]
 sens <- sens[!is.na(sens$code_group),]
@@ -321,6 +335,7 @@ ft_seval %>% as_image(width = 22, file = paste0(figdir, "/modelling_feedback-sen
 rm(list = c("sens", "data_wide", "data_sum"))
 ###################### prepare modelling - sensitivity analysis and/or validation? ########################
 
+
 ###################### prepare modelling - data ########################
 modelling_data <- quotes_long[quotes_long$code_group == "modelling - data",]
 modelling_data <- modelling_data[!is.na(modelling_data$code_group),]
@@ -340,9 +355,39 @@ ft_data <- modelling_data_sum %>% #see https://haozhu233.github.io/kableExtra/aw
 
 ft_data %>% as_image(width = 22, file = paste0(figdir, "/modelling_data_table.png"))
 
+modelling_data$primary <- sub("\\).*", "", sub(".*\\(", "", modelling_data$name)) 
+modelling_data$name <- gsub("\\s*\\([^\\)]+\\)","", modelling_data$name)
+
+modelling_data <- modelling_data %>% 
+  group_by(primary, name, Document) %>%
+  count(primary, name)
+
+modelling_data$n <- 1
+
+colnames(modelling_data)[1:2] <- c("primary or secondary", "data type")
+
+modelling_data_sum <- modelling_data %>% 
+  group_by(`data type`, `primary or secondary`) %>%
+  count(`data type`, `primary or secondary`)
+
+modelling_data_spread <- modelling_data_sum %>% spread(`primary or secondary`, n)
+modelling_data_spread[is.na(modelling_data_spread)] <- 0
+
+modelling_data_spread$primary <- color_bar("lightblue")(modelling_data_spread$primary)
+modelling_data_spread$secondary <- color_bar("lightblue")(modelling_data_spread$secondary)
+
+mo_data_prsec <- modelling_data_spread %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(primary, secondary) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+mo_data_prsec %>% as_image(width = 22, file = paste0(figdir, "/modelling_data-type-&-primarysecondary_table.png"))
+
 rm(list = c("modelling_data", "modelling_data_sum"))
 
 ###################### prepare modelling - data ########################
+
 
 ###################### prepare per model - type ########################
 mtype <- quotes_long[quotes_long$code_group == "per model - type",]
@@ -364,7 +409,7 @@ ft_mtyp %>% as_image(width = 22, file = paste0(figdir, "/per-model_type_table.pn
 
 rm(list = c("mtype", "mtype_sum"))
 
-# Co-occurence
+# Co-occurence network graph
 gov <- quotes_long[grep("modelling - coupling?: yes", quotes_long$Codes, fixed = TRUE),]
 n_combined <- length(unique(gov$Document))
 
@@ -392,9 +437,6 @@ colnames(Vdat) <- gsub(" ","_", colnames(Vdat)) #remove spaces because they caus
 rownames(Vdat) <- gsub(" ","_", rownames(Vdat))
 Vdat$measures1 <- rownames(Vdat)
 
-library(reshape2)
-library(igraph)
-library(visNetwork)
 Vlong <- melt(Vdat, id.vars = c("measures1"))
 colnames(Vlong)[2] <- "measures2"
 
@@ -411,6 +453,7 @@ cluster_df <- data.frame(as.list(membership(cluster)))
 cluster_df <- as.data.frame(t(cluster_df))
 cluster_df$label <- rownames(cluster_df)
 colnames(Vnodes) <- c("id", "label")
+
 #Create group column
 Vnodes <- left_join(Vnodes, cluster_df, by = "label")
 colnames(Vnodes)[3] <- "group"
@@ -421,8 +464,8 @@ visNetwork(nodes, edges) %>%
   visOptions( highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
   visInteraction( navigationButtons = TRUE) %>%
   visPhysics( maxVelocity = 35)
-# to do: create grouped visNetwork
 
+# co-occurence table
 x = 2
 png(filename = paste0(figdir, "/modelling-coupled_model-types_co-occurence.png"), width = 1300, height = 1300)
 ggplot(Vedges, aes(x = from, y = to, col = width, label = width)) +
@@ -441,7 +484,6 @@ ggplot(Vedges, aes(x = from, y = to, col = width, label = width)) +
         title = element_text(size = rel(1.4*x))) + 
   scale_size(range = c(10,30), breaks = c(0:max(Vedges$width))) +
   scale_color_gradient(low = "lightblue", high = "blue") #+
-# coord_flip()
 dev.off()
 
 
@@ -467,6 +509,7 @@ ft_mdom %>% as_image(width = 22, file = paste0(figdir, "/per-model_domain_table.
 
 rm(list = c("mdom", "mdom_sum"))
 ###################### prepare per model - domain ########################
+
 
 ###################### per model - domain co-occurence ########################
 # first limit data to where the co-occurence of governance measures is specified
@@ -526,6 +569,7 @@ venn.diagram(
 
 ###################### per model - domain co-occurence ########################
 
+
 ###################### per model - domain x type co-occurence ########################
 dat <- quotes_long[quotes_long$code_group %in% c("per model - domain", "per model - type"),]
 dat <- dat[!is.na(dat$code_group),]
@@ -546,19 +590,19 @@ for(i in 1:nrow(dat_sum)){
   doms <- unlist(dat_sum$`per model - domain`[i])
   if(is.null(doms)){next
   }else{
-      typs <- unlist(dat_sum$`per model - type`[i])
-      if(is.null(typs)){next
-      }else{
-          for(j in 1:length(doms)){
-            for(k in 1:length(typs)){
-              newrow <- dat_cooc[i,]
-              newrow$`per model - domain` <- doms[j]
-              newrow$`per model - type` <- typs[k]
-              newrow[,1:2] <- dat_sum[i,1:2]
-              dat_cooc <- rbind(dat_cooc, newrow)
-            }
-          }
-        } 
+    typs <- unlist(dat_sum$`per model - type`[i])
+    if(is.null(typs)){next
+    }else{
+      for(j in 1:length(doms)){
+        for(k in 1:length(typs)){
+          newrow <- dat_cooc[i,]
+          newrow$`per model - domain` <- doms[j]
+          newrow$`per model - type` <- typs[k]
+          newrow[,1:2] <- dat_sum[i,1:2]
+          dat_cooc <- rbind(dat_cooc, newrow)
+        }
+      }
+    } 
   }
 }
 
@@ -593,12 +637,12 @@ dev.off()
 rm(list = c("dat", "dat_sum", "dat_cooc", "x"))
 ###################### per model - domain x type co-occurence ########################
 
-###################### prepare per model - subdomain ########################
-mdom <- quotes_long[quotes_long$code_group == "per model - subdomain",]
+###################### prepare per model - subdomain ######################## 
+mdom <- quotes_long[quotes_long$code_group == "per model - subdomain",] #!! here I would need to go through all again to paint a fair picture. some categories (like land market, which actually was modelled in a lot of models), have not been consistently coded
 mdom <- mdom[!is.na(mdom$code_group),]
 mdom_sum <- level1_count(sheet = mdom)
-nota <- which(unique(mdom_sum$name) == "not applicable")
-mdom_sum$name <- factor(mdom_sum$name, levels = c(unique(mdom_sum$name)[-nota], "not applicable"))
+nota <- which(unique(mdom_sum$name) == "not specified")
+mdom_sum$name <- factor(mdom_sum$name, levels = c(unique(mdom_sum$name)[-nota], "not specified"))
 mdom_sum <- mdom_sum[order(mdom_sum$name),]
 colnames(mdom_sum) <- c("model sub domains", "number")
 mdom_sum$proportion <- round(mdom_sum$number/n_studies, 2)
@@ -639,7 +683,51 @@ ft_msdom %>% as_image(width = 22, file = paste0(figdir, "/per-model_subtype_tabl
 rm(list = c("mdom", "mdom_sum", "nota"))
 ###################### prepare per model - subtype ########################
 
+
 ###################### prepare spatial & temporal - country ########################
+
+#
+# identify papers that represent all countries
+to_fix <- which(quotes_long$name == "all countries fix in R")
+
+#get list of all countries
+library(maps)
+x <- map("world", plot=FALSE)
+str(x)
+x$names
+
+countries <- unique(gsub("\\:.*","",x$names))
+countries
+
+#some of the countries extracted from the function above are not really countries (but e.g. sovereign states), and therefore removed
+no_country <- c("Ascension Island", "Azores", "Barbuda", "Bonaire", "Canary Islands", "Chagos Archipelago", "Christmas Island",
+                "Cocos Islands", "Falkland Islands", "Guadeloupe", "Heard Island", "Madeira Islands", "Martinique", "Mayotte",
+                "Micronesia", "Reunion", "Saba", "Saint Kitts" , "Saint Vincent", "Siachen Glacier", "Sint Eustatius", "Sint Maarten",
+                "South Georgia", "South Sandwich Islands", "Trinidad", "Vatican", "Virgin Islands, US")
+countries <- countries[-which(countries %in% no_country)]
+
+#add row for each country, with the rest of the information remaining the same
+for(i in to_fix){
+  rowi <- quotes_long[i,]
+  for(j in countries){
+    rowj <- rowi
+    rowj$name <- j
+    quotes_long <- rbind(quotes_long, rowj)
+  }
+}
+
+#remove rows with "all countries fix in R" identifier
+quotes_long <- quotes_long[-to_fix,]
+
+#some countries are not recognized by the map function used later on, therefore fixed here
+quotes_long$name[quotes_long$name == "Antigua"] <- "Antigua and Barbuda"
+quotes_long$name[quotes_long$name == "Côte d'Ivoire"] <- "Cote d'Ivoire"
+quotes_long$name[quotes_long$name == "Grenadines"] <- "Saint Vincent and the Grenadines"
+quotes_long$name[quotes_long$name == "Nevis"] <- "Saint Kitts and Nevis"
+quotes_long$name[quotes_long$name == "Tobago"] <- "Trinidad and Tobago"
+quotes_long$name[quotes_long$name == "Eswatini"] <- "Swaziland"
+
+#
 cntr <- quotes_long[quotes_long$code_group == "spatial & temporal - country",]
 cntr <- cntr[!is.na(cntr$code_group),]
 cntr_sum <- level1_count(sheet = cntr)
@@ -662,7 +750,8 @@ rm(list = c("cntr", "cntr_sum"))
 
 library("rworldmap")
 cntr_summ <- as.data.frame(cntr_summ)
-nmap <- joinCountryData2Map(cntr_summ, joinCode = "NAME", suggestForFailedCodes = TRUE, nameJoinColumn = "country")
+nmap <- joinCountryData2Map(cntr_summ, joinCode = "NAME", suggestForFailedCodes = TRUE, nameJoinColumn = "country", verbose=TRUE)
+
 
 mycol <- scale_colour_gradientn(colours=c("brown", "purple"))
 
@@ -672,20 +761,39 @@ mapParams <- mapCountryData(nmap,
                             oceanCol = "azure",
                             catMethod = "fixedWidth",
                             missingCountryCol = gray(.8),
-                            colourPalette = "terrain",
-                            addLegend = F,
-                            mapTitle = "",
-                            border = NA)
+                            colourPalette = "topo",
+                            addLegend = T,
+                            mapTitle = "Number of studies",
+                            border = NA,
+                            numCats = max(cntr_summ$number))
 # add legend and display map
-do.call(addMapLegendBoxes, c(mapParams,
-                             x = 'bottom',
-                             title = "Number of studies",
-                             horiz = TRUE,
-                             bg = "transparent",
-                             bty = "n"))
+# do.call(addMapLegend, c(mapParams,
+#                              x = 'bottom',
+#                              title = "Number of studies",
+#                              horiz = TRUE,
+#                              bg = "transparent",
+#                              bty = "n",
+#                         title = "Number of studies"))
 dev.off()
 
+# try bubble plot
+par(mai=c(0,0,0.2,0),xaxs="i",yaxs="i")
+mapBubbles(nmap,
+           nameZSize = "number",
+           nameZColour = "GEO3major",
+           colourPalette = "rainbow",
+           oceanCol = "azure",
+           landCol = "wheat")
+
+mapBars(nmap,
+           nameZs = "number",
+           nameZColour = "GEO3major",
+           colourPalette = "rainbow",
+           oceanCol = "azure",
+           landCol = "wheat")
+
 ###################### prepare spatial & temporal - country ########################
+
 
 ###################### prepare spatial & temporal - ref scale ########################
 rsc <- quotes_long[quotes_long$code_group == "spatial & temporal - ref scale",]
@@ -722,6 +830,7 @@ ft_rsc %>% as_image(width = 22, file = paste0(figdir, "/spatial&temporal_ref-sca
 rm(list = c("rsc", "rsc_sum"))
 ###################### prepare spatial & temporal - ref scale ########################
 
+
 ###################### prepare spatial & temporal - representation ########################
 repr <- quotes_long[quotes_long$code_group == "spatial & temporal - representation",]
 repr <- repr[!is.na(repr$code_group),]
@@ -740,8 +849,29 @@ ft_repr <- repr_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
 
 ft_repr %>% as_image(width = 22, file = paste0(figdir, "/spatial&temporal_representation_table.png"))
 
+repr_cooc <- make_cooc_doc(sheet = quotes_long, 
+                           codegr1 = "spatial & temporal - representation split", 
+                           codegr2 = "spatial & temporal - representation features")
+
+
+repr <- repr_cooc %>%
+  group_by(`spatial & temporal - representation split`, `spatial & temporal - representation features`) %>%
+  count(`spatial & temporal - representation split`, `spatial & temporal - representation features`)
+
+repr$n <- color_bar("lightpink")(repr$n)
+
+ft_repr_split <- repr %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+  group_by(n) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
+  kable_styling(font_size = 20) %>%
+  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+
+ft_repr_split %>% as_image(width = 22, file = paste0(figdir, "/spatial&temporal_representation-split_table.png"))
+
+
 rm(list = c("repr", "repr_sum"))
 ###################### prepare spatial & temporal - representation ########################
+
 
 ###################### prepare spatial & temporal - spatial extent ########################
 # to do: check whether Anderson 2004 really has two spatial extents (this is possible)
@@ -760,13 +890,13 @@ spext_sum <- spext_sum[order(spext_sum$name),]
 quant_n <- length(unique(spext$Document))
 
 dc_spext <- ggdotchart(spext_sum, x = "Document", y = "name",
-           add = "segments",
-           add.params = list(color = "black"),
-          sorting = "ascending") +
+                       add = "segments",
+                       add.params = list(color = "black"),
+                       sorting = "ascending") +
   scale_y_continuous(trans = "log10", limits = c(10^6, 10^15), breaks = 10^(6:15), labels = c(paste(c(1,10,100), "million"), 
-                                                                     paste(c(1, 10, 100), "billion"),
-                                                                     paste(c(1, 10, 100), "trillion"),
-                                                                     "1 quadrillion")) +
+                                                                                              paste(c(1, 10, 100), "billion"),
+                                                                                              paste(c(1, 10, 100), "trillion"),
+                                                                                              "1 quadrillion")) +
   ylab(bquote("spatial extent "~(m^2))) + xlab("Reviewed paper") +
   bgcolor("lightpink") +
   border("#BFD5E3") +
@@ -784,6 +914,7 @@ dev.off()
 rm(list = c("spext", "spext_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial extent ########################
 
+
 ###################### prepare spatial & temporal - spatial resolution ########################
 spres <- quotes_long[quotes_long$code_group == "spatial & temporal - spatial resolution [m2]",]
 spres$name <- as.numeric(as.character(spres$name))
@@ -793,7 +924,6 @@ spres_sum <- spres %>% group_by(Document, name) %>% count(name)
 spres_sum$n <- 1
 spres_sum$name <- as.numeric(as.character(spres_sum$name))
 spres_sum <- spres_sum[order(spres_sum$name),]
-#spext_sum <- spext_sum %>% group_by(name) %>% count(name)
 
 quant_n <- length(unique(spres$Document))
 
@@ -801,7 +931,7 @@ dc_spres <- ggdotchart(spres_sum, x = "Document", y = "name",
                        add = "segments",
                        add.params = list(color = "black"),
                        sorting = "ascending") +
-  scale_y_continuous(trans = "log10", breaks = 10^(2:7), labels = c("100", "1000", "10,000", "100,000", "1,000,000", "10,000,000")) +
+  scale_y_continuous(trans = "log10", breaks = 10^(2:9), labels = c("100", "1000", "10,000", "100,000", "1,000,000", "10,000,000", "100,000,000", "1,000,000,000")) +
   ylab(bquote("spatial resolution "~(m^2))) + xlab("Reviewed paper") +
   bgcolor("lightpink") +
   border("#BFD5E3") +
@@ -814,6 +944,7 @@ dev.off()
 
 rm(list = c("spres", "spres_sum", "quant_n"))
 ###################### prepare spatial & temporal - spatial resolution ########################
+
 
 ###################### prepare spatial & temporal - temporal extent ########################
 # to do: check if chen 2018 really has two temporal extents
@@ -832,9 +963,9 @@ quant_n <- length(unique(tmext$Document))
 tm_range <- c(min(tmext_sum$name), max(tmext_sum$name))
 
 dc_tmext <- ggdotchart(tmext_sum, x = "Document", y = "name",
-           add = "segments",
-           add.params = list(color = "black"),
-           sorting = "ascending") +
+                       add = "segments",
+                       add.params = list(color = "black"),
+                       sorting = "ascending") +
   scale_y_continuous(trans = "log10", breaks = 10^(2:5), labels = c("100", "1,000", "10,000", "100,000"), limits = c(100,100000)) +
   ylab("temporal extent (days)") + xlab("Reviewed paper") +
   bgcolor("lightpink") +
@@ -854,7 +985,6 @@ rm(list = c("tmext", "tmext_sum", "quant_n", "tm_range"))
 ###################### prepare spatial & temporal - temporal extent ########################
 
 ###################### prepare spatial & temporal - temporal resolution ########################
-# to do: check whether berger and chen really have two temporal resolutions
 tmres <- quotes_long[quotes_long$code_group == "spatial & temporal - temporal resolution [d]",]
 tmres$name <- as.numeric(as.character(tmres$name))
 tmres <- tmres[!is.na(tmres$code_group),]
@@ -863,7 +993,6 @@ tmres_sum <- tmres %>% group_by(Document, name) %>% count(name)
 tmres_sum$n <- 1
 tmres_sum$name <- as.numeric(as.character(tmres_sum$name))
 tmres_sum <- tmres_sum[order(tmres_sum$name),]
-#spext_sum <- spext_sum %>% group_by(name) %>% count(name)
 
 quant_n <- length(unique(tmres$Document))
 
@@ -871,7 +1000,7 @@ dc_tmres <- ggdotchart(tmres_sum, x = "Document", y = "name",
                        add = "segments",
                        add.params = list(color = "black"),
                        sorting = "ascending") +
-  scale_y_continuous(trans = "log10", breaks = 10^(0:3), labels = c("1", "10", "100", "1000")) +
+  scale_y_continuous(trans = "log10", breaks = 10^(0:4), labels = c("1", "10", "100", "1,000", "10,000")) +
   ylab("temporal resolution (days)") + xlab("Reviewed paper") +
   bgcolor("lightpink") +
   border("#BFD5E3") +
@@ -879,7 +1008,9 @@ dc_tmres <- ggdotchart(tmres_sum, x = "Document", y = "name",
   ggtitle(paste(quant_n, "studies out of", n_studies)) +
   geom_hline(yintercept=365, col = "deeppink", linetype = "dashed") + annotate("text", x = 2, y = 365, label = "1 year", col = "grey30") + #1 year
   geom_hline(yintercept=30, col = "deeppink", linetype = "dashed") + annotate("text", x = 2, y = 30, label = "1 month", col = "grey30") +
-  geom_hline(yintercept=7, col = "deeppink", linetype = "dashed") + annotate("text", x = 2, y = 7, label = "1 week", col = "grey30") #1 year
+  geom_hline(yintercept=7, col = "deeppink", linetype = "dashed") + annotate("text", x = 2, y = 7, label = "1 week", col = "grey30") + #1 year
+  geom_hline(yintercept = 3652, col = "deeppink", linetype = "dashed") + annotate("text", x = 2, y = 3652, label = "1 decade", col = "grey30") +
+  geom_hline(yintercept = 1, col = "deeppink", linetype = "dashed") + annotate("text", x = 2, y = 1, label = "1 day", col = "grey30")
 
 png(filename = paste0(figdir, "/spatial&temporal_temporal-resolution_dotchart.png"), width = 750, height = 800)
 dc_tmres
@@ -888,10 +1019,11 @@ dev.off()
 rm(list = c("tmres", "tmres_sum", "quant_n"))
 ###################### prepare spatial & temporal - temporal resolution ########################
 
+
 ###################### prepare food system - echelon ########################
 ech_long <- quotes_long
-ech_long$name[ech_long$name %in% c("distribution", "transport", "trade")] <- "distribution/transport/trade"
-ech_long$name[ech_long$name %in% c("processing", "manufacturing", "storage")] <- "processing/manufacturing/storage"
+ech_long$name[ech_long$name %in% c("distribution", "transport")] <- "distribution/transport"
+ech_long$name[ech_long$name %in% c("processing", "manufacturing", "storage", "wholesale")] <- "processing/manufacturing/storage/wholesale"
 ech <- ech_long[ech_long$code_group == "food system - echelon",]
 ech <- ech[!is.na(ech$code_group),]
 ech_sum <- level1_count(sheet = ech)
@@ -911,9 +1043,9 @@ ft_ech %>% as_image(width = 22, file = paste0(figdir, "/food-system_echelon_tabl
 
 ech_sum <- ech %>% group_by(Document, name) %>% count(Document, name)
 ech_sum$n <- 1
-  
+
 production <- ech_sum[ech_sum$name == "production",]$Document
-distribution <- ech_sum[ech_sum$name == "distribution/transport/trade" ,]$Document
+distribution <- ech_sum[ech_sum$name == "distribution/transport" ,]$Document
 processing <- ech_sum[ech_sum$name == "processing/manufacturing/storage",]$Document
 retail <- ech_sum[ech_sum$name == "retail",]$Document
 consumption <- ech_sum[ech_sum$name == "comsumption",]$Document
@@ -922,7 +1054,7 @@ myCol <- c("yellow", "deeppink",
            "green", 
            "grey", "turquoise1")
 
-venn.diagram(
+venn.diagram( #!! make better
   x = list(production, distribution, 
            processing, 
            retail, consumption),
@@ -972,10 +1104,11 @@ x <- 2
 
 dat_cooc$`food system - echelon` <- factor(dat_cooc$`food system - echelon`, levels = c("hunting/fishing/gathering",
                                                                                         "production",
-                                                                                        "distribution/transport/trade",
-                                                                                        "processing/manufacturing/storage",
+                                                                                        "distribution/transport",
+                                                                                        "trade",
+                                                                                        "processing/manufacturing/storage/wholesale",
                                                                                         "retail",
-                                                                                        "comsumption"))
+                                                                                        "consumption"))
 
 dat_cooc <- dat_cooc[order(dat_cooc$`food system - echelon`),] 
 png(filename = paste0(figdir, "/per-model_type_food-system_echelon_co-occurence.png"), width = 1300, height = 1300)
@@ -1041,6 +1174,7 @@ rm(list = c("com", "com_sum", "code_vec"))
 
 ###################### prepare food system - commodity ########################
 
+
 ###################### prepare nonfood system - commodity ########################
 com <- quotes_long[quotes_long$code_group == "nonfood system - commodity",]
 com <- com[!is.na(com$code_group),]
@@ -1060,6 +1194,7 @@ ft_noncom <- com_sum[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awes
 ft_noncom %>% as_image(width = 22, file = paste0(figdir, "/nonfood-system_commodity-top20_table.png")) 
 rm(list = c("com", "com_sum"))
 ###################### prepare nonfood system - commodity ########################
+
 
 ###################### governance - combined measures? ########################
 gov <- quotes_long[quotes_long$code_group == "governance - combined measures?",]
@@ -1082,7 +1217,7 @@ ft_gov %>% as_image(width = 22, file = paste0(figdir, "/governance_combined-meas
 # which governance measures are combined?
 
 # first limit data to where the co-occurence of governance measures is specified
-gov <- quotes_long[grep("governance - combined measures?: yes", quotes_long$Codes, fixed = TRUE),]
+gov <- quotes_long2[grep("governance - combined measures?: yes", quotes_long$Codes, fixed = TRUE),]
 n_combined <- length(unique(gov$Document))
 
 gov <- gov[gov$code_group == "per measure - measure",]
@@ -1090,19 +1225,22 @@ gov <- gov[!is.na(gov$code_group),]
 gov <- gov[!is.na(gov$name),]
 
 gov$class <- ""
-gov <- dict_classification(sheet = gov, dct = measure_class, clm = 16, class_clm = 17)
+gov <- dict_classification(sheet = gov, dct = NOTA_subclass, clm = 16, class_clm = 17)
+colnames(gov)[17] <- "subclass"
+gov$class <- ""
+gov <- dict_classification(sheet = gov, dct = NOTA_class, clm = 17, class_clm = 18)
 
 gov_sum <- gov %>% 
-  group_by(ID, name, class) %>%
-  count(ID, name, class)
+  group_by(ID, name, subclass, class) %>%
+  count(ID, name, subclass, class)
 
 selfcooc <- gov %>% 
-  group_by(ID, class) %>%
-  count(ID, class)
+  group_by(ID, subclass, class) %>%
+  count(ID, subclass, class)
 
 selfcooc <- selfcooc[selfcooc$n > 1,]
 
-selfcooc <- selfcooc %>% group_by(class) %>% count(class)
+selfcooc <- selfcooc %>% group_by(subclass, class) %>% count(subclass, class)
 
 V <- crossprod(table(gov_sum[c(1,3)]))
 diag(V) <- 0 #figure out how to do it properly with selfcooc$n
@@ -1146,12 +1284,41 @@ visNetwork(nodes, edges) %>%
   visOptions( highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
   visInteraction( navigationButtons = TRUE) %>%
   visPhysics( maxVelocity = 35)
-# to do: create grouped visNetwork
+# to do: colour by NATO
+
+Vedges$from <- gsub("_", " ", Vedges$from)
+Vedges$to <- gsub("_", " ", Vedges$to)
+Vedges$class <- ""
+Vedges <- dict_classification(sheet = Vedges, dct = NOTA_class, clm = 2, class_clm = 4)
+str(Vedges$class)
+Vedges$class1 <- as.factor(Vedges$class)
+Vedges <- dict_classification(sheet = Vedges, dct = NOTA_class, clm = 1, class_clm = 4)
+
+Vedges$from <- factor(x = Vedges$from, 
+                      levels = (c("bespoke messages", "group targeted messages", "propaganda", #nodality
+                                 "open compacts", "open permits", "standard constraints", #authority
+                                 "bearer-directed payments", "bounties", "conduits", "contracts", "transfers", #treasure
+                                 "at large treatment", "group treatment", "transportation and redistribution", #organisation
+                                 "unclear"))) 
+
+Vedges$to <- factor(x = Vedges$to, 
+                      levels = rev(c("bespoke messages", "group targeted messages", "propaganda", #nodality
+                                 "open compacts", "open permits", "standard constraints", #authority
+                                 "bearer-directed payments", "bounties", "conduits", "contracts", "transfers", #treasure
+                                 "at large treatment", "group treatment", "transportation and redistribution", #organisation
+                                 "unclear"))) 
+
+with(Vedges, Vedges[order(from, to, decreasing = F),])
+
+Vedges$text <- Vedges$width
+Vedges$text <- as.character(Vedges$text)
+Vedges$text[Vedges$text == "0"] <- ""
 
 x = 2
 png(filename = paste0(figdir, "/governance_combined-measures_co-occurence.png"), width = 1300, height = 1300)
-ggplot(Vedges, aes(x = from, y = to, col = width, label = width)) +
-  geom_point(aes(size = width)) +
+ggplot(Vedges, aes(x = from, y = to, label = text)) +
+  geom_point(aes(size = width, col = class), shape = 15) +
+  geom_point(aes(size = width, col = class1), shape = 16) +
   geom_text(col = "black", fontface = "bold", size = 10) +
   ggtitle(paste("Total number of studies =", n_studies, ". Studies with combined governances measures =", n_combined)) +
   ylab("Governance measure") +
@@ -1164,16 +1331,17 @@ ggplot(Vedges, aes(x = from, y = to, col = width, label = width)) +
         legend.position = "none",
         legend.text = element_text(size = rel(1.4*x)),
         title = element_text(size = rel(1.4*x))) + 
-  scale_size(range = c(10,30), breaks = c(0:max(Vedges$width))) +
-  scale_color_gradient(low = "lightblue", high = "blue") #+
-  # coord_flip()
+  scale_size(range = c(0,30), breaks = c(1:max(Vedges$width))) +
+  scale_color_manual(values = brewer.pal(n = 5, name = "Set1")) #+
+# coord_flip()
 dev.off()
 
 rm(list = c("x", "gov", "gov_sum", "Vedges", "edges", "nodes", "Vnodes", "cluster_df", "graph", "cluster", "V", "Vdat", "Vlong"))
 ###################### governance - combined measures? ########################
 
+
 ###################### per measure - measure ########################
-meas <- quotes_long[quotes_long$code_group == "per measure - measure",]
+meas <- quotes_long2[quotes_long2$code_group == "per measure - measure",]
 meas <- meas[!is.na(meas$code_group),]
 meas_sum <- level1_count(sheet = meas)
 
@@ -1194,20 +1362,36 @@ ft_meas %>% as_image(width = 22, file = paste0(figdir, "/per-measure_measure-top
 # measure classes
 # to do: add total number of governance measures to caption
 meas$class <- ""
-meas <- dict_classification(sheet = meas, dct = measure_class, clm = 16, class_clm = 17)
-#colnames(meas)[16:17] <- c("governance_measure", "name")
+meas <- dict_classification(sheet = meas, dct = NOTA_subclass, clm = 16, class_clm = 17)
 meas_sum <- level2_count(sheet = meas)
 meas_sum$class <- factor(meas_sum$class, levels = rev(unique(meas_sum$class)))
 colnames(meas_sum) <- c("governance measures by type", "number")
 meas_sum$proportion <- round(meas_sum$number/n_studies, 2)
 
+meas_sum$`governance measures by type` <- factor(x = meas_sum$`governance measures by type`,
+                    levels = rev(c("group targeted messages", "propaganda", "packaged self-serve messages", "bespoke messages",   #nodality
+                                   "standard constraints", "open permits", "open compacts", "directed constraints",    #authority
+                                   "bearer-directed payments", "bounties", "conduits", "contracts", "transfers", #treasure
+                                   "at large treatment", "transportation and redistribution", "processing", "storage and custody", "group treatment",  #organisation
+                                   "unclear")))
+
 meas_sum$number <- color_bar("red")(meas_sum$number)
 
+meas_sum <- meas_sum[order(meas_sum$`governance measures by type`, decreasing = TRUE),]
+head(meas_sum)
+
+str(meas_sum$`governance measures by type`)
+
 ft_measgr <- meas_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
-  group_by(number) %>%
+  group_by(`governance measures by type`) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers.")) %>%
   kable_styling(font_size = 20) %>%
-  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+  kable_classic(full_width = F, html_font = "Cambria", position = "center") %>%
+  pack_rows("Nodality", 1, 4) %>%
+  pack_rows("Authority", 5, 8) %>%
+  pack_rows("Treasure", 9, 13) %>%
+  pack_rows("Organisation", 14, 18) %>%
+  pack_rows("Unclear", 19, 19) 
 
 ft_measgr %>% as_image(width = 22, file = paste0(figdir, "/per-measure_measure-grouped_table.png")) 
 
@@ -1216,57 +1400,14 @@ rm(list = c("meas", "meas_sum"))
 # to do: make a list with all measures grouped per type
 ###################### per measure - measure ########################
 
-###################### per measure - type ########################
-mstyp <- quotes_long[quotes_long$code_group %in% c("per measure - type", "per measure - measure"),]
-mstyp <- mstyp[!is.na(mstyp$code_group),]
-mstyp <- mstyp %>% spread(code_group, name)
-colnames(mstyp)[15:16] <- c("measure", "type")
-meas <- mstyp[,which(colnames(mstyp) %in% c("measure", "ID", "Document"))]
-typ <- mstyp[,which(colnames(mstyp) %in% c("type", "ID"))]
-
-mstyp <- merge(meas, typ, by = "ID")
-mstyp <- na.omit(mstyp)
-
-mstyp <- mstyp %>% group_by(Document, measure, type) %>%
-  count(Document, measure, type)
-
-mstyp$n <- 1
-
-mstyp_sum <- mstyp %>% 
-  group_by(type) %>%
-  count(type)
-
-mstyp_sum <- mstyp_sum %>%
-  arrange(desc(n))
-
-ismeas <- which(quotes_long$code_group == "per measure - measure")
-n_measures <- length(unique(paste(quotes_long$Document[ismeas],quotes_long$name[ismeas]))) 
-
-mstyp_sum$type <- factor(mstyp_sum$type, levels = rev(unique(mstyp_sum$type)))
-mstyp_sum$proportion <- round(mstyp_sum$n/n_measures, 2)
-colnames(mstyp_sum)[1:2] <- c("type governance measure", "number")
-
-mstyp_sum$number <- color_bar("red")(mstyp_sum$number)
-
-ft_mstyp <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
-  group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures")) %>%
-  kable_styling(font_size = 20) %>%
-  kable_classic(full_width = F, html_font = "Cambria", position = "center")
-
-ft_mstyp %>% as_image(width = 22, file = paste0(figdir, "/per-measure_measure-type_table.png")) 
-
-# to do: tool venn cooc diagram
-
-rm(list = c("mstyp", "mstyp_sum"))
-###################### per measure - type ########################
 
 ###################### per measure - type 2 ########################
-mstyp2 <- quotes_long[quotes_long$code_group %in% c("per measure - type 2", "per measure - measure"),]
+mstyp2 <- quotes_long2[quotes_long2$code_group %in% c("per measure - type 2", "per measure - measure"),]
 mstyp2 <- mstyp2[!is.na(mstyp2$code_group),]
 
 mstyp2 <- mstyp2 %>% spread(code_group, name)
-colnames(mstyp2)[15:16] <- c("measure", "type2")
+colnames(mstyp2)[which(colnames(mstyp2)=="per measure - type 2")] <- "type2"
+colnames(mstyp2)[which(colnames(mstyp2)=="per measure - measure")] <- "measure"
 meas <- mstyp2[,which(colnames(mstyp2) %in% c("measure", "ID", "Document"))]
 typ2 <- mstyp2[,which(colnames(mstyp2) %in% c("type2", "ID"))]
 
@@ -1303,8 +1444,9 @@ ft_mstyp2 %>% as_image(width = 22, file = paste0(figdir, "/per-measure_measure-t
 rm(list = c("mstyp2", "mstyp2_sum"))
 ###################### per measure - type 2 ########################
 
+
 ###################### per measure - objective ########################
-obj <- level2_summ(level1code = "per measure - measure", level2code = "per measure - objective", dat_long = quotes_long)
+obj <- level2_summ(level1code = "per measure - measure", level2code = "per measure - objective", dat_long = quotes_long2)
 obj$proportion <- round(obj$n/n_measures, 2)
 colnames(obj)[1:2] <- c("governance objectives", "number")
 
@@ -1320,7 +1462,7 @@ ft_obj <- obj[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_tab
 ft_obj %>% as_image(width = 22, file = paste0(figdir, "/per-measure_objective-top20_table.png")) 
 
 #objectives grouped according to food security dimension or - if not related to food security - other societal domains
-objclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - objective", dat_long = quotes_long, classdct = goals_class)
+objclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - objective", dat_long = quotes_long2, classdct = goals_class)
 colnames(objclss) <- c("governance objective groups", "number")
 objclss$number <- color_bar("red")(objclss$number)
 
@@ -1344,7 +1486,9 @@ ft_objgr <- objclss %>% #see https://haozhu233.github.io/kableExtra/awesome_tabl
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_measures, "governance measures.")) %>%
   kable_styling(font_size = 20) %>%
-  kable_classic(full_width = F, html_font = "Cambria", position = "center")
+  kable_classic(full_width = F, html_font = "Cambria", position = "center") %>%
+  pack_rows("Food security objectives", 1, 6) %>%
+  pack_rows("Other objectives", 7, 12) 
 
 ft_objgr %>% as_image(width = 22, file = paste0(figdir, "/per-measure_objective-grouped_table.png")) 
 
@@ -1360,18 +1504,18 @@ colnames(msc)[1:2] <- c("scales of governance", "number")
 msc$number <- color_bar("red")(msc$number)
 
 msc$`scales of governance` <- factor(msc$`scales of governance`, levels = rev(c("unclear", "earth", 
-                                                             "earth > x > continent", 
-                                                             "continent", 
-                                                             "continent > x > country", 
-                                                             "country", 
-                                                             "country > x > province/state",
-                                                             "province/state",
-                                                             "province/state > x > municipality",
-                                                             "municipality",
-                                                             "municipality > x > city",
-                                                             "city",
-                                                             "city > x > village/city_district",
-                                                             "village/city district")))
+                                                                                "earth > x > continent", 
+                                                                                "continent", 
+                                                                                "continent > x > country", 
+                                                                                "country", 
+                                                                                "country > x > province/state",
+                                                                                "province/state",
+                                                                                "province/state > x > municipality",
+                                                                                "municipality",
+                                                                                "municipality > x > city",
+                                                                                "city",
+                                                                                "city > x > village/city_district",
+                                                                                "village/city district")))
 msc <- msc[order(msc$`scales of governance`),]
 
 ft_msc <- msc %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
@@ -1385,8 +1529,9 @@ ft_msc %>% as_image(width = 22, file = paste0(figdir, "/per-measure_scale_table.
 rm(list = c("msc"))
 ###################### per measure - scale ########################
 
+
 ###################### per measure - target implementer ########################
-mdat <- level2_summ(level1code = "per measure - measure", level2code = "per measure - target implementer", dat_long = quotes_long)
+mdat <- level2_summ(level1code = "per measure - measure", level2code = "per measure - target implementer", dat_long = quotes_long2)
 
 colnames(mdat) <- c("implementer of governance measure", "number")
 mdat$proportion <- round(mdat$number/n_measures, 2)
@@ -1402,7 +1547,7 @@ ft_impl <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in
 ft_impl %>% as_image(width = 22, file = paste0(figdir, "/per-measure_target-implementer_table.png")) 
 
 # target implementer grouped
-mdatclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - target implementer", dat_long = quotes_long, classdct = timpl_class)
+mdatclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per measure - target implementer", dat_long = quotes_long2, classdct = timpl_class)
 colnames(mdatclss) <- c("target implementing entities", "number")
 mdatclss$number <- color_bar("red")(mdatclss$number)
 
@@ -1419,7 +1564,7 @@ rm(list = c("mstyp", "mstyp_sum", "mdatclss"))
 ###################### per measure - target implementer ########################
 
 ###################### per measure - spatially targeted? ########################
-mdat <- level2_summ(level1code = "per measure - measure", level2code = "per measure - spatially targeted?", dat_long = quotes_long)
+mdat <- level2_summ(level1code = "per measure - measure", level2code = "per measure - spatially targeted?", dat_long = quotes_long2)
 colnames(mdat) <- c("spatially targeted governance?", "number")
 mdat$proportion <- round(mdat$number/n_measures, 2)
 mdat$number <- color_bar("red")(mdat$number)
@@ -1432,11 +1577,12 @@ ft_sptg <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in
 
 ft_sptg %>% as_image(width = 22, file = paste0(figdir, "/per-measure_spatially-targeted_table.png")) 
 
-rm(list = c("mstyp", "mstyp_sum"))
+rm(list = c("mdat"))
 ###################### per measure - spatially targeted? ########################
 
+
 ###################### per effect - FS indicator ########################
-mdat <- level2_summ(level1code = "per effect - direct?", level2code = "per effect - FS indicator", dat_long = quotes_long)
+mdat <- level2_summ(level1code = "per effect - direct?", level2code = "per effect - FS indicator", dat_long = quotes_long2)
 colnames(mdat) <- c("food security indicator", "number")
 
 n_effects <- length(unique(quotes_long[quotes_long$code_group == "per effect - FS indicator",]$ID))
@@ -1446,14 +1592,14 @@ mdat$number <- color_bar("yellow")(mdat$number)
 
 ft_FSin <- mdat[1:20,] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_effects, "impacts of", n_measures, "governance measures.")) %>%
+  kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers, describing", n_effects, "impacts of", n_measures, "governance measures. Top 20.")) %>%
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
 ft_FSin %>% as_image(width = 22, file = paste0(figdir, "/per-effect_FS-indicator-top20_table.png"))
 
 # FS indicator classes
-mdatclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per effect - FS indicator", dat_long = quotes_long, classdct = FSi_class)
+mdatclss <- level2_class_summ(level1code = "per measure - measure", level2code = "per effect - FS indicator", dat_long = quotes_long2, classdct = FSi_class)
 colnames(mdatclss) <- c("food security indicator grouped", "number")
 mdatclss$proportion <- round(mdatclss$number/n_effects, 2)
 mdatclss$`food security indicator grouped` <- as.character(mdatclss$`food security indicator grouped`)
@@ -1482,6 +1628,7 @@ ft_fsigr %>% as_image(width = 22, file = paste0(figdir, "/per-effect_FS-indicato
 rm(list = c("mdat", "mdatclss"))
 ###################### per effect - FS indicator ########################
 
+
 ###################### per effect - direct? ########################
 mdat <- level2_summ(level1code = "per measure - measure", level2code = "per effect - direct?", dat_long = quotes_long)
 colnames(mdat) <- c("direct impact?", "number")
@@ -1495,10 +1642,11 @@ ft_dir <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_dir %>% as_image(width = 22, file = paste0(figdir, "/per-effect_direct_table.png"))
+ft_dir %>% as_image(width = 22, file = paste0(figdir, "/per-effect_direct_table.png")) #!! proportions don't add up
 
 rm(list = c("mdat"))
 ###################### per effect - direct? ########################
+
 
 ###################### per effect - place ########################
 mdat <- level2_summ(level1code = "per effect - FS indicator", level2code = "per effect - place", dat_long = quotes_long)
@@ -1517,10 +1665,11 @@ ft_plc <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_plc %>% as_image(width = 22, file = paste0(figdir, "/per-effect_place_table.png"))
+ft_plc %>% as_image(width = 22, file = paste0(figdir, "/per-effect_place_table.png")) #!! proportions don't add up
 
 rm(list = c("mdat"))
 ###################### per effect - place ########################
+
 
 ###################### per effect - intended ########################
 mdat <- level2_summ(level1code = "per effect - FS indicator", level2code = "per effect - intended?", dat_long = quotes_long)
@@ -1535,10 +1684,11 @@ ft_intd <- mdat %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in
   kable_styling(font_size = 20) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_intd %>% as_image(width = 22, file = paste0(figdir, "/per-effect_intended_table.png"))
+ft_intd %>% as_image(width = 22, file = paste0(figdir, "/per-effect_intended_table.png")) #!! proportions don't add up
 
 rm(list = c("mdat"))
 ###################### per effect - intended ########################
+
 
 ###################### per effect - on FS? ########################
 mstyp <- quotes_long[quotes_long$code_group %in% c("per effect - on FS?", "per measure - measure"),]
@@ -1554,7 +1704,7 @@ mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
 
 mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
 
-ft_eofs <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_eofs <- mstyp_sum %>% 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
@@ -1563,6 +1713,7 @@ ft_eofs %>% as_image(width = 22, file = paste0(figdir, "/per-effect_on-FS_table.
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per effect - on FS? ########################
+
 
 ###################### per effect - affected agent ########################
 mstyp <- quotes_long[quotes_long$code_group %in% c("per effect - affected agent", "per measure - measure"),]
@@ -1578,7 +1729,7 @@ mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
 
 ft_eafa <- mstyp_sum[c(1:20),] %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
   group_by(number) %>%
-  kable("html", escape = F, caption = paste("Top 20. Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
+  kable("html", escape = F, caption = paste("Top 20. Gathered from", n_studies, "papers describing", n_effects, "governance impacts.")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
 ft_eafa %>% as_image(width = 22, file = paste0(figdir, "/per-effect_affected-agent-top20_table.png"))
@@ -1607,7 +1758,7 @@ ft_eafagr <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_t
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers.")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_eafagr %>% as_image(width = 22, file = paste0(figdir, "/per-effect_affected-agent-grouped_table.png"))
+ft_eafagr %>% as_image(width = 22, file = paste0(figdir, "/per-effect_affected-agent-grouped_table.png")) #!! maybe use packrows to differentiate food and non-food agents
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per effect - affected agent ########################
@@ -1626,7 +1777,7 @@ mstyp_sum$proportion <- round(mstyp_sum$number/n_effects, 2)
 
 mstyp_sum$number <- color_bar("yellow")(mstyp_sum$number)
 
-ft_etpo <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_etpo <- mstyp_sum %>% 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers describing", n_effects, "governance impacts")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
@@ -1640,7 +1791,7 @@ rm(list = c("mstyp", "mstyp_sum"))
 gov <- quotes_long2[quotes_long2$code_group %in% c("per measure - objective", "per measure - measure", "per effect - FS indicator"),]
 gov_w <- spread(gov, code_group, name)
 obj_w <- gov_w[,c(1,18)]
-meas_w <- gov_w[,c(1,15)]
+meas_w <- gov_w[,c(1,17)]
 fsi_w <- gov_w[,c(1,16)]
 
 gov_s <- merge(obj_w, meas_w,  by = "ID")
@@ -1658,8 +1809,6 @@ gov_t$f_class <- ""
 gov_t <- dict_classification(sheet = gov_t, dct = NOTA_subclass, clm = 2, class_clm = 4)
 gov_t <- dict_classification(sheet = gov_t, dct = FSi_class, clm = 3, class_clm = 5)
 
-# colnames(intract_m) <- c("ID", "agent", "other", "codes", "exchange")
-# intract_m <- intract_m[-which(intract_m$agent == "not applicable" | intract_m$exchange == "not applicable"| intract_m$other == "not applicable"),]
 gov_s <- gov_s %>% group_by(o_class, m_class, ID) %>% count(o_class, m_class, ID)
 gov_s$o_class <- paste("obj:", gov_s$o_class)
 gov_t <- gov_t%>% group_by(m_class, f_class, ID) %>% count(m_class, f_class, ID)
@@ -1682,10 +1831,10 @@ links$IDtarget <- match(links$target, nodes$name)-1
 
 # Make the Network
 s_gov <- sankeyNetwork(Links = links, Nodes = nodes,
-                   Source = "IDsource", Target = "IDtarget",
-                   Value = "value", NodeID = "name", 
-                   sinksRight=FALSE, fontSize = 19)
-s_gov
+                       Source = "IDsource", Target = "IDtarget",
+                       Value = "value", NodeID = "name", 
+                       sinksRight=FALSE, fontSize = 19)
+s_gov #!! colour by NATO
 saveNetwork(s_gov, paste0(figdir, "/obj_meas_FSindicator_sankey.html"))
 webshot(paste0(figdir, "/obj_meas_FSindicator_sankey.html"),paste0(figdir, "/obj_meas_FSindicator_sankey.png"), vwidth = 1200, vheight = 900)
 ###################### governance measures sankey ########################
@@ -1743,7 +1892,7 @@ mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
 
 mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
 
-ft_athe <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_athe <- mstyp_sum %>% 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
@@ -1764,15 +1913,16 @@ mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
 
 mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
 
-ft_amet <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_amet <- mstyp_sum %>% 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
 
-ft_amet %>% as_image(width = 22, file = paste0(figdir, "/agent_method_table.png"))
+ft_amet %>% as_image(width = 22, file = paste0(figdir, "/agent_method_table.png")) 
 
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### agent - method ########################
+
 
 ###################### per agent - agent ########################
 mstyp <- quotes_long[quotes_long$code_group == "per agent - agent",]
@@ -1789,7 +1939,7 @@ mstyp_sum <- mstyp_sum[order(mstyp_sum$agent),]
 
 mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
 
-ft_agnt <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_agnt <- mstyp_sum %>%  
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
@@ -1814,7 +1964,7 @@ mstyp_sum$proportion <- round(mstyp_sum$number/n_studies, 2)
 
 mstyp_sum$number <- color_bar("chocolate")(mstyp_sum$number)
 
-ft_agntgr <- mstyp_sum %>% #see https://haozhu233.github.io/kableExtra/awesome_table_in_html.html & http://cran.nexr.com/web/packages/kableExtra/vignettes/use_kableExtra_with_formattable.html 
+ft_agntgr <- mstyp_sum %>% 
   group_by(number) %>%
   kable("html", escape = F, caption = paste("Gathered from", n_studies, "papers.")) %>%
   kable_classic(full_width = F, html_font = "Cambria", position = "center")
@@ -1846,449 +1996,4 @@ ft_ahet %>% as_image(width = 22, file = paste0(figdir, "/per-agent_heterogeneity
 rm(list = c("mstyp", "mstyp_sum"))
 ###################### per agent - heterogeneity ########################
 
-##MESSY##
-
-
-
-###################### process data ########################
-
-# merge ref_scales and model_types
-ref_scale_model_type_long <- merge(ref_scale_long, model_types_long, by = "Papers") #total <- merge(data frameA,data frameB,by="ID")
-for(i in 1:nrow(ref_scale_model_type_long)){ref_scale_model_type_long$cooc[i] = min(ref_scale_model_type_long$`mentioned?.x`[i], ref_scale_model_type_long$`mentioned?.y`[i])}
-
-ref_scale_model_type_sum <- ref_scale_model_type_long %>% 
-  group_by(scale, type) %>%
-  summarise(cooc = sum(cooc))
-
-ref_scale_model_type_sum$scale <- factor(ref_scale_model_type_sum$scale, levels = (c("earth\r\n", 
-                                                               "earth_>_x_>_continent\r\n", 
-                                                               "continent\r\n", 
-                                                               "continent_>_x_>_country\r\n", 
-                                                               "country\r\n", 
-                                                               "country_>_x_>_province/state\r\n",
-                                                               "province/state\r\n",
-                                                               "province/state_>_x_>_municipality\r\n",
-                                                               "municipality\r\n",
-                                                               "municipality_>_x_>_city\r\n",
-                                                               "city\r\n",
-                                                               "city_>_x_>_city_district\r\n",
-                                                               "city_district\r\n")))
-
-# interaction data from quotes_long
-intract <- quotes_long[quotes_long$code_group %in% c("per agent - agent", "per interaction - other agent", "per interaction - exchange"),]
-intract_w <- spread(intract, code_group, name)
-agent_w <- intract_w[,c(1,15)]
-other_w <- intract_w[,c(1,17)]
-exchange_w <- intract_w[,c(1,7,16)]
-
-intract_m <- merge(agent_w, other_w,  by = "ID")
-intract_m <- merge(intract_m, exchange_w,  by = "ID")
-intract_m <- na.omit(intract_m)
-colnames(intract_m) <- c("ID", "agent", "other", "codes", "exchange")
-intract_m <- intract_m[-which(intract_m$agent == "not applicable" | intract_m$exchange == "not applicable"| intract_m$other == "not applicable"),]
-intract_source <- intract_m %>% group_by(agent, exchange) %>% count(agent, exchange)
-intract_source$sender <- paste("sender:", intract_source$agent)
-intract_target <- intract_m %>% group_by(exchange, other) %>% count(exchange, other)
-intract_target$target <- paste("receiver:", intract_target$other)
-
-# goals from quotes_long
-goals <- quotes_long[quotes_long$code_group == "per measure - objective",]
-goals <- goals[!is.na(goals$name),]
-goals <- goals %>% group_by(Document) %>% count(name)
-goals$n <- 1
-goals <- goals %>% group_by(name) %>% count(name)
-goals$class <- ""
-goals$n_of_class <- 0
-goals <- dict_classification(sheet = goals, dct = goals_class, clm = 1, class_clm = 3)
-
-# governance measures from quotes_long
-measures <- unique(quotes_long$code[grepl("per measure - measure: ", quotes_long$code)])
-measures <- gsub("per measure - measure: ", "", measures)
-
-governance <- quotes_long[quotes_long$code_group %in% c("per measure - objective",
-                                                        "per measure - measure",
-                                                        "per effect - effect"),]
-governance_w <- spread(governance, code_group, name)
-objective_w <- na.omit(governance_w[,c(1,14)])
-objective_w$objective_class <- ""
-objective_w <- dict_classification(sheet = objective_w, dct = goals_class, clm = 2, class_clm = 3)
-
-measure_w <- na.omit(governance_w[,c(1,7,13)])
-measure_w$measure_class <- ""
-measure_w <- dict_classification(sheet = measure_w, dct = measure_class, clm = 3, class_clm = 4)
-
-effect_w <- na.omit(governance_w[,c(1,12)])
-
-governance_om <- merge(objective_w, measure_w,  by = "ID")
-governance_me <- merge(measure_w, effect_w,  by = "ID")
-governance_om <- na.omit(governance_om)
-governance_me <- na.omit(governance_me)
-colnames(governance_om) <- c("ID", "objective", "objective_class", "codes", "measure", "measure_class")
-colnames(governance_me) <- c("ID", "codes", "measure", "measure_class", "effect")
-
-#governance_source <- governance_om %>% group_by(ID) %>% count(objective, measure)
-#governance_source$n <- 1
-governance_source <- governance_om %>% group_by(objective_class, measure_class) %>% count(objective_class, measure_class)
-
-#governance_target <- governance_me %>% group_by(ID) %>% count(measure, effect)
-#governance_target$n <- 1
-#governance_target <- governance_target %>% group_by(measure, effect) %>% count(measure, effect)
-governance_target <- governance_me %>% group_by(measure_class, effect) %>% count(measure_class, effect)
-
-# echelon vs scale of governance
-head(quotes_long)
-ech <- quotes_long[quotes_long$code_group %in% c("food system - echelon"),]
-sc <- quotes_long[quotes_long$code_group %in% c("spatial & temporal - ref scale"),]
-
-ech_sum <- ech %>% group_by(Document, name) %>% count(name)
-ech_sum$n <- 1
-
-ech_sum <- ech_sum %>% group_by(name) %>% count(name)
-formattable(ech_sum[order(-ech_sum$n),], list(`n` = color_bar("#71CA97")))
-
-sc_sum <- sc %>% group_by(Document, name) %>% count(name)
-sc_sum$n <- 1
-
-sc_sum <- sc_sum %>% group_by(name) %>% count(name)
-unique(sc_sum$name)
-sc_sum$name <- factor(sc_sum$name, levels = rev(c("earth", 
-                                               "earth > x > continent", 
-                                              "continent", 
-                                                                  "continent > x > country", 
-                                                                  "country", 
-                                                                  "country > x > province/state",
-                                                                  "province/state",
-                                                                  "province/state > x > municipality",
-                                                                  "municipality",
-                                                                  "municipality > x > city",
-                                                                  "city",
-                                                                  "city > x > city_district",
-                                                                  "city district")))
-
-formattable(sc_sum[order(sc_sum$name),], list(`n` = color_bar("#71CA97")))
-
-msc <- quotes_long[quotes_long$code_group %in% c("per measure - scale"),]
-
-msc_sum <- msc %>% group_by(Document, name) %>% count(name)
-#msc_sum$n <- 1
-
-msc_sum <- msc_sum %>% group_by(name) %>% count(name)
-unique(msc_sum$name)
-msc_sum$name <- factor(msc_sum$name, levels = rev(c("unclear",
-                                                    "earth", 
-                                                  "earth > x > continent", 
-                                                  "continent", 
-                                                  "continent > x > country", 
-                                                  "country", 
-                                                  "country > x > province/state",
-                                                  "province/state",
-                                                  "province/state > x > municipality",
-                                                  "municipality",
-                                                  "municipality > x > city",
-                                                  "city",
-                                                  "city > x > city_district",
-                                                  "city district")))
-
-formattable(msc_sum[order(msc_sum$name),], list(`n` = color_bar("#71CA97")))
-
-###################### visualise data ###################### 
-
-#data types
-png(paste0(figdir, "/data_types.png"), width = 640, height = 580)
-ggplot(modelling_data_sum, aes(fill=data_class, y=number, x = data)) +
-  geom_bar(position = "stack", stat = "identity", colour = "black") + 
-  scale_fill_manual(name = "Data class", values = c("#FEF445", "#CEE741", "#8FD14F", "#FAc710")) + 
-  ggtitle(paste("Total number of studies =", length(unique(modelling_data$Papers)))) +
-  ylab("Number of studies") +
-  xlab("Type of data") +
-  theme_classic() +
-  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.6)), 
-        axis.text.y = element_text(size = rel(1.6)), 
-        axis.title = element_text(size=rel(1.4), face="bold"),
-        legend.title = element_text(size = rel(1.3), face = "bold"), 
-        legend.position = c(0.8, 0.2),
-        legend.text = element_text(size = rel(1.4)),
-        title = element_text(size = rel(1.4))) + 
-  scale_y_continuous(breaks = seq(0,15,3)) +
-  coord_flip()
-dev.off()
-
-#model types
-png(paste0(figdir, "/model_types.png"), width = 640, height = 580)
-ggplot(model_types_sum, aes(fill=type, y=number, x = type)) +
-  geom_bar(position = "stack", stat = "identity", colour = "black") + 
-  scale_fill_manual(name = "Data class", values = c("#2D9BF0", "#12CDD4", "#0CA789", "#652CB3", "#0CA789", "#DA0063", "#9510AC", "#12CDD4", "#414BB2")) + 
-  ggtitle(paste("Total number of studies =", length(unique(model_types$Papers)))) +
-  ylab("Number of studies") +
-  xlab("Type of model") +
-  theme_classic() +
-  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.6)), 
-        axis.text.y = element_text(size = rel(1.6)), 
-        axis.title = element_text(size=rel(1.4), face="bold"),
-        legend.title = element_text(size = rel(1.3), face = "bold"), 
-        legend.position = "none",
-        legend.text = element_text(size = rel(1.4)),
-        title = element_text(size = rel(1.4))) + 
-  scale_y_continuous(breaks = seq(0,15,3)) +
-  coord_flip()
-dev.off()
-
-#ref scales
-png(paste0(figdir, "/ref_scales.png"), width = 640, height = 580)
-ggplot(ref_scale_sum, aes(fill=scale, y=number, x = scale)) +
-  geom_bar(position = "stack", stat = "identity", colour = "black") + 
-  scale_fill_manual(name = "Data class", values = rev(c("#EA2727", "#EA2775", "#EA27C9", "#BD27EA", "#8527EA", "#4D27EA", "#274FEA", "#2795EA", "#27B9EA", "#27EAEA", "#27EAC0", "#27EA6B", "#85EA27"))) + 
-  ggtitle(paste("Total number of studies =", length(unique(ref_scale$Papers)))) +
-  ylab("Number of studies") +
-  xlab("Spatial scale") +
-  theme_classic() +
-  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.6)), 
-        axis.text.y = element_text(size = rel(1.6)), 
-        axis.title = element_text(size=rel(1.4), face="bold"),
-        legend.title = element_text(size = rel(1.3), face = "bold"), 
-        legend.position = "none",
-        legend.text = element_text(size = rel(1.4)),
-        title = element_text(size = rel(1.4))) + 
-  scale_y_continuous(breaks = seq(0,15,3)) +
-  coord_flip()
-dev.off()
-
-#model type x ref scales
-png(paste0(figdir, "/model_type_x_ref_scales.png"), width = 740, height = 580)
-ggplot(ref_scale_model_type_sum, aes(x = scale, y = type)) +
-  geom_point(aes(size = cooc)) +
-  ggtitle(paste("Total number of studies =", length(unique(ref_scale_model_type_long$Papers)))) +
-  ylab("Model types") +
-  xlab("Spatial scale") +
-  theme_classic() +
-  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.6), angle = 90), 
-        axis.text.y = element_text(size = rel(1.6)), 
-        axis.title = element_text(size=rel(1.4), face="bold"),
-        legend.title = element_text(size = rel(1.3), face = "bold"), 
-        #legend.position = "none",
-        legend.text = element_text(size = rel(1.4)),
-        title = element_text(size = rel(1.4))) + 
-  #scale_y_continuous(breaks = seq(0,15,3)) +
-  coord_flip()
-dev.off()
-
-#model type x model domain
-png(paste0(figdir, "/model_type_x_model_domain.png"), width = 640, height = 580)
-ggplot(model_type_model_domain_long, aes(x = domain, y = model_type)) +
-  geom_point(aes(size = cooc)) +
-  ggtitle(paste("Total number of studies =", length(unique(ref_scale_model_type_long$Papers)))) +
-  ylab("Model types") +
-  xlab("Model domain") +
-  theme_classic() +
-  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.6), angle = 90), 
-        axis.text.y = element_text(size = rel(1.6)), 
-        axis.title = element_text(size=rel(1.4), face="bold"),
-        legend.title = element_text(size = rel(1.3), face = "bold"), 
-        #legend.position = "none",
-        legend.text = element_text(size = rel(1.4)),
-        title = element_text(size = rel(1.4))) + 
-  #scale_y_continuous(breaks = seq(0,15,3)) +
-  coord_flip()
-dev.off()
-
-# agent types
-levels(agent_class$code)
-agent_class$code <- factor(as.character(agent_class$code), levels = c(agent_types[["not applicable"]],
-                                                                      agent_types[["overarching agent types"]],
-                                                                      agent_types[["other type of agents"]],
-                                                                      agent_types[["farmer-type agents"]],
-                                                                      agent_types[["distribution-type agents"]],
-                                                                      agent_types[["retailer-type agents"]],
-                                                                      agent_types[["consumer-type agents"]]))
-
-agent_class$class <- factor(as.character(agent_class$class), levels = c("not applicable",
-                                                                        "overarching agent types",
-                                                                        "other type of agents",
-                                                                        "farmer-type agents",
-                                                                        "distribution-type agents",
-                                                                        "retailer-type agents",
-                                                                        "consumer-type agents"))
-
-agent_class <- agent_class[order(agent_class$code, agent_class$class),]
-
-x = 2
-
-png(paste0(figdir, "/agent_types.png"), width = 900, height = 700)
-ggplot(agent_class, aes(fill=code, y=n, x = class)) +
-  geom_bar(position = position_dodge2(width = 0.9, preserve = "single"), stat = "identity", colour = "black") + 
-  geom_text(aes(label = code, group = class), 
-            position = position_dodge2(width = 0.9, preserve = "single"), vjust=0.4, hjust = -0.1, angle = 0, size = rel(5)) +
-  #scale_fill_manual(name = "Data class", values = rev(c("#EA2727", "#EA2775", "#EA27C9", "#BD27EA", "#8527EA", "#4D27EA", "#274FEA", "#2795EA", "#27B9EA", "#27EAEA", "#27EAC0", "#27EA6B", "#85EA27"))) + 
-  ggtitle(paste("Total number of studies =", length(unique(quotes[quotes$`Document Groups`== "!Read for Lit review - eligible",]$Document)))) +
-  ylab("Number of studies") +
-  expand_limits(y = 7) +
-  xlab("Agent type") +
-  theme_classic() +
-  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.4*x), angle = 90), 
-        axis.text.y = element_text(size = rel(1.4*x)), 
-        axis.title = element_text(size=rel(1.2*x), face="bold"),
-        legend.title = element_text(size = rel(1.3*x), face = "bold"), 
-        legend.position = "none",
-        legend.text = element_text(size = rel(1.4*x)),
-        title = element_text(size = rel(1.4*x))) + 
-  scale_y_continuous(breaks = seq(0,10,2)) +
-  coord_flip()
-dev.off()
-
-#agent interaction sankey diagram
-
-#intract_target$target <- paste("receiver:", intract_target$target)
-colnames(intract_source) <- c("agent",  "target", "value", "source")
-colnames(intract_target) <- c("source", "other", "value", "target")
-links <- rbind(intract_source, intract_target)
-colnames(links)
-
-# From these flows we need to create a node data frame: it lists every entities involved in the flow
-nodes <- data.frame(
-  name=c(as.character(links$source), 
-         as.character(links$target)) %>% unique()
-)
-
-library(networkD3)
-
-# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
-links$IDsource <- match(links$source, nodes$name)-1 
-links$IDtarget <- match(links$target, nodes$name)-1
-
-# Make the Network
-p <- sankeyNetwork(Links = links, Nodes = nodes,
-                   Source = "IDsource", Target = "IDtarget",
-                   Value = "value", NodeID = "name", 
-                   sinksRight=FALSE, fontSize = 10)
-p
-
-saveNetwork(p, paste0(figdir, "/per-interaction_agents_exchange_sankey.html"))
-webshot(paste0(figdir, "/per-interaction_agents_exchange_sankey.html"),paste0(figdir, "/per-interaction_agents_exchange_sankey.png"), vwidth = 1200, vheight = 900)
-
-
-other_agent <- intract[intract$code_group == "per interaction - other agent",]
-View(other_agent)
-
-other_agent_sum <- other_agent %>% count(Document, name)
-other_agent_sum$n <- 1
-
-other_agent_sum <- other_agent %>% count(name)
-
-# goals
-levels(goals$name)
-goals$name <- factor(as.character(goals$name), levels = c(goals_class[["availability"]],
-                                                                goals_class[["accessibility"]],
-                                                                goals_class[["utilisation"]],
-                                                                goals_class[["stability"]],
-                                                                goals_class[["environmental"]],
-                                                                goals_class[["economic"]],
-                                                                goals_class[["logistics"]],
-                                                                goals_class[["infrastructure & technology"]],
-                                                                goals_class[["health & wellbeing"]],
-                                                          goals_class[["other"]]))
-
-goals$class <- factor(as.character(goals$class), levels = c("availability",
-                                                                        "accessibility",
-                                                                        "utilisation",
-                                                                        "stability",
-                                                                        "environmental",
-                                                                        "economic",
-                                                                        "logistics",
-                                                            "infrastructure & technology",
-                                                            "health & wellbeing",
-                                                            "other"))
-
-goals <- goals[order(goals$name, goals$class),]
-
-
-
-png(paste0(figdir, "/goal_types.png"), width = 900, height = 1000)
-ggplot(goals, aes(fill=name, y=n, x = class)) +
-  geom_bar(position = position_dodge2(width = 0.9, preserve = "single"), stat = "identity", colour = "black") + 
-  geom_text(aes(label = name, group = class), 
-            position = position_dodge2(width = 0.9, preserve = "single"), vjust=0.4, hjust = -0.1, angle = 0, size = rel(5)) +
-  #scale_fill_manual(name = "Data class", values = rev(c("#EA2727", "#EA2775", "#EA27C9", "#BD27EA", "#8527EA", "#4D27EA", "#274FEA", "#2795EA", "#27B9EA", "#27EAEA", "#27EAC0", "#27EA6B", "#85EA27"))) + 
-  ggtitle(paste("Total number of studies =", length(unique(quotes[quotes$`Document Groups`== "!Read for Lit review - eligible",]$Document)))) +
-  ylab("Number of studies") +
-  expand_limits(y = 5) +
-  xlab("Goals") +
-  theme_classic() +
-  theme(axis.text.x = element_text(vjust = 0.5, hjust=1, size = rel(1.6)), 
-        axis.text.y = element_text(size = rel(1.6)), 
-        axis.title = element_text(size=rel(1.4), face="bold"),
-        legend.title = element_text(size = rel(1.3), face = "bold"), 
-        legend.position = "none",
-        legend.text = element_text(size = rel(1.4)),
-        title = element_text(size = rel(1.4))) + 
-  scale_y_continuous(breaks = seq(0,10,2)) +
-  coord_flip()
-dev.off()
-
-n_reviewed <- length(unique(quotes[quotes$`Document Groups`== "!Read for Lit review - eligible",]$Document))
-
-#
-library(gt)
-library(tidyverse)
-library(glue)
-
-goals$name <- as.character(goals$name)
-goals <- goals[,1:3]
-colnames(goals) <- c("goals", "n_measures", "class")
-m <- max(goals$n_measures)
-
-goals %>%
-  group_by(class) %>%
-  arrange(class,desc(n_measures)) %>%
-  gt() %>%
-  tab_header(
-    title = "Goals of governance measures",
-    subtitle = paste("Gathered from", n_reviewed, "papers")
-  ) %>% #tab_row_group(
-    #group = "class"
-  #) %>%
-  fmt_passthrough( # Not sure about this but it works...
-    columns = vars(class) # First column: supp (character)
-  ) %>%
-  # data_color( # Update cell colors...
-  #   columns = vars(class), # ...for supp column!
-  #   colors = scales::col_factor( # <- bc it's a factor
-  #     palette = c(
-  #       "chocolate1","chocolate3", "coral1", "coral3", "chartreuse3", "cyan", "azure1", "azure3", "blueviolet", "brown1"), # Two factor levels, two colors
-  #     domain = unique(goals$class)# Levels
-  #   )) %>% 
-  data_color( # Update cell colors...
-    columns = vars(n_measures), # ...for dose column 
-    colors = scales::col_numeric( # <- bc it's numeric
-      palette = c(
-        "gray90","gray50"), # A color scheme (gradient)
-      domain = c(0,m) # Column scale endpoints
-    )) %>% tab_options(row_group.background.color = "yellow")
-  
-formattable(goals[,1:2])
-
-#
-
-
-# governance sankey diagram
-#intract_target$target <- paste("receiver:", intract_target$target)
-colnames(governance_source) <- c("source", "target", "value")
-colnames(governance_target) <- c("source", "target", "value")
-links <- rbind(governance_source, governance_target)
-colnames(links)
-
-# From these flows we need to create a node data frame: it lists every entities involved in the flow
-nodes <- data.frame(
-  name=c(as.character(links$source), 
-         as.character(links$target)) %>% unique()
-)
-
-# With networkD3, connection must be provided using id, not using real name like in the links dataframe.. So we need to reformat it.
-links$IDsource <- match(links$source, nodes$name)-1 
-links$IDtarget <- match(links$target, nodes$name)-1
-
-# Make the Network
-p <- sankeyNetwork(Links = links, Nodes = nodes,
-                   Source = "IDsource", Target = "IDtarget",
-                   Value = "value", NodeID = "name", 
-                   sinksRight=FALSE, fontSize = 10)
-p
+###################### FIGURES ########################
