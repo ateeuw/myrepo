@@ -48,4 +48,4 @@ return(sheet)
 # modelling <- modelling[-empty_rows,]
 # 
 # 
-# test <- split_and_add(sheet = modelling, clm = 4)
+# test <- split_and_add_by_ID(sheet = modelling, clm = 4)
