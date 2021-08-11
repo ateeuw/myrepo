@@ -1637,11 +1637,11 @@ rm(list = c("mstyp", "mstyp_sum"))
 ###################### per effect - type other ########################
 
 ###################### governance measures sankey ########################
-gov <- quotes_long[quotes_long$code_group %in% c("per measure - objective", "per measure - measure", "per effect - FS indicator"),]
+gov <- quotes_long2[quotes_long2$code_group %in% c("per measure - objective", "per measure - measure", "per effect - FS indicator"),]
 gov_w <- spread(gov, code_group, name)
-obj_w <- gov_w[,c(1,17)]
-meas_w <- gov_w[,c(1,16)]
-fsi_w <- gov_w[,c(1,15)]
+obj_w <- gov_w[,c(1,18)]
+meas_w <- gov_w[,c(1,15)]
+fsi_w <- gov_w[,c(1,16)]
 
 gov_s <- merge(obj_w, meas_w,  by = "ID")
 gov_t <- merge(meas_w, fsi_w,  by = "ID")
@@ -1651,11 +1651,11 @@ gov_t <- na.omit(gov_t)
 gov_s$m_class <- ""
 gov_s$o_class <- ""
 gov_s <- dict_classification(sheet = gov_s, dct = goals_class, clm = 2, class_clm = 5)
-gov_s <- dict_classification(sheet = gov_s, dct = measure_class, clm = 3, class_clm = 4)
+gov_s <- dict_classification(sheet = gov_s, dct = NOTA_subclass, clm = 3, class_clm = 4)
 
 gov_t$m_class <- ""
 gov_t$f_class <- ""
-gov_t <- dict_classification(sheet = gov_t, dct = measure_class, clm = 2, class_clm = 4)
+gov_t <- dict_classification(sheet = gov_t, dct = NOTA_subclass, clm = 2, class_clm = 4)
 gov_t <- dict_classification(sheet = gov_t, dct = FSi_class, clm = 3, class_clm = 5)
 
 # colnames(intract_m) <- c("ID", "agent", "other", "codes", "exchange")
