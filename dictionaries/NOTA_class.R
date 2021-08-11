@@ -15,13 +15,14 @@ undir_gov[["scholarship scheme"]] <- c("training and scholarship scheme")
 undir_gov[["promotion of agricultural machinery and equipment"]] <- c("promotion of agricultural machinery & equipment")
 undir_gov[["promotion of improved seed"]] <- c("promotion of improved seed")
 undir_gov[["improving female workers' education levels"]] <- c("improving female workers' education levels") #unsure
-undir_gov[["agricultural extension"]] <- c("(expand) agricultural extension services")
+undir_gov[["agricultural extension"]] <- c("(expand) agricultural extension services", "educate farmers through extension services")
 
 ## propaganda
 undir_gov[["dietary guidelines"]] <- "dietary guidelines"
 undir_gov[["awareness campaign on water conservation"]] <- c("awareness campaign on water conservation")
 undir_gov[["campaign to promote shopping in supermarkets"]] <- c("campaign to promote shopping in supermarkets (versus convenience stores)")
 undir_gov[["improving willingness to walk"]] <- c("improving willingness to walk")
+undir_gov[["promote export of X"]] <- c("promote export of X")
 
 ## packaged self-serve messages
 undir_gov[["share seasonal weather forcasts with farmers"]] <- c("share seasonal forecasts with farmers")
@@ -35,6 +36,8 @@ undir_gov[["improve transport and distribution of food in public distribution pr
 undir_gov[["crowd-shipping food rescue programme"]] <- "crowd-shipping food rescue programme"
 undir_gov[["improve public transport"]] <- c("improving public transport")
 undir_gov[["set up a distribution network for a commodity X"]] <- c("setup local X distribution network")
+undir_gov[["mobile market programme targeting food insecure households"]] <- c("mobile market programme targeting food insecure households")
+undir_gov[["public food distribution programme"]] <- c("end public food distribution programme")
 
 ## at large treatment
 undir_gov[["construction of irrigation infrastructure"]] <- c("improve irrigation facilities", "construction of irrigation infrastructure", "construction of water canals", "construction of irrigation network")
@@ -49,6 +52,7 @@ undir_gov[["soil erosion control"]] <- c("soil erosion control")
 undir_gov[["construction of dams"]] <- c("construction of hydro-electric dams", "construction of dam")
 undir_gov[["relocation of water demanding crops"]] <- c("relocation of water-demanding crops")
 undir_gov[["creating new stores"]] <- c("creating new stores")
+undir_gov[["introduce farmer's markets"]] <- c("introduce farmer's markets")
 
 ## storage and custody
 undir_gov[["strategic storage reserves of a commodity X"]] <- c("strategic storage reserves of X")
@@ -68,7 +72,7 @@ undir_gov[["increase availability of a commodity X in stores"]] <- c("increase a
 ## bounties
 undir_gov[["import tariffs on a commodity X"]] <- c("remove import tariffs for X", "import tariffs on X", "reduce/remove import tariffs on X", "reduce import tariffs on X", "remove import tariffs")
 undir_gov[["support fertiliser application through price incentives"]] <- "support fertiliser application through price incentives"
-undir_gov[["direct payments to farmers in exchange for food production, land management or delivery of other ecosystem services"]] <- c("(increase) direct payments", "(increase) direct payments for X production", "reduce direct payments", "reduce direct payments for X production", "remove direct payments", "abolish production subsidies for X")
+undir_gov[["direct payments to farmers in exchange for food production, land management or delivery of other ecosystem services"]] <- c("direct payments for X production", "increase direct payments for X production", "(increase) direct payments", "(increase) direct payments for X production", "reduce direct payments", "reduce direct payments for X production", "remove direct payments", "abolish production subsidies for X")
 undir_gov[["export subsidies for a commodity X"]] <- c("abolish export subsidies for X", "abolish export subsidies")
 undir_gov[["variable cost subsidies for production of a commodity X"]] <- "variable cost subsidies for X production" 
 undir_gov[["export tariffs on a commodity X"]] <- "export tariffs on X"
@@ -84,18 +88,21 @@ undir_gov[["incentivise GM food production through redused compliance cost"]] <-
 undir_gov[["willing-buyer willing-seller land reform stimulated by grants"]] <- "willing-buyer willing-seller land reform stimulated by grants"
 undir_gov[["forward contracts with producers of a commodity X"]] <- c("forward constracts with X producers")
 undir_gov[["credit programmes (generic)"]] <- c("improve access to credit", "credit programme")
-undir_gov[["create off-farm off-season work opportunities"]] <- "create off-farm off-season work opportunities"
+undir_gov[["create off-farm work opportunities"]] <- c("create off-farm off-season work opportunities", "create off-farm work opportunities")
 undir_gov[["change interest rate on loans"]] <- c("reduce interest rate on loans", "increased interest rate", "adjusted interest rates")
 undir_gov[["credit provision for agricultural production-related expenses"]] <- c("credit provision for agricultural production-related expenses")
 
 ## bearer-directed payments
 undir_gov[["subsidies on housing loans"]] <- "subsidies on housing loans"
 undir_gov[["subsidies on energy consumption"]] <- "subsidies on energy consumption"
-undir_gov[["subsidies on farm inputs"]] <- c("subsidies on fertiliser", "elimination of irrigation subsidies", "(increase) subsidies on agrochemicals", "(increase) subsidies on machinery and equipment", "subsidies for productive infrastructure", "subsidies for pure breed livestock acquisition", "(increase) subsidies on (hybrid/improved/high quality) seeds", "(increase) subsidies on farm inputs", "reduce subsidies on agrochemicals", "reduce subsidies on fertilisers", "abolish subsidies on fertiliser", "short-term subsidies on fertiliser", "short-term subsidies on (hybrid/improved) seeds", "subsidies on fuel", "subsidies on supplementary feed during forage shortage", "subsidies on supplementary feed during drought", "subsidies on supplementary feed during and after drought")
+undir_gov[["subsidies on farm inputs"]] <- c("increase subsidies on fertilisers", "subsidies on high-quality seed", "subsidies on farm inputs", "subsidies on fertiliser", "elimination of irrigation subsidies", "(increase) subsidies on agrochemicals", "(increase) subsidies on machinery and equipment", "subsidies for productive infrastructure", "subsidies for pure breed livestock acquisition", "(increase) subsidies on (hybrid/improved/high quality) seeds", "(increase) subsidies on farm inputs", "reduce subsidies on agrochemicals", "reduce subsidies on fertilisers", "abolish subsidies on fertiliser", "short-term subsidies on fertiliser", "short-term subsidies on (hybrid/improved) seeds", "subsidies on fuel", "subsidies on supplementary feed during forage shortage", "subsidies on supplementary feed during drought", "subsidies on supplementary feed during and after drought")
 undir_gov[["minimum support price for a commodity X"]] <- c("(increase) minimum support price for X", "reduce minimum support price for X")
 undir_gov[["subsidies on land rent"]] <- c("subsidies on land rent")
 undir_gov[["cheaper healthy food (relative pricing)"]] <- c("cheaper healthy food/relative pricing")
-undir_gov[["subsidies on a commodity X"]] <- c("subsidies on X")
+undir_gov[["subsidies on a commodity X"]] <- c("subsidies on X", "subsidies on X in convenience stores")
+undir_gov[["ride service to grocery shop for food insecure households"]] <- c("ride service to grocery shop for food insecure households")
+undir_gov[["direct payments to large-scale farmers"]] <- c("increase direct payments to large-scale farmers")
+undir_gov[["minimum export price for a commodity X"]] <- c("minimum export price for X")
 
 ## transfers
 undir_gov[["food stamps to low-income households"]] <- c("food stamps to low-income households", "food stamps to low-income households with incentives for fruit and vegetable", "food stamps to low-income households during price shocks")
@@ -161,7 +168,6 @@ undir_gov[["allow farmers to perform agroforestry in timber production areas"]] 
 undir_gov[["land reform/redistribution"]] <- c("land reform/redistribution")
 undir_gov[["reduce value added taxes for poor households"]] <- c("reduce value added tax for poor households") #unsure
 
-
 # combine tools that are the same but used differently ################################################################
 
 
@@ -193,7 +199,8 @@ nodality[["packaged self-serve messages"]] <- c("share seasonal weather forcasts
 nodality[["propaganda"]] <- c("campaign to promote shopping in supermarkets",
                               "dietary guidelines",
                               "improving willingness to walk",
-                              "awareness campaign on water conservation")
+                              "awareness campaign on water conservation",
+                              "promote export of X")
 
 nodality_rev <- reverse_dict(dict = nodality)
 NOTA_class[["Nodality"]] <- nodality_rev
@@ -205,7 +212,9 @@ organisation[["transportation and redistribution"]] <- c("relocation of water de
                                                          "improve transport and distribution of food in public distribution programme",
                                                          "improv public transport",
                                                          "set up a distribution network for a commodity X",
-                                                         "improve public transport")
+                                                         "improve public transport",
+                                                         "mobile market programme targeting food insecure households",
+                                                         "public food distribution programme")
 
 organisation[["at large treatment"]] <- c("construction of irrigation infrastructure",
                                           "construction of market facilities",
@@ -219,7 +228,8 @@ organisation[["at large treatment"]] <- c("construction of irrigation infrastruc
                                           "construction of dams",
                                           "construction of water storage infrastructure",
                                           "creating new stores",
-                                          "construction of road infrastructure")
+                                          "construction of road infrastructure",
+                                          "introduce farmer's markets")
 
 organisation[["storage and custody"]] <- c("strategic storage reserves of a commodity X") 
 
@@ -231,7 +241,7 @@ organisation[["processing"]] <- c("start processing factory for a commodity X", 
                                   "increased shelf life for a commodity X")
 
 organisation_rev <- reverse_dict(dict = organisation)
-NOTA_class[["Organisation"]] <- organisation
+NOTA_class[["Organisation"]] <- organisation_rev
 
 # Then all treasure measures per sub-class
 treasure <- list()
@@ -249,10 +259,14 @@ treasure[["bearer-directed payments"]] <- c("minimum support price for a commodi
                                             "subsidies on houseing loans",
                                             "subsidies on a commodity X",
                                             "subsidies on land rent",
-                                            "subsidies on housing loans")
+                                            "subsidies on housing loans",
+                                            "ride service to grocery shop for food insecure households",
+                                            "direct payments to large-scale farmers",
+                                            "minimum export price for a commodity X")
 
 treasure[["contracts"]] <- c("credit provision for agricultural production-related expenses",
                              "create off-farm off-season work opportunities",
+                             "create off-farm work opportunities",
                              "credit programmes (generic)",
                              "change interest rate on loans",
                              "willing-seller willing-buyer land reform stimulated by government grants",
@@ -287,13 +301,12 @@ treasure[["conduits"]] <- c("investment in ...",
                             "investment in agricultural sector (generic)")
 
 treasure_rev <- reverse_dict(dict = treasure)
-NOTA_class[["Treasure"]] <- organisation
+NOTA_class[["Treasure"]] <- treasure_rev
 
 # Then lastly all authority measures per sub-class
 authority <- list()
 authority[["directed constraints"]] <- c("value added tax on a commodity X for ...", 
-                                         "land reform/redistribution",
-                                         "reduce value added taxes for poor households")
+                                         "land reform/redistribution")
 
 authority[["open permits"]] <- c("export quotas for a commodity X",
                                  "import quotas for a commodity X")
@@ -326,7 +339,9 @@ authority[["open compacts"]] <- c("allow cultivation of bio-fuel in marginal gra
                                   "allow the cultivation of bio-fuel in marginal grasslands")
 
 authority_rev <- reverse_dict(dict = authority)
-NOTA_class[["Authority"]] <- authority
+NOTA_class[["Authority"]] <- authority_rev 
+
+NOTA_class[["unclear"]] <- "unclear"
 
 #
 NOTA_simpl <- list()
