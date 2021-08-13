@@ -350,4 +350,4 @@ NOTA_simpl <- append(NOTA_simpl, organisation_rev)
 NOTA_simpl <- append(NOTA_simpl, treasure_rev)
 NOTA_simpl <- append(NOTA_simpl, authority_rev)
 
-
+rm(list = c("authority", "nodality", "organisation", "treasure"))
