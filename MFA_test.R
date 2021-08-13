@@ -16,13 +16,12 @@ library(factoextra)
 library(FactoMineR)
 library(beepr)
 
-
-res = MFA(wine, 
-          group=c(2,5,3,10,9,2), 
-          type=c("n",rep("s",5)), 
-          ncp=5, 
-          name.group=c("origin","odor","visual","odor.after.shaking", "taste","overall"), 
-          num.group.sup=c(1,6))
+# res = MFA(wine, 
+#           group=c(2,5,3,10,9,2), 
+#           type=c("n",rep("s",5)), 
+#           ncp=5, 
+#           name.group=c("origin","odor","visual","odor.after.shaking", "taste","overall"), 
+#           num.group.sup=c(1,6))
 
 test = MFA(agmod[,2:ncol(agmod)], #leave document out 
           group=c(1,8), 
