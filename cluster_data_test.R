@@ -1,10 +1,13 @@
 # Cluster data test
 
+rm(list = ls()) #start with a clean environment
+
 # libraries
 library(readxl) #for reading data
 library(dplyr) #for piping
 library(tidyr) #for data processing
-library(countrycode)
+library(countrycode) #for aggregating countries into regions
+library(maps) #to get a list of all countries
 
 # functions
 source("./functions/split_and_add_by_ID.R")
@@ -21,11 +24,11 @@ source("./dictionaries/goals_class.R")
 
 # Load data ###################
 datadir <- "../Atlas_export_sheets"
-review_all_columns <- read_excel(paste0(datadir, "/", "all_quotes.xlsx")) # read_excel("C:/Users/MeyerMA/OneDrive - Universiteit Twente/Paper/Review paper/Import_R_case_studies.xlsx")
+quotes <- read_excel(paste0(datadir, "/", "all_quotes.xlsx")) # read_excel("C:/Users/MeyerMA/OneDrive - Universiteit Twente/Paper/Review paper/Import_R_case_studies.xlsx")
 # Load data ###################
 
 # Pre-process data ########################
-quotes <- review_all_columns[review_all_columns$`Document Groups` == "!Read for Lit review - eligible",] #ignore codes attached in papers ineligible for literature review
+quotes <- quotes[quotes$`Document Groups` == "!Read for Lit review - eligible",] #ignore codes attached in papers ineligible for literature review
 
 #quotes <- quotes[quotes$Document %in% unique(quotes$Document)[1:10],]
 
@@ -60,25 +63,69 @@ n_studies <- as.numeric(as.character(length(unique(quotes_long$Document))))
 
 quotes_long <- quotes_long[!is.na(quotes_long$name),]
 
-rm(list = c("new_row", "code", "codes_vec", "code_vec", "codes", "i", "j", "review_all_columns"))
+rm(list = c("quotes", "new_row", "code", "codes_vec", "code_vec", "codes", "i", "j"))
 
 quotes_long$name_id <- 1:nrow(quotes_long)
 
 # Fix spatial & temporal - extent and resolution
-quotes_long2 <- quotes_long
-quotes_long2$code_group[which(quotes_long2$code_group == "spatial & temporal - spatial extent [m2]")] <- "spatial & temporal - spatial extent"
-quotes_long2$code_group[which(quotes_long2$code_group == "spatial & temporal - spatial resolution [m2]")] <- "spatial & temporal - spatial resolution"
-quotes_long2$code_group[which(quotes_long2$code_group == "spatial & temporal - temporal extent [d]")] <- "spatial & temporal - temporal extent"
-quotes_long2$code_group[which(quotes_long2$code_group == "spatial & temporal - temporal resolution [d]")] <- "spatial & temporal - temporal resolution"
+quotes_long$code_group[which(quotes_long$code_group == "spatial & temporal - spatial extent [m2]")] <- "spatial & temporal - spatial extent"
+quotes_long$code_group[which(quotes_long$code_group == "spatial & temporal - spatial resolution [m2]")] <- "spatial & temporal - spatial resolution"
+quotes_long$code_group[which(quotes_long$code_group == "spatial & temporal - temporal extent [d]")] <- "spatial & temporal - temporal extent"
+quotes_long$code_group[which(quotes_long$code_group == "spatial & temporal - temporal resolution [d]")] <- "spatial & temporal - temporal resolution"
 
+quotes_wide <- quotes_long %>% spread(code_group, name)
 
-quotes_wide <- quotes_long2 %>% spread(code_group, name)
+# Fix countries
+# identify papers that represent all countries
+to_fix <- which(quotes_long$name == "all countries fix in R")
+
+#get list of all countries
+x <- map("world", plot=FALSE)
+str(x)
+x$names
+
+countries <- unique(gsub("\\:.*","",x$names))
+countries
+
+#some of the countries extracted from the function above are not really countries (but e.g. sovereign states), and therefore removed
+no_country <- c("Ascension Island", "Azores", "Barbuda", "Bonaire", "Canary Islands", "Chagos Archipelago", "Christmas Island",
+                "Cocos Islands", "Falkland Islands", "Guadeloupe", "Heard Island", "Madeira Islands", "Martinique", "Mayotte",
+                "Micronesia", "Reunion", "Saba", "Saint Kitts" , "Saint Vincent", "Siachen Glacier", "Sint Eustatius", "Sint Maarten",
+                "South Georgia", "South Sandwich Islands", "Trinidad", "Vatican", "Virgin Islands, US")
+
+countries <- countries[-which(countries %in% no_country)]
+
+#add row for each country, with the rest of the information remaining the same
+for(i in to_fix){
+  rowi <- quotes_wide[i,]
+  for(j in countries){
+    rowj <- rowi
+    rowj$`spatial & temporal - country` <- j
+    quotes_wide <- rbind(quotes_wide, rowj)
+  }
+}
+
+#remove rows with "all countries fix in R" identifier
+quotes_wide <- quotes_wide[-to_fix,]
+
+#some countries are not recognized by the map function used later on, therefore fixed here
+quotes_wide$`spatial & temporal - country`[quotes_wide$`spatial & temporal - country` == "Antigua"] <- "Antigua and Barbuda"
+quotes_wide$`spatial & temporal - country`[quotes_wide$`spatial & temporal - country` == "Côte d'Ivoire"] <- "Cote d'Ivoire"
+quotes_wide$`spatial & temporal - country`[quotes_wide$`spatial & temporal - country` == "Grenadines"] <- "Saint Vincent and the Grenadines"
+quotes_wide$`spatial & temporal - country`[quotes_wide$`spatial & temporal - country` == "Nevis"] <- "Saint Kitts and Nevis"
+quotes_wide$`spatial & temporal - country`[quotes_wide$`spatial & temporal - country` == "Tobago"] <- "Trinidad and Tobago"
+quotes_wide$`spatial & temporal - country`[quotes_wide$`spatial & temporal - country` == "Eswatini"] <- "Swaziland"
+
+# Fix data (split data type and whether the type is primary or secondary)
+quotes_wide$`modelling - data primary or secondary` <- sub("\\).*", "", sub(".*\\(", "", quotes_wide$`modelling - data`)) 
+quotes_wide$`modelling - data` <- gsub("\\s*\\([^\\)]+\\)","", quotes_wide$`modelling - data`)
 
 # Pre-process data ########################
 
 # modelling #############################
 modelling <- quotes_wide
-modelling$`modelling - data` <- gsub("\\s*\\([^\\)]+\\)","",as.character(modelling$`modelling - data`)) #disregarding whether data are primary or secondary
+
+# modelling$`modelling - data` <- gsub("\\s*\\([^\\)]+\\)","",as.character(modelling$`modelling - data`)) #disregarding whether data are primary or secondary
 modelling$`modelling - coupling?`[which(modelling$`modelling - coupling?` == "not applicable")] <- "just one"
 
 modelling_codes <- c("modelling - aim", "modelling - feedback-loop?", "modelling - sensitivity analysis?", "modelling - validation?", "modelling - data",
@@ -106,6 +153,14 @@ nest2 <- split_and_add_by_ID(sheet = nest2, clm = 4) #domain
 nest2 <- nest2[-which(is.na(nest2$`per model - type`)),]
 nest2 <- nest2[,-which(colnames(nest2) %in% c("name_id","ID"))]
 
+nest3 <- quotes_wide[,which(colnames(quotes_wide) %in% c("modelling - data", "modelling - data primary or secondary", "name_id", "Document", "ID"))]
+empty_rows <- which(rowSums(is.na(nest3[,4:ncol(nest3)]))==length(4:ncol(nest3)))
+nest3 <- nest3[-empty_rows,]
+
+nest3 <- split_and_add_by_ID(sheet = nest3, clm = 4) #data type + prim/sec
+# nest3 <- nest3[-which(is.na(nest3$`modelling - data`)),]
+nest3 <- nest3[,-which(colnames(nest3) %in% c("name_id","ID"))]
+
 # level one non-nested data
 for(i in c(4:9)){
   modelling <- split_and_add_by_doc(sheet = modelling, clm = i)
@@ -116,6 +171,8 @@ modelling <- modelling %>% distinct()
 
 modelling <- merge(modelling, nest)
 modelling <- merge(modelling, nest2)
+modelling <- merge(modelling, nest3)
+modelling <- modelling %>% distinct()
 # modelling #############################
 
 
@@ -138,6 +195,7 @@ agent_agt <- dict_classification(sheet = agent_agt, dct = timpl_class, clm = 3, 
 agent_agt <- agent_agt[!is.na(agent_agt$class),]
 agent_agt <- agent_agt[-which(agent_agt$class == ""),]
 agent_agt <- agent_agt[,-(which(colnames(agent_agt) %in% c("name_id")))]
+colnames(agent_agt)[which(colnames(agent_agt) == "class")] <- "per agent - agent class"
 agent_agt <- agent_agt %>% distinct()
 
 #agent <- merge(agent_rep, agent_agt)
@@ -185,6 +243,8 @@ spat_codes <- c("spatial & temporal - representation split", "spatial & temporal
 keep <- which(colnames(spat) %in% c(spat_codes, "name_id", "Document"))
 spat <- spat[,keep]
 spat$continent <- countrycode(sourcevar = spat$`spatial & temporal - country`, origin = "country.name", destination = "continent")
+spat$WBregion7 <- countrycode(sourcevar = spat$`spatial & temporal - country`, origin = "country.name", destination = "region")
+spat$WBregion23 <- countrycode(sourcevar = spat$`spatial & temporal - country`, origin = "country.name", destination = "region23")
 empty_rows <- which(rowSums(is.na(spat[,3:ncol(spat)]))==length(3:ncol(spat)))
 spat <- spat[-empty_rows,]
 
