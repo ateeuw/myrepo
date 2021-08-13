@@ -1,0 +1,36 @@
+"per model - subtype" "number"
+"not specified" 66
+"dynamic CGE model" 4
+"recursive dynamic CGE model" 4
+"comparative static CGE model" 2
+"Markov model" 2
+"mathematical programming-based ABM" 2
+"simultaneous equations" 2
+"structural demand model" 2
+"applied CGE model" 1
+"binary logistic regression" 1
+"binary probit model" 1
+"bottom-up CGE model" 1
+"cellular automata-Markov integrated model" 1
+"comparative-static PE model" 1
+"dynamic PE model" 1
+"dynamic recursive CGE model" 1
+"impact multipliers analysis" 1
+"integrated PE model" 1
+"mixed demand model" 1
+"Monte Carlo simulation" 1
+"multi-market model" 1
+"Partnership for Economic Policy standard CGE model" 1
+"piecewise linear regression models" 1
+"polynomial regression" 1
+"recursive dyamic PE supply-demand model" 1
+"recursive dynamic ABM" 1
+"recursive dynamic microsimulation model" 1
+"reduced-form analysis" 1
+"reduced-form multinomial logit model." 1
+"regionally-disaggregated CGE model" 1
+"sequential dynamic CGE model" 1
+"spatially disaggregated dynamic CGE model" 1
+"static CGE model" 1
+"topic modelling-system dynamics modelling" 1
+"vector autoregression model" 1

@@ -1,0 +1,7 @@
+"per agent - interactions" "number"
+"farmer-farmer" 2
+"agricultural enterprise-water manager; agricultural enterprise-water supplier" 1
+"ecological entity-water manager" 1
+"industrial entity-water manager; industrial entity-water supplier" 1
+"residential entity-water manager; residential entity-water supplier" 1
+"water supplier-water manager" 1

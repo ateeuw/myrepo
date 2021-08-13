@@ -1,0 +1,227 @@
+"per agent - characteristic" "number"
+"not applicable" 68
+"income" 15
+"land" 12
+"labour" 7
+"farm size" 6
+"geocoded location" 6
+"savings" 5
+"yield expectation" 5
+"capital" 4
+"household size" 4
+"price expectation" 4
+"access to irrigation water" 3
+"age of household head" 3
+"education" 3
+"experiences" 3
+"financial savings" 3
+"food requirements" 3
+"household labour" 3
+"skilled?" 3
+"type of inventory/store" 3
+"wage" 3
+"yield of X" 3
+"access to credit" 2
+"age" 2
+"age household members" 2
+"climate expectation" 2
+"crops" 2
+"education of household head" 2
+"employment status" 2
+"energy requirements" 2
+"farmer?" 2
+"food preference" 2
+"food security status" 2
+"food stock" 2
+"gender household members" 2
+"household composition" 2
+"knowledge" 2
+"number of livestock" 2
+"preferences" 2
+"region" 2
+"rural?" 2
+"skill" 2
+"urban?" 2
+"village where agent lives" 2
+"willingness to abandon land" 2
+"ability to find suitable land" 1
+"ability to work off-farm" 1
+"ability to work on-farm" 1
+"access to labour markets" 1
+"access to market for direct sale?" 1
+"access to river/stream" 1
+"access to technology" 1
+"administrative unit" 1
+"adult equivalents" 1
+"agricultural added value" 1
+"agricultural intensity" 1
+"agroecological zone" 1
+"allowed to participate in initiative?" 1
+"asset ownership" 1
+"attitude concerining agronomic risk" 1
+"attitude concerning economic risk" 1
+"attitudes" 1
+"awareness of initiative" 1
+"bacterial presence on food" 1
+"bank balance" 1
+"behavioural characteristics" 1
+"beliefs" 1
+"BMI" 1
+"bus stops" 1
+"business style" 1
+"calorie needs" 1
+"capacity for passengers" 1
+"capital demand" 1
+"car ownership" 1
+"cash requirement" 1
+"cereal stock" 1
+"cognition" 1
+"conservationist?" 1
+"consumption" 1
+"consumption preferences" 1
+"consumption share of X" 1
+"crop productivity" 1
+"cropland" 1
+"dairy consumption" 1
+"demand for X" 1
+"demographic composition" 1
+"diabetes status" 1
+"discount on food" 1
+"disposable income" 1
+"distance to fields" 1
+"distance to hydro-electric dam" 1
+"distance to road" 1
+"distance to stores" 1
+"dividends" 1
+"employment of household head" 1
+"employment status of household members" 1
+"expectations" 1
+"expenditure" 1
+"expenditure quitile" 1
+"family labour" 1
+"farm expenses" 1
+"farm gate price" 1
+"farm geography" 1
+"farm output" 1
+"farm type" 1
+"feed resources" 1
+"fertiliser use" 1
+"financial capital" 1
+"fodder stock" 1
+"food availability" 1
+"food consumption needs" 1
+"food demand" 1
+"food prices" 1
+"food product inventory" 1
+"food safety" 1
+"food sales volumes" 1
+"food waste" 1
+"full-time work?" 1
+"gender head of household" 1
+"gender of household head" 1
+"grain production" 1
+"groundwater supply" 1
+"home location" 1
+"hours of operation" 1
+"household calorie need" 1
+"income decile" 1
+"income expectation" 1
+"income quartile" 1
+"industrial added value" 1
+"innovativeness" 1
+"intentions" 1
+"interactions with other agents" 1
+"invited to participate in initiative?" 1
+"irrigation access" 1
+"irrigation equipment" 1
+"irrigation quota" 1
+"irrigation systems" 1
+"jurisdiction within which agent lives" 1
+"land cover" 1
+"land rental contract?" 1
+"land rights" 1
+"land use" 1
+"liability concerns" 1
+"likelihood of stocking healthy food" 1
+"livestock characteristics" 1
+"livestock ownership" 1
+"marriage status of household members" 1
+"maximum migration scope" 1
+"minimum milk price" 1
+"motivation" 1
+"movement speed" 1
+"natural capital" 1
+"non-farmer?" 1
+"number of cells searched per iteration" 1
+"number of food products" 1
+"number of household head" 1
+"number of search iterations" 1
+"nutritional knowledge" 1
+"off-farm income" 1
+"ordered quantities of food products" 1
+"participation status" 1
+"perceived importance of staying healthy" 1
+"perceived success of participation in initiative" 1
+"perception" 1
+"perceptual range" 1
+"pesticide use" 1
+"prices of food products" 1
+"private vehicle ownership" 1
+"probability of getting fired" 1
+"probability of getting hired" 1
+"production deficit of X" 1
+"productive ability" 1
+"profit" 1
+"profit margin" 1
+"purchasing costs" 1
+"race" 1
+"race of household members" 1
+"receiver of state premiums?" 1
+"remittances" 1
+"resource availability" 1
+"revenue" 1
+"rice yield" 1
+"risk aversion" 1
+"risk of death" 1
+"satisfaction" 1
+"semi-skilled?" 1
+"shelf life of food products" 1
+"shopping frequency" 1
+"size of fields" 1
+"social network" 1
+"soil quality of fields" 1
+"spare time" 1
+"spatial location" 1
+"speed limit" 1
+"storage costs" 1
+"store preference" 1
+"store size" 1
+"supply of X" 1
+"surface water supply" 1
+"surplus of X" 1
+"terrain" 1
+"time required to fulfill task" 1
+"tools ownership" 1
+"topology of fields" 1
+"tractor ownership" 1
+"transfers" 1
+"trust in market" 1
+"trust in weather forecast" 1
+"unskilled?" 1
+"utility" 1
+"values (importance of profit)" 1
+"values (importance of sustainability)" 1
+"walking speed" 1
+"water demand" 1
+"water requirements" 1
+"water security rate" 1
+"water usage" 1
+"water usage quota" 1
+"water use" 1
+"willingness to buy food that will soon expire" 1
+"willingness to buy land" 1
+"willingness to participate in initiative" 1
+"willingness to relinquish land" 1
+"willingness to rent out land" 1
+"willingness to walk" 1
+"work hours of household members" 1

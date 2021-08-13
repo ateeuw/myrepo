@@ -1,0 +1,104 @@
+"per agent - ability" "number"
+"not applicable" 68
+"allocate land to X" 10
+"buy food" 10
+"work off-farm" 10
+"work on-farm" 9
+"move/migrate" 6
+"allocate labour to X" 5
+"buy land" 5
+"earn money" 5
+"allocate cash to X" 4
+"buy non-food commodities" 4
+"choose store" 4
+"consume food" 4
+"sell livestock" 4
+"allocate money" 3
+"consume agricultural products (self-consumption)" 3
+"plant perennials" 3
+"rent (out) land" 3
+"save money" 3
+"sell land" 3
+"age" 2
+"buy machinery" 2
+"buy X" 2
+"choose mode of transportation" 2
+"consume own-produced food" 2
+"exit farming" 2
+"keep livestock" 2
+"pay taxes" 2
+"produce food" 2
+"receive remittances" 2
+"sell agricultural products" 2
+"sell crops" 2
+"sell X" 2
+"adapt crop choice based on weather forecast" 1
+"adopt new crop variety" 1
+"adopt new farming technique" 1
+"allocate credit" 1
+"allocate income" 1
+"allocate inputs to X" 1
+"borrow money" 1
+"buy fertiliser" 1
+"buy irrigation water" 1
+"buy livestock" 1
+"buy seeds" 1
+"carry food items" 1
+"change inventory" 1
+"choose crops" 1
+"choose where to move/migrate to" 1
+"choose who to sell to" 1
+"close store" 1
+"collect foreign aid" 1
+"collect grants" 1
+"collect taxes" 1
+"colonise new land" 1
+"consume goods" 1
+"consume services" 1
+"convert to organic" 1
+"determine demand for X" 1
+"determine supply of X" 1
+"die" 1
+"donate X" 1
+"establish store" 1
+"expand farm" 1
+"get born" 1
+"get fired" 1
+"get hired" 1
+"go to store" 1
+"hire/rent out labour" 1
+"leave field fallow" 1
+"maximise income" 1
+"maximise net returns" 1
+"maximise utility" 1
+"negotiate" 1
+"optimise water use" 1
+"order food products" 1
+"pay employees" 1
+"perceive" 1
+"predict crop returns" 1
+"produce food for self-consumption" 1
+"produce milk" 1
+"produce X" 1
+"provide public services" 1
+"receive dividends" 1
+"receive food stamps" 1
+"receive seasonal weather forecast" 1
+"receive state transfers" 1
+"reduce food intake" 1
+"remain farming" 1
+"rent (out) equipment" 1
+"rent (out) oxen" 1
+"repay loan" 1
+"save income" 1
+"search for suitable land" 1
+"sell food products" 1
+"sell timber" 1
+"sens environment" 1
+"shrink farm" 1
+"stop farming" 1
+"store X" 1
+"transfer money" 1
+"transport people" 1
+"transport X to shelter" 1
+"waste food" 1

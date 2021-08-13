@@ -1,0 +1,14 @@
+"spatial & temporal - ref scale" "number"
+"country" 35
+"earth" 16
+"province/state > x > municipality" 10
+"province/state" 9
+"continent > x > country" 7
+"country > x > province/state" 6
+"municipality" 6
+"city" 5
+"village/city district" 5
+"city > x > village/city district" 4
+"municipality > x > city" 2
+"earth > x > continent" 1
+"village/city district > x" 1

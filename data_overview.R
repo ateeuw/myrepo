@@ -182,6 +182,24 @@ quotes_long <- quotes_wide %>% pivot_longer(cols = c("per measure - measure undi
                                             names_to = "code_group", values_to = "name")
 
 # Get type of food security indicators
+quotes_long$class <- ""
+class_clm = which(colnames(quotes_long) == "class")
+name_clm = which(colnames(quotes_long) == "name")
+quotes_long <- dict_classification(sheet = quotes_long, dct = FSi_class, clm = name_clm, class_clm = class_clm)
+colnames(quotes_long)[class_clm] <- "per effect - FS indicator class"
+unique(quotes_long$`per measure - FS indicator class`)
+
+quotes_long <- quotes_long %>% distinct()
+quotes_long$name_id <- 1:nrow(quotes_long)
+
+quotes_wide <- quotes_long %>% pivot_wider(names_from = code_group, values_from = name)
+which(colnames(quotes_wide) == "per measure - FS indicator class")
+colnames(quotes_wide)
+quotes_long <- quotes_wide %>% pivot_longer(cols = c("per effect - FS indicator class":"spatial & temporal - WBD23 region"),
+                                            names_to = "code_group", values_to = "name")
+
+# Get type of food commodities
+
 
 # Fix data (split data type and whether the type is primary or secondary)
 for(i in which(quotes_long$code_group == "modelling - data")){
@@ -220,7 +238,7 @@ leave_out <- c("ID", "Quotation Name", "Document", "Document Groups", "Quotation
                "agent", "food system - FS agent", "food system - FS type", "method-sensitivity analysis", "method-validation", "method - model testing", "method - sensitivity analysis",
                "modelling - programming language", "modelling - validation type", "papers - first author", "papers - last author", "per agent - interactions", "per effect - effect", 
                "per effect - FS dimension", "per effect - indicator other", "per effect - unit indicator other", "spatial & temporal - constituent state", "per effect - indicator other",
-               )
+)
 
 favars <- colnames(quotes_wide)[!(colnames(quotes_wide) %in% leave_out)]
 
@@ -239,8 +257,8 @@ for(i in favars){
   tablenamei = gsub("\\?", "", tablenamei) #remove question mark
   
   #datai_sum <- as.data.frame(datai_sum)
-  write.xlsx(cbind(i = datai_sum$name, "number" = datai_sum$n), file="./variable_summary_tables/all_variables.xlsx", sheetName=gsub("\\?", "", i), row.names=FALSE, append = TRUE)
-    
+  write.xlsx(cbind(i = datai_sum$name, "number" = datai_sum$n), file="../variable_summary_tables/all_variables.xlsx", sheetName=gsub("\\?", "", i), row.names=FALSE, append = TRUE)
+  
   #write.table(cbind(i = datai_sum$name, "number" = datai_sum$n), file = tablenamei, row.names = FALSE)
   
   

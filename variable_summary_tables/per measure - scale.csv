@@ -1,0 +1,13 @@
+"per measure - scale" "number"
+"country" 63
+"province/state" 9
+"city" 6
+"country > x > province/state" 6
+"unclear" 5
+"village/city district" 5
+"continent > x > country" 4
+"earth > x > continent" 3
+"municipality" 3
+"earth" 2
+"city > X > village/city district" 1
+"province/state > x > municipality" 1

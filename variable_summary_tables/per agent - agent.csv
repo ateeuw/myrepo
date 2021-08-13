@@ -1,0 +1,52 @@
+"per agent - agent" "number"
+"none" 28
+"household" 13
+"farmer" 12
+"consumer" 11
+"farming household" 11
+"population" 9
+"consumer household" 6
+"labourer" 5
+"farm" 4
+"government" 4
+"producer" 3
+"store" 3
+"farmer population" 2
+"urban household" 2
+"agricultural entity" 1
+"agro-pastoralist" 1
+"bakeries" 1
+"chicken flock" 1
+"consumer population" 1
+"crop producers" 1
+"customer pool" 1
+"distribution centre" 1
+"ecological entity" 1
+"food distribution operators" 1
+"food producing firm" 1
+"food storage operators" 1
+"food vendor" 1
+"food warehouse operators" 1
+"foreign sector" 1
+"industrial entity" 1
+"investor" 1
+"land manager" 1
+"livestock raiser" 1
+"livestock raising household" 1
+"pastoralist" 1
+"producer household" 1
+"public transport vehicle" 1
+"residential entity" 1
+"restaurant" 1
+"retailer" 1
+"rural household" 1
+"sheep" 1
+"shops" 1
+"storing agent" 1
+"taxpayer" 1
+"transportation vehicle" 1
+"village" 1
+"villager" 1
+"volunteer" 1
+"water manager" 1
+"water supplier" 1

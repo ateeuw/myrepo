@@ -1,0 +1,11 @@
+"spatial & temporal - representation" "number"
+"none" 82
+"geographic + gridded" 6
+"geographic + zonal" 3
+"geographic + gridded + zonal" 2
+"geographic + zonal + points" 2
+"chessboard" 1
+"chessboard + toroidal" 1
+"geographic + gridded + points" 1
+"geographic + gridded + points + zonal" 1
+"geographic + networks + points" 1

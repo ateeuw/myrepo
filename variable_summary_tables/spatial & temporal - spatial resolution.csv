@@ -1,0 +1,24 @@
+"spatial & temporal - spatial resolution" "number"
+"same as extent" 46
+"country" 16
+"province/state" 5
+"not given" 4
+"urban versus rural" 4
+"agroecological zones" 3
+"not given but very small" 3
+"10000" 2
+"1000000" 2
+"2500" 2
+"900" 2
+"90000" 2
+"country > x > province/state" 2
+"size of cells not given" 2
+"1667497225" 1
+"62500" 1
+"city" 1
+"city district" 1
+"farmers' fields (<= 150000 m2)" 1
+"households" 1
+"municipality" 1
+"province/state > x > municipality" 1
+"village/city district" 1

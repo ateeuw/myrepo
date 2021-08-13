@@ -1,0 +1,215 @@
+"per effect - effect" "number"
+"increased income" 5
+"reduced poverty incidence" 4
+"increased agricultural productivity" 3
+"increased food production" 3
+"reduced food prices" 3
+"decrease in food prices" 2
+"decrease in food production" 2
+"increased export of agricultural products" 2
+"increased farm gate prices" 2
+"increased food prices" 2
+"increased GDP" 2
+"increased poverty incidence" 2
+"increased profit" 2
+"increased return per land area" 2
+"increased rice consumption" 2
+"increased rice imports" 2
+"increased wages" 2
+"reduced income" 2
+"reduced poverty" 2
+"reduced prices of agricultural commodities" 2
+"reduced return from farm land" 2
+"reduced rice consumption" 2
+"reduced rice farm gate prices" 2
+"reduced rice prices for consumers" 2
+"change from rice to cotton" 1
+"changes in product flows between regions" 1
+"compromised financial access to irrigation" 1
+"compromised income" 1
+"decrease calf sales" 1
+"decrease in diet differential" 1
+"decrease in national poverty" 1
+"decrease in people walking to store as a last resort" 1
+"decrease in price of specific crop" 1
+"decrease in private investment in agricultural sector" 1
+"decrease in public expenditures" 1
+"decrease in water use" 1
+"decreased agricultural productivity" 1
+"decreased fodder production" 1
+"decreased income" 1
+"decreased milk productivity" 1
+"decreased supply of ecosystem services" 1
+"decreased supply of irrigated crops" 1
+"decresed economic importance of agriculture" 1
+"delayed farm exits" 1
+"displacement of people" 1
+"economic growth" 1
+"electricity board goes bankrupt" 1
+"electricity infrastructure cannot be maintained" 1
+"fewer people walk as last resort" 1
+"improved diets in the lower income quartile (Q4)" 1
+"improved diets in the lower middle income quartile (Q3)" 1
+"Improved diets in the upper middle income quartile (Q2)" 1
+"improved flood control" 1
+"increase in feedgrain price" 1
+"increase in fodder area" 1
+"increase in food crop GDP" 1
+"increase in hydroelectric power generation" 1
+"increase in irrigation coverage" 1
+"increase in milk sales" 1
+"increase in output value of agricultural products" 1
+"increase it quality adjusted life years" 1
+"increased abandonment of agricultura land" 1
+"increased abandonment of natural land" 1
+"increased acreage of specific crop(s)" 1
+"increased added value for certain crops" 1
+"increased agricultural GDP" 1
+"increased agricultural growth" 1
+"increased agricultural incomes" 1
+"increased agricultural trade surplus" 1
+"increased cereal prices" 1
+"increased crop production" 1
+"increased crop productivity" 1
+"increased demand for agricultural labour" 1
+"increased demand for non-agricultural goods" 1
+"increased domestic rice price" 1
+"increased domestic rice production" 1
+"increased export of dairy" 1
+"increased export of meat" 1
+"increased export of oilseeds" 1
+"increased export of sugar" 1
+"increased export of vegetables & fruits" 1
+"increased export of wheat" 1
+"increased extension service coverage" 1
+"increased farm-non farm income inequality" 1
+"increased farm gate price of plant-based fibers" 1
+"increased fertiliser use" 1
+"increased food availability" 1
+"increased food inflation" 1
+"increased forest area" 1
+"increased global rice price" 1
+"increased government revenue" 1
+"increased grain production" 1
+"increased import of dairy" 1
+"increased import of oilseeds" 1
+"increased import of plant-based fibers" 1
+"increased import of sugar" 1
+"increased import price for rice" 1
+"increased income equality" 1
+"increased income inequality" 1
+"increased irrigation water supply" 1
+"increased meat production" 1
+"increased milk production" 1
+"increased non-agricultural prices" 1
+"increased non-food prices" 1
+"increased oilseed consumption" 1
+"increased pesticide use" 1
+"increased poverty" 1
+"increased price of dairy" 1
+"increased price of domestic agricultural goods" 1
+"increased price of irrigated crops" 1
+"increased price of labour" 1
+"increased price of meat" 1
+"increased price of rice" 1
+"increased price of wheat" 1
+"increased prices of goods" 1
+"increased production of plant-based fibers" 1
+"increased real wages" 1
+"increased return to investments in agricultural sector" 1
+"increased return to labour" 1
+"increased returns to capital" 1
+"increased rice area" 1
+"increased rice exports" 1
+"increased rice production" 1
+"increased selling time for food products" 1
+"increased sugar consumption" 1
+"increased supply of ecosystem services" 1
+"increased use of chemical fertilisers" 1
+"increased vegetable & fruit consumption" 1
+"increased wages for skilled workers" 1
+"increased water security" 1
+"minimum price for milk" 1
+"mitigation of greenhouse gas emissions" 1
+"movement of labour from agriculture to non-agriculture" 1
+"movement of labour from non-agriculture to agriculture" 1
+"near term return of rice prices to pre-reform levels" 1
+"no change in average profit" 1
+"no change in consumption of dairy" 1
+"no change in diets in the upper income quartile (Q1)" 1
+"no change in diets in the upper middle income quartile (Q2)" 1
+"no change in meat consumption" 1
+"no change in price of imported rice" 1
+"no change in prices of specific crop(s)" 1
+"no change in wheat consumption" 1
+"no change price of imported rice" 1
+"no movement of labour between agricultural and non-agricultural sector" 1
+"reduced added value for certain crops" 1
+"reduced cereal prices" 1
+"reduced consumption of plant-based fibers" 1
+"reduced cost of labour" 1
+"reduced dairy production" 1
+"reduced demand for farm land" 1
+"reduced domestic rice production" 1
+"reduced earthquake frequency" 1
+"reduced export of feedgrains" 1
+"reduced export of plant-based fibers" 1
+"reduced farm-gate price for dairy" 1
+"reduced farm-gate price for feedgrains" 1
+"reduced farm-gate price for meat" 1
+"reduced farm-gate price for oilseeds" 1
+"reduced farm-gate price for rice" 1
+"reduced farm-gate price for sugar" 1
+"reduced farm-gate prices of vegetables & fruits" 1
+"reduced farm-gate prices of wheat" 1
+"reduced farm output" 1
+"reduced feed exports" 1
+"reduced feedgrain production" 1
+"reduced fertiliser prices" 1
+"reduced food inflation" 1
+"reduced food self-sufficiency" 1
+"reduced food shortages" 1
+"reduced food waste" 1
+"reduced fruit & vegetable production" 1
+"reduced import of feedgrains" 1
+"reduced import of meat" 1
+"reduced import of rice" 1
+"reduced import of vegetables & fruits" 1
+"reduced import of wheat" 1
+"reduced incidence of human disease" 1
+"reduced labour demand in nonagricultural sector" 1
+"reduced labour returns" 1
+"reduced land allocated to food crops" 1
+"reduced land rental rates" 1
+"reduced market concentration" 1
+"reduced oilseed production - total [volume]" 1
+"reduced poverty gap" 1
+"reduced price of cereal - average [monetary unit]" 1
+"reduced price of coffee" 1
+"reduced price of labour" 1
+"reduced price of maize - average [monetary unit]" 1
+"reduced price of oilseeds" 1
+"reduced price of plant-based fibers" 1
+"reduced price of rice" 1
+"reduced price of skilled labour" 1
+"reduced price of unskilled labour" 1
+"reduced price of vegetables & fruits" 1
+"reduced production costs" 1
+"reduced real wages" 1
+"reduced returns to capital" 1
+"reduced rice area" 1
+"reduced rice import price" 1
+"reduced rice production" 1
+"reduced rice rice imports" 1
+"reduced sewage discharge" 1
+"reduced sugar production" 1
+"reduced supply chain costs" 1
+"reduced total inflation" 1
+"reduced transportation costs (% change USD)" 1
+"reduced wages" 1
+"reduced wages for unskilled workers" 1
+"reduced wheat production" 1
+"reduction in fodder purchases" 1
+"unclear" 1
+"unskilled farm workers leave agriculture for nonfarm work" 1
+"worse diets in the middle lower income quertile (Q3)" 1

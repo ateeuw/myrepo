@@ -1,0 +1,55 @@
+"per effect - indicator other" "number"
+"abandoned natural land [# cells]" 1
+"agricultural GDP [% increase per year]" 1
+"availability of hydro-electric power (# households)" 1
+"change in GDP (%)" 1
+"change in labour demand in agricutural sector (%)" 1
+"change in labour demand in nonagricultural sector (%)" 1
+"change in poverty gap (%)" 1
+"consumption of plant-based fibers - total [volume]" 1
+"cost of labour" 1
+"demand for agricultural goods" 1
+"demand for non-agricultural goods" 1
+"displacement of people (#)" 1
+"earthquake frequency" 1
+"economic benefit of flood control - total [USD/year]" 1
+"economic benefit of hydroelectric power generation (USD/year)" 1
+"economic share of agriculture [% of total GDP]" 1
+"export of plant-based fibers - total [volume]" 1
+"fertiliser use [tonnes]" 1
+"forest area [ha]" 1
+"GDP" 1
+"governent revenue - total [monetary unit]" 1
+"human disease incidence" 1
+"import of plant-based fibers - total [volume]" 1
+"labour employed in agricultural sector [%]" 1
+"labour employed in non-agricultural sector [%]" 1
+"market power [Herfindahl-Hirschman index]" 1
+"mitigated emissions (tonnes CO2 per year)" 1
+"pesticide use [tonnes]" 1
+"plant-based fiber production - total [volume]" 1
+"price of labour [% change]" 1
+"price of plant-based fibers [monetary unit]" 1
+"prices of non-agricultural products" 1
+"private investment in agricultural sector [rupees]" 1
+"product shipments between states [# boxes]" 1
+"production costs [monetary unit]" 1
+"profit [euro]" 1
+"profit [monetary unit / farm]" 1
+"profit [monetary unit per kg milk]" 1
+"real consumer prices (USD)" 1
+"returns to capital [% change]" 1
+"returns to investments in the agricultural sector" 1
+"returns to labour" 1
+"returns to land [% change]" 1
+"sewage discharge [tonnes]" 1
+"supply chain costs [monetary unit]" 1
+"supply of ecosystem services" 1
+"total GDP [% growth / year]" 1
+"trade surplus [cedi / year]" 1
+"transportation costs [monetary unit]" 1
+"unskilled farm labourers leaving agriculture (%)" 1
+"use of chemical fertilisers [% of farm households using them]" 1
+"wage rate" 1
+"water security rate (%)" 1
+"water use" 1

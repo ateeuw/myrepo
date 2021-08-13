@@ -1,0 +1,10 @@
+"spatial & temporal - scale" "number"
+"country" 8
+"provincial" 3
+"city district" 2
+"county" 2
+"earth" 1
+"multiple cities within country" 1
+"multiple states (within one country) + multiple telecoupled countries" 1
+"region within state" 1
+"trade partnership (multiple countries from different continents)" 1
